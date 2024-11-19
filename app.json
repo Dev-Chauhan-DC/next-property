@@ -1,36 +1,52 @@
 {
   "expo": {
-    "name": "next-property",
+    "name": "NextProperty",
     "slug": "next-property",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./src/assets/images/icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/images/splash.png",
+      "image": "./src/assets/images/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "config" : {
+        "googleMapsApiKey": "AIzaSyDVNQlGHNNa_YBrcCLcNKA8NyZDE04D52c"
+      },
+      "supportsTablet": true,
+      "bundleIdentifier": "com.devexpozebra.nextproperty"
     },
     "android": {
+      "config" :{
+        "googleMaps": {
+          "apiKey": "AIzaSyDVNQlGHNNa_YBrcCLcNKA8NyZDE04D52c"
+        }
+      },
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./src/assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.devexpozebra.nextproperty"
     },
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./src/assets/images/favicon.png"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "efee61ca-84e6-49c3-8694-3633199daa16"
+      }
     }
   }
 }

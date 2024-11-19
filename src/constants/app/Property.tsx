@@ -1,0 +1,373 @@
+import AcIcon from "@/src/assets/svgs/AcIcon";
+import ApartmentIcon from "@/src/assets/svgs/ApartmentIcon";
+import BuildingIcon from "@/src/assets/svgs/BuildingIcon";
+import BuiltUpAreaIcon from "@/src/assets/svgs/BuiltUpAreaIcon";
+import CarpetAreaIcon from "@/src/assets/svgs/CarpetAreaIcon";
+import ClubIcon from "@/src/assets/svgs/ClubIcon";
+import ElevatorIcon from "@/src/assets/svgs/ElevatorIcon";
+import FireAlarmIcon from "@/src/assets/svgs/FireAlarmIcon";
+import GateIcon from "@/src/assets/svgs/GateIcon";
+import HouseIcon from "@/src/assets/svgs/HouseIcon";
+import HouseKeeperIcon from "@/src/assets/svgs/HouseKeeperIcon";
+import IntercomIcon from "@/src/assets/svgs/IntercomIcon";
+import ParkIcon from "@/src/assets/svgs/ParkIcon";
+import ParkingIcon from "@/src/assets/svgs/ParkingIcon";
+import PipeIcon from "@/src/assets/svgs/PipeIcon";
+import SaveWaterIcon from "@/src/assets/svgs/SaveWaterIcon";
+import SellIcon from "@/src/assets/svgs/SellIcon";
+import SewageIcon from "@/src/assets/svgs/SewageIcon";
+import ShoppingCenterIcon from "@/src/assets/svgs/ShoppingCenterIcon";
+import SliderIcon from "@/src/assets/svgs/SliderIcon";
+import SwimmingPoolIcon from "@/src/assets/svgs/SwimmingPoolIcon";
+import WifiIcon from "@/src/assets/svgs/WifiIcon";
+import { ISelectList } from "@/src/components/common/select/multiple_select";
+import { IPlaceDetails } from "@/src/data/network/models/googleMap";
+
+export const houseType: ISelectList[] = [
+    {
+        title: "Apartment",
+        icon: <ApartmentIcon />
+    },
+    {
+        title: "Gated Community Villa",
+        icon: <GateIcon />
+    },
+    {
+        title: "Standalone Building",
+        icon: <BuildingIcon />
+    },
+    {
+        title: "Independent House / Villa",
+        icon: <HouseIcon />
+    },
+]
+
+
+export const roles: ISelectList[] = [{ title: "Owner" }, { title: "Builder" }, { title: "Agent" }];
+export const ownershipType: ISelectList[] = [{ title: "Self Owned" }, { title: "On Lease" }];
+export const bedroom: ISelectList[] = [{ title: "0" }, { title: "1" }, { title: "2" }, { title: "3" }, { title: "4" }, { title: "5" }];
+export const bathroom: ISelectList[] = [{ title: "0" }, { title: "1" }, { title: "2" }, { title: "3" }, { title: "4" }, { title: "5" }];
+export const hall: ISelectList[] = [{ title: "0" }, { title: "1" }, { title: "2" }, { title: "3" }, { title: "4" }, { title: "5" }];
+export const kitchen: ISelectList[] = [{ title: "0" }, { title: "1" }, { title: "2" }, { title: "3" }, { title: "4" }, { title: "5" }];
+export const balcony: ISelectList[] = [{ title: "0" }, { title: "1" }, { title: "2" }, { title: "3" }, { title: "4" }, { title: "5" }];
+export const cupboards: ISelectList[] = [{ title: "0" }, { title: "1" }, { title: "2" }, { title: "3" }, { title: "4" }, { title: "5" }];
+export const parkingSlotTwoWheel: ISelectList[] = [{ title: "0" }, { title: "1" }, { title: "2" }, { title: "3" }, { title: "4" }, { title: "5" }];
+export const parkingSlotFourWheel: ISelectList[] = [{ title: "0" }, { title: "1" }, { title: "2" }, { title: "3" }, { title: "4" }, { title: "5" }];
+export const availability: ISelectList[] = [{ title: "Immediate" }, { title: "Within 15 Days" }, { title: "Within 30 Days" }, { title: "After 30 Days" }];
+export const kitchenType: ISelectList[] = [{ title: "Modular" }, { title: "Coverd Shelves" }, { title: "Open Shelves" }];
+export const waterSupply: ISelectList[] = [{ title: "Corporation" }, { title: "Borewell" }, { title: "Both" }];
+export const powerBackup: ISelectList[] = [{ title: "Full" }, { title: "Partial" }, { title: "None" }];
+export const possesion: ISelectList[] = [{ title: "Under Construction" }, { title: "Ready to Move" }];
+export const tenants: ISelectList[] = [{ title: "Anyone" }, { title: "Family" }, { title: "Bachelor Male" }, { title: "Bachelor female" }, { title: "Company" },];
+export const furnishing: ISelectList[] = [{ title: "Full" }, { title: "Semi" }, { title: "None" }];
+export const facing: ISelectList[] = [{ title: "North" }, { title: "South" }, { title: "East" }, { title: "West" }, { title: "North - West" }, { title: "North - East" }, { title: "South - West" }, { title: "South - East" },];
+export const flooringType: ISelectList[] = [{ title: "Cement" }, { title: "Marbel / Granite" }, { title: "Wooden" }, { title: "Virtified Tiles" }, { title: "Mosaic" }];
+export const sort: ISelectList[] = [
+    {
+        title: 'Relevance',
+        name: 'relevance'
+    },
+    {
+        title: 'Newest',
+        name: 'newest'
+    },
+    {
+        title: 'High to Low (Price)',
+        name: 'price-highToLow'
+    },
+    {
+        title: 'Low to High (Price)',
+        name: 'price-lowToHigh'
+    },
+    {
+        title: 'Low to High (sqrt)',
+        name: 'built_up_area-lowToHigh'
+    },
+    {
+        title: 'High to Low (sqrt)',
+        name: 'built_up_area-highToLow'
+    },
+    {
+        title: 'Low to High (Bedroom)',
+        name: 'bedroom_count-lowToHigh'
+    },
+    {
+        title: 'High to Low (Bedroom)',
+        name: 'bedroom_count-highToLow'
+    },
+    {
+        title: 'Low to High (Bathroom)',
+        name: 'bathroom_count-lowToHigh'
+    },
+    {
+        title: 'High to Low (Bathroom)',
+        name: 'bathroom_count-highToLow'
+    },
+    {
+        title: 'Low to High (Hall)',
+        name: 'hall_count-lowToHigh'
+    },
+    {
+        title: 'High to Low (Hall)',
+        name: 'hall_count-highToLow'
+    },
+    {
+        title: 'Low to High (Kitchen)',
+        name: 'kitchen_count-lowToHigh'
+    },
+    {
+        title: 'High to Low (Kitchen)',
+        name: 'kitchen_count-highToLow'
+    }
+]
+
+
+
+export const amenities: ISelectList[] = [
+    {
+        title: "air conditioner",
+        icon: <AcIcon className="" />
+
+    },
+    {
+        title: "club",
+        icon: <ClubIcon className="" />
+
+
+    },
+    {
+        title: "playground",
+        icon: <SliderIcon className="" />
+
+    },
+    {
+        title: "gas",
+        icon: <PipeIcon className="" />
+
+    },
+    {
+        title: "internet",
+        icon: <WifiIcon className="" />
+
+    },
+    {
+        title: "sewage",
+        icon: <SewageIcon className="" />
+    },
+    {
+        title: "lift",
+        icon: <ElevatorIcon className="" />
+
+    },
+    {
+        title: "fire alarm",
+        icon: <FireAlarmIcon className="" />
+
+    },
+    {
+        title: "house keeper",
+        icon: <HouseKeeperIcon className="" />
+
+    },
+    {
+        title: "park",
+        icon: <ParkIcon className="" />
+
+    },
+    {
+        title: "shopping center",
+        icon: <ShoppingCenterIcon className="" />
+    },
+    {
+        title: "swimming pool",
+        icon: <SwimmingPoolIcon className="" />
+    },
+    {
+        title: "intercom",
+        icon: <IntercomIcon className="" />
+    },
+    {
+        title: "visitor parking",
+        icon: <ParkingIcon />
+
+    },
+    {
+        title: "rain water harvesting ",
+        icon: <SaveWaterIcon className="" />
+    },
+]
+
+
+
+export const propertyInfo = [
+    {
+        name: "purpose",
+        subTitle: "Sell",
+        icon: <SellIcon />
+    },
+    {
+        subTitle: "Built Up Area",
+        name: "1,200Sq Ft",
+        icon: <BuiltUpAreaIcon />
+    },
+    {
+        subTitle: "Carpet Area",
+        name: "1,200Sq Ft",
+        icon: <CarpetAreaIcon />
+    },
+]
+
+export const defaultPlaceDetails: IPlaceDetails | null = {
+    html_attributions: [],
+    result: {
+        address_components: [
+            {
+                long_name: "Surat",
+                short_name: "Surat",
+                types: [
+                    "locality",
+                    "political"
+                ]
+            },
+            {
+                long_name: "Surat",
+                short_name: "Surat",
+                types: [
+                    "administrative_area_level_3",
+                    "political"
+                ]
+            },
+            {
+                long_name: "Gujarat",
+                short_name: "GJ",
+                types: [
+                    "administrative_area_level_1",
+                    "political"
+                ]
+            },
+            {
+                long_name: "India",
+                short_name: "IN",
+                types: [
+                    "country",
+                    "political"
+                ]
+            }
+        ],
+        adr_address: "<span class=\"locality\">Surat</span>, <span class=\"region\">Gujarat</span>, <span class=\"country-name\">India</span>",
+        formatted_address: "Surat, Gujarat, India",
+        geometry: {
+            location: {
+                lat: 21.1702401,
+                lng: 72.83106070000001
+            },
+            viewport: {
+                northeast: {
+                    lat: 21.27058340704162,
+                    lng: 72.94321056780348
+                },
+                southwest: {
+                    lat: 21.04781690239682,
+                    lng: 72.70138193777503
+                }
+            }
+        },
+        icon: "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/geocode-71.png",
+        icon_background_color: "#7B9EB0",
+        icon_mask_base_uri: "https://maps.gstatic.com/mapfiles/place_api/icons/v2/generic_pinlet",
+        name: "Surat",
+        photos: [
+            {
+                height: 1860,
+                html_attributions: [
+                    "<a href=\"https://maps.google.com/maps/contrib/100790250452850557781\">kashyap bhadreshvara</a>"
+                ],
+                photo_reference: "AdDdOWrOoYcJPpLxYwNexcZBulYS8aK_49d5m2IqB_lyiGu9AVh7ovdUARikavhfFXHVdKiQizjuVdfvJtHrZYXunvqByOjg19IlUllFK2jQnKcGECsK4dQQMR7botwMWprK6WI8nqGgRR25H3p_LOB5_eMWySm159IJtZt4jKdo533iNVq3",
+                width: 4032
+            },
+            {
+                height: 3120,
+                html_attributions: [
+                    "<a href=\"https://maps.google.com/maps/contrib/102822911990619688331\">Ushmita Vasava (UsHi)</a>"
+                ],
+                photo_reference: "AdDdOWq8rZLGhDQrrW7x5iTR72_UJwv0CFxbGTAulzCJp76ByO8KM5quIIKT7rzYtyRvp-7gfMwoT3HKMYdAgnTmhM5VVymOElcndzaDNrDQIA5Ub692XErGgl5Hddve1Z0nKLhYVeqXExB6mNvku41cX7jg36Xhg4taOo50weR7pD6nBYqe",
+                width: 4160
+            },
+            {
+                height: 4160,
+                html_attributions: [
+                    "<a href=\"https://maps.google.com/maps/contrib/102822911990619688331\">Ushmita Vasava (UsHi)</a>"
+                ],
+                photo_reference: "AdDdOWrNv9i2g3LFx6nRCj-bcNT_ILH1JqxFjz24N9_gcevljg_W0TPMK2wfqWkSjfTKyjsaOVA4AmtNHI0mKBCoO2od2UjDCCqk9Qkel85i0PH5HuBrRctxqwxD_oULFlzqr7PLGdoEiMywyaeCjuC0gkn-iiyk-l4aBTFdFjCEhpGOek-L",
+                width: 3120
+            },
+            {
+                height: 5760,
+                html_attributions: [
+                    "<a href=\"https://maps.google.com/maps/contrib/116253705863990200173\">Deepak Das</a>"
+                ],
+                photo_reference: "AdDdOWq6k9B8zP-0hpfaAprj8-sXAwKNm-qXcnFN1BEY623_YIzA54MCLCwN77nO1LxZKufkT0MkdCOquIYdFMTmYuwpoQ8QOQvdNY4BMsMFAkzI2mFIItb96z63xcK0zZDRkZLa9A9GHF-ME6OOlhD2-0RPtYjBJJE2ZVk5QFNsVNc9sumz",
+                width: 4312
+            },
+            {
+                height: 4640,
+                html_attributions: [
+                    "<a href=\"https://maps.google.com/maps/contrib/111264548942207323156\">PRAMOD MISHRA</a>"
+                ],
+                photo_reference: "AdDdOWpAWaUMHec2CJuN10ICBrXv_3G2cIB_zPojlL8vfYYxiS_wWbBDOLr8e6bdGAx1qW6EzNfEiylFhsaEIRV1fyxNUnNYlhK8soQt7IqujU6x9ZkDmOsinXGVSzQek_JxSTIUGTVZCs2oNlIgTHUWRGmbF2bPy1pwHPxRWngegeqBQwvW",
+                width: 2088
+            },
+            {
+                height: 510,
+                html_attributions: [
+                    "<a href=\"https://maps.google.com/maps/contrib/118418242376507329150\">Madhuri verma</a>"
+                ],
+                photo_reference: "AdDdOWrP7LNH0vfvh2wDbu0cCYonidQU9thLVzP3Vfpk8yXct0GNmbjYqsu9nZVtjb387z6eTXjoJWInT-yhIWw341y1jGY6SPoeDC-iuYVvf1_DYsSsCVdMOo8McMyZ1jzmXQ0AJNW_K5Po2QliFQIsC1sUvxIyNDs0U5IaTy1vEWGrzEeb",
+                width: 691
+            },
+            {
+                height: 4000,
+                html_attributions: [
+                    "<a href=\"https://maps.google.com/maps/contrib/108241946610712094511\">Anakin Black</a>"
+                ],
+                photo_reference: "AdDdOWrzEM0DoMg46yGPpfp7Jbce_QaFRKk7UYws_vzwfNeF3n9X7jus1kooXE9Y7rexxffIBiuzYm4y_oB21D-QH7Tv4bOsc3ojSCmWzeNL-dhdeNeTtd1-Km6FWOdeuP1jpmk8mjp4_4Vt1cDAGaeMIdyWhP-bUM_2YhsGd3FfHcnMJ0VF",
+                width: 1800
+            },
+            {
+                height: 2340,
+                html_attributions: [
+                    "<a href=\"https://maps.google.com/maps/contrib/106640043044327241181\">arvind veljibhai</a>"
+                ],
+                photo_reference: "AdDdOWrKS02hQE94tONA0mEjve9fPYmnpSGNoaOkSsaBNOxSv3uOJJOpymOZWziFI3rP3OUzxHhZvilw-a_M7wbJPqBHMH9HyvIs9ZcZvKKbICFeQ9SsYvwwof9WNcJ7FMxxwYCPp2gMHrJyub0XjXYDltVDBk6P8XPDV6PPKPL3UAEnF9BB",
+                width: 1080
+            },
+            {
+                height: 956,
+                html_attributions: [
+                    "<a href=\"https://maps.google.com/maps/contrib/118418242376507329150\">Madhuri verma</a>"
+                ],
+                photo_reference: "AdDdOWoeDYhbdyI4LSiadfxLt_SRQNjet4wwNj4NX0gB1hPZnEfUw32XCKH2K1uCviwWe2AA2wchJF0U8RrY_1X5ogoxs9gde7KDfWKWO1UdnT_XBeol_luHPMjY0wRGMQljziFCFxw1hEQObLoEWOGgCZkrLhoEDvxFV9FEp3ZYH8W4GAsU",
+                width: 696
+            },
+            {
+                height: 4000,
+                html_attributions: [
+                    "<a href=\"https://maps.google.com/maps/contrib/100146711351306538228\">Biharsharif City</a>"
+                ],
+                photo_reference: "AdDdOWqjnlaLYuJLBqc5QAY1Mf5kaMoHy8LYujcm4rNVGJHq71BPGfxX-eG6s123J6zQVwQrowjF9DEPWhSjcRj2LvKTpjdS_XhqcTC80l6l-GBbuwlCMTPg3biKJtQZ0RVGJ1seEKg3slX9_n4ndChaoocd_zo7Wf8LdLdiMfmefbosId6y",
+                width: 3000
+            }
+        ],
+        place_id: "ChIJYxUdQVlO4DsRQrA4CSlYRf4",
+        reference: "ChIJYxUdQVlO4DsRQrA4CSlYRf4",
+        types: [
+            "locality",
+            "political"
+        ],
+        url: "https://maps.google.com/?q=Surat,+Gujarat,+India&ftid=0x3be04e59411d1563:0xfe4558290938b042",
+        utc_offset: 330,
+        vicinity: "Surat",
+        website: "http://www.suratmunicipal.gov.in/"
+    },
+    status: "OK"
+}

@@ -1,0 +1,22 @@
+import * as React from "react"
+import Svg, { Path, SvgProps } from "react-native-svg"
+
+function ElevatorIcon(props: React.JSX.IntrinsicAttributes & React.JSX.IntrinsicClassAttributes<Svg> & Pick<Readonly<SvgProps>, "width" | "height" | "viewBox" | "color" | "title" | "children" | "opacity" | "fill" | "fillOpacity" | "fillRule" | "stroke" | "strokeWidth" | "strokeOpacity" | "strokeDasharray" | "strokeDashoffset" | "strokeLinecap" | "strokeLinejoin" | "strokeMiterlimit" | "vectorEffect" | "clipRule" | "clipPath" | "translate" | "translateX" | "translateY" | "origin" | "originX" | "originY" | "scale" | "scaleX" | "scaleY" | "skew" | "skewX" | "skewY" | "rotation" | "x" | "y" | "transform" | "pointerEvents" | "onStartShouldSetResponder" | "onMoveShouldSetResponder" | "onResponderEnd" | "onResponderGrant" | "onResponderReject" | "onResponderMove" | "onResponderRelease" | "onResponderStart" | "onResponderTerminationRequest" | "onResponderTerminate" | "onStartShouldSetResponderCapture" | "onMoveShouldSetResponderCapture" | "disabled" | "onPress" | "onPressIn" | "onPressOut" | "onLongPress" | "delayPressIn" | "delayPressOut" | "delayLongPress" | "id" | "marker" | "markerStart" | "markerMid" | "markerEnd" | "mask" | "onLayout" | "accessibilityLabel" | "accessible" | "testID" | "font" | "fontStyle" | "fontVariant" | "fontWeight" | "fontStretch" | "fontSize" | "fontFamily" | "textAnchor" | "textDecoration" | "letterSpacing" | "wordSpacing" | "kerning" | "fontFeatureSettings" | "fontVariantLigatures" | "fontVariationSettings" | "hitSlop" | "needsOffscreenAlphaCompositing" | "removeClippedSubviews" | "style" | "nativeID" | "className" | "cssInterop" | "collapsable" | "renderToHardwareTextureAndroid" | "focusable" | "tabIndex" | "shouldRasterizeIOS" | "isTVSelectable" | "hasTVPreferredFocus" | "tvParallaxProperties" | "tvParallaxShiftDistanceX" | "tvParallaxShiftDistanceY" | "tvParallaxTiltAngle" | "tvParallaxMagnification" | "onTouchStart" | "onTouchMove" | "onTouchEnd" | "onTouchCancel" | "onTouchEndCapture" | "onPointerEnter" | "onPointerEnterCapture" | "onPointerLeave" | "onPointerLeaveCapture" | "onPointerMove" | "onPointerMoveCapture" | "onPointerCancel" | "onPointerCancelCapture" | "onPointerDown" | "onPointerDownCapture" | "onPointerUp" | "onPointerUpCapture" | "accessibilityActions" | "aria-label" | "accessibilityRole" | "accessibilityState" | "aria-busy" | "aria-checked" | "aria-disabled" | "aria-expanded" | "aria-selected" | "accessibilityHint" | "accessibilityValue" | "aria-valuemax" | "aria-valuemin" | "aria-valuenow" | "aria-valuetext" | "onAccessibilityAction" | "importantForAccessibility" | "aria-hidden" | "aria-modal" | "role" | "accessibilityLabelledBy" | "aria-labelledby" | "accessibilityLiveRegion" | "aria-live" | "accessibilityElementsHidden" | "accessibilityViewIsModal" | "onAccessibilityEscape" | "onAccessibilityTap" | "onMagicTap" | "accessibilityIgnoresInvertColors" | "accessibilityLanguage"> & { readonly preserveAspectRatio?: string | undefined } & {}) {
+    return (
+        <Svg
+            strokeWidth={0}
+            viewBox="0 0 20 20"
+            {...props}
+        >
+            <Path d="M14.688 3.75H3.438a.312.312 0 00-.313.313v15.625a.312.312 0 10.625 0V4.374h10.625v15.313a.312.312 0 10.625 0V4.063a.312.312 0 00-.313-.313z" />
+            <Path d="M13.75 4.688H4.375A.312.312 0 004.062 5v14.688a.312.312 0 10.625 0V5.313h8.75v14.375a.312.312 0 10.626 0V5a.312.312 0 00-.313-.313zM16.784 10.091a.312.312 0 00-.442 0l-.625.626a.312.312 0 10.441.441l.625-.625a.312.312 0 000-.441z" />
+            <Path d="M17.409 10.716l-.625-.624a.312.312 0 10-.442.441l.625.625a.312.312 0 10.442-.441zM17.409 12.591a.312.312 0 00-.442 0l-.625.626a.312.312 0 10.442.441l.625-.625a.312.312 0 000-.441z" />
+            <Path d="M16.784 13.216l-.625-.624a.312.312 0 10-.442.441l.625.625a.312.312 0 10.442-.441zM9.063 4.688A.312.312 0 008.75 5v14.688a.312.312 0 10.625 0V5a.312.312 0 00-.313-.313z" />
+            <Path d="M15.313 19.375h-12.5a.312.312 0 100 .625h12.5a.312.312 0 100-.625zM9.063 0A2.816 2.816 0 006.25 2.813a.312.312 0 10.625 0A2.19 2.19 0 019.063.624a2.19 2.19 0 012.187 2.188.312.312 0 10.625 0A2.816 2.816 0 009.062 0z" />
+            <Path d="M11.563 2.5h-5a.312.312 0 100 .625h5a.312.312 0 100-.625z" />
+            <Path d="M9.063 1.25a.312.312 0 00-.313.313v1.25a.312.312 0 10.625 0v-1.25a.312.312 0 00-.313-.313z" />
+        </Svg>
+    )
+}
+
+export default ElevatorIcon
