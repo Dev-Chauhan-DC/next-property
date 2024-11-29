@@ -1,4 +1,4 @@
-import { IUser } from "./property"
+import { IUser } from "./user"
 
 export interface IInterestedPeople {
     id: number

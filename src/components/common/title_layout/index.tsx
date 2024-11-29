@@ -10,7 +10,7 @@ interface Props {
 const TitleLayout: React.FC<Props> = ({ children, title }) => {
     return (
         <View>
-            <Text className='text-sm text-black-800 font-mRegular mb-3'>{title}</Text>
+            <Text className='text-sm text-black-800 font-mMedium mb-3'>{title}</Text>
             {children}
         </View>
     )

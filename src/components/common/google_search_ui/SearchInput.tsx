@@ -14,9 +14,10 @@ interface Props {
     onChangeText?: (text: string) => void;
     placeholder?: string;
     loading?: boolean;
+    inputRef?: React.LegacyRef<TextInput>
 }
 
-const SearchInput: React.FC<Props> = ({ className, value, onChangeText, placeholder, loading }) => {
+const SearchInput: React.FC<Props> = ({ inputRef, className, value, onChangeText, placeholder, loading }) => {
     const router = useRouter();
 
 
@@ -38,6 +39,7 @@ const SearchInput: React.FC<Props> = ({ className, value, onChangeText, placehol
                     fill={Colors.black[800]}
                 /></Pressable>
             <TextInput
+                ref={inputRef}
                 placeholderTextColor={Colors.gray[300]}
                 placeholder={placeholder}
                 value={value}

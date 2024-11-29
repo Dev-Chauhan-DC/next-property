@@ -7,6 +7,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { cookieName } from '@/src/data/local_storage/cookies'
 import { useRecoilState } from 'recoil'
 import { userState } from '@/src/global_state/recoil/atoms/user'
+import { StatusBar } from 'expo-status-bar';
+
 
 
 interface Props {
@@ -36,7 +38,10 @@ const Index: React.FC<Props> = ({ children }) => {
         getUserHandle()
     }, [])
     return (
-        <>{children}</>
+        <View className='flex-1'>
+            {children}
+            <StatusBar style="dark" animated hideTransitionAnimation='fade' translucent />
+        </View>
     )
 }
 

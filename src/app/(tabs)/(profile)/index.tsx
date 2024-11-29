@@ -72,9 +72,16 @@ const ProfileScreen = () => {
                 className=' px-[16px] mx-[10px] h-[67px] rounded-[10px] bg-gray-100 justify-center'>
                 <View className='gap-3.5 flex flex-row items-center'>
                     <View className='w-[45px] h-[45px] rounded-full bg-gray-200 '></View>
-                    <View className='gap-1'>
-                        <Text className='text-sm font-mRegular text-black-800'>{user?.first_name + ' ' + user?.last_name}</Text>
-                        <Text className='text-[10px] text-gray-400 font-mRegular'>Show Profile</Text>
+                    <View className='gap-0.5'>
+                        <Text className='text-base font-mMedium text-black-800'>
+                            {
+                                user?.first_name && user?.last_name ?
+                                    `${user?.first_name + ' ' + user?.last_name}` :
+                                    'Update Profile'
+                            }
+
+                        </Text>
+                        <Text className='text-[10px] text-gray-300 font-mMedium'>Show Profile</Text>
                     </View>
                 </View>
 
@@ -107,6 +114,8 @@ const ProfileScreen = () => {
                         sqft={item.built_up_area}
                         address={item.address}
                         role={item.user?.user_role?.role}
+                        interestedPeople={true}
+                        onPressInterestedPeople={() => router.push({ pathname: '/interested_people', params: { id: item.id } })}
                     />}
                 keyExtractor={(item) => item.id.toString()}
                 ListFooterComponent={

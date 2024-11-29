@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View, Text, TextInput } from 'react-native'
 import React, { useCallback, useState } from 'react'
 import SearchInput from './SearchInput'
 import Suggesion, { IOnSelectPrediction } from './suggetion'
@@ -19,11 +19,12 @@ interface Props {
     loadingPlace?: boolean
     className?: string
     displaySuggestion?: boolean
+    inputRef?: React.LegacyRef<TextInput>
 }
 
 
 
-const GoogleSearchUI: React.FC<Props> = ({ onSelect, placeholder, loadingPlace, className }) => {
+const GoogleSearchUI: React.FC<Props> = ({ inputRef, onSelect, placeholder, loadingPlace, className }) => {
     const [loading, setLoading] = useState<boolean>(false);
     const [search, setSearch] = useState<string>('');
     const [suggestion, setSuggestion] = useState<IGoogleSuggetion>();
@@ -53,6 +54,7 @@ const GoogleSearchUI: React.FC<Props> = ({ onSelect, placeholder, loadingPlace, 
     return (
         <View className={twMerge(`relative`, className)}>
             <SearchInput
+                inputRef={inputRef}
                 loading={loadingPlace}
                 placeholder={placeholder}
                 value={search}

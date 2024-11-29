@@ -150,6 +150,11 @@ const ProfileInfoScreen = () => {
                     onPress={onPressUpdateHandle}
                     title='Update Information'
                 />
+                <Button
+                    className='bg-red-500 '
+                    onPress={() => logout()}
+                    title='Delete Account'
+                />
                 <Text
                     onPress={() => logout()}
                     className='font-mMedium text-red-500 text-sm text-center'>Logout</Text>

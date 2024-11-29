@@ -8,7 +8,12 @@ import MapIcon from '@/src/assets/svgs/MapIcon';
 import { useRecoilState } from 'recoil';
 import { searchQueryState } from '@/src/global_state/recoil/atoms/search';
 
-const Header = () => {
+
+interface Props {
+    getHeight?: (e: number) => void;
+}
+
+const Header: React.FC<Props> = ({ getHeight }) => {
     const pathname = usePathname()
     const { width } = useWindowDimensions();
     const [menuBoxWidth, setMenuBoxWidth] = useState<number>(0);
@@ -21,11 +26,14 @@ const Header = () => {
 
     return (
         <View
+            onLayout={(e) => {
+                getHeight && getHeight(e.nativeEvent.layout.height)
+            }}
             style={{
                 paddingHorizontal: px,
                 gap: gap,
             }}
-            className='flex flex-row pb-[7px]'>
+            className='flex flex-row py-[7px]'>
             {
                 pathname === '/' ?
                     <Link href={'/(home)/list'}>
@@ -63,7 +71,7 @@ const Header = () => {
                     style={{
                         width: width - menuBoxWidth - filterBoxWidth - (px * 2) - (gap * 2)
                     }}
-                    className='h-[30px] bg-gray-100 rounded-full flex justify-center px-3'>
+                    className='h-9 bg-gray-100 rounded-full flex justify-center px-3'>
                     <Text
                         numberOfLines={1}
                         className='font-mRegular'>{searchQuery?.result.formatted_address}</Text>

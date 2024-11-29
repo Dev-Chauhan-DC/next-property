@@ -1,5 +1,5 @@
-import { View } from 'react-native'
-import React, { useState } from 'react'
+import { TextInput, View } from 'react-native'
+import React, { useEffect, useRef, useState } from 'react'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import GoogleSearchUI from '../components/common/google_search_ui'
 import Toast from 'react-native-root-toast'
@@ -14,6 +14,7 @@ const SearchScreen = () => {
     const insets = useSafeAreaInsets();
     const [loading, setLoading] = useState<boolean>(false);
     const [searchQuery, setSearchQuery] = useRecoilState(searchQueryState);
+    const inputRef = useRef<TextInput>(null)
 
 
     const placeDetailsHandle = async (placeId: string) => {
@@ -30,6 +31,11 @@ const SearchScreen = () => {
         }
     }
 
+
+    useEffect(() => {
+        inputRef.current?.focus()
+    }, [])
+
     return (
         <View
             className='px-[10px] flex-1 bg-white'
@@ -37,6 +43,7 @@ const SearchScreen = () => {
                 paddingTop: insets.top
             }}>
             <GoogleSearchUI
+                inputRef={inputRef}
                 loadingPlace={loading}
                 placeholder='Search Google Map'
                 onSelect={(prediction) => placeDetailsHandle(prediction.place_id)}

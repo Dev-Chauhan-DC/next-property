@@ -32,6 +32,7 @@ import FlooringIcon from '../assets/svgs/FlooringIcon';
 import FacingIcon from '../assets/svgs/FacingIcon';
 import FurnishIcon from '../assets/svgs/FurnishIcon';
 import TenantIcon from '../assets/svgs/TenantIcon';
+import LoadingScreen from '../components/common/loading/loading_screen';
 
 const CompareScreen = () => {
     const insets = useSafeAreaInsets();
@@ -63,6 +64,13 @@ const CompareScreen = () => {
         }
 
     }, [ids])
+
+
+    if (loading) {
+        return (
+            <LoadingScreen />
+        )
+    }
 
 
     return (

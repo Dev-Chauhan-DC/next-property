@@ -15,7 +15,7 @@ import Toast from 'react-native-root-toast';
 import { getError } from '@/src/utilities/halper_functions/service';
 import { IProperty } from '@/src/data/network/models/property';
 import { useRecoilState } from 'recoil';
-import { filterAtom, searchQueryState } from '@/src/global_state/recoil/atoms/search';
+import { filterAtom, onFilterApplyClickAtom, searchQueryState } from '@/src/global_state/recoil/atoms/search';
 import LoadMoreButton from '@/src/components/common/button/LoadMoreButton';
 import { sort } from '@/src/constants/app/Property';
 import { result } from 'lodash';
@@ -72,6 +72,8 @@ const ListScreen = () => {
     const [searchQuery, setSearchQuery] = useRecoilState(searchQueryState);
     const [page, setPage] = useState<number>(1);
     const [filter, setFilter] = useRecoilState(filterAtom);
+    const [onFilterApplyClick, setOnFilterApplyClick] = useRecoilState(onFilterApplyClickAtom);
+
 
 
 
@@ -85,7 +87,7 @@ const ListScreen = () => {
             const result = await searchAndFilters(viewport, filters);
 
             if (filters.page === 1) {
-                setProperties(prevState => []);
+                setProperties([]);
                 setProperties(result.data);
             } else {
                 setProperties(prevState => [...prevState, ...result.data])
@@ -121,13 +123,30 @@ const ListScreen = () => {
 
     }, [searchQuery])
 
+    useEffect(() => {
+
+        const filterFunction = () => {
+            if (searchQuery?.result.geometry.viewport) {
+                searchAndFiltersHandle(searchQuery?.result.geometry.viewport, { ...filter, page: 1 });
+            }
+        }
+
+        if (onFilterApplyClick) {
+            filterFunction();
+            setOnFilterApplyClick(false)
+        }
+
+
+
+    }, [onFilterApplyClick])
+
 
     return (
         <HomeLayout>
             <View className='pb-[10] flex flex-row justify-end px-[10px]'>
                 <ButtonIcon
                     onPress={() => setSortModal(true)}
-                    icon={<SortIcon width={12} height={12} fill={Colors.gray[400]} />}
+                    icon={<SortIcon />}
                     title='Sort By'
                 />
             </View>
@@ -176,6 +195,7 @@ const ListScreen = () => {
                         searchAndFiltersHandle(searchQuery?.result.geometry.viewport, { ...filter, sorting: sort[index].name, page: 1 });
                         setFilter((prevState) => ({ ...prevState, sorting: sort[index].name, page: 1 }));
                         setPage(1);
+                        setSortModal(false);
                     }
                 }}
             />

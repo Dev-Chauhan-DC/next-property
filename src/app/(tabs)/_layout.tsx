@@ -11,14 +11,23 @@ import ProfileActiveIcon from '@/src/assets/svgs/ProfileActiveIcon'
 import { useRecoilValue } from 'recoil'
 import { userState } from '@/src/global_state/recoil/atoms/user'
 import LoginIcon from '@/src/assets/svgs/LoginIcon'
+import { tabBarHeightAtom } from '@/src/global_state/recoil/atoms/layout'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 const TabLayout = () => {
     const user = useRecoilValue(userState);
+    const tabBarHeight = useRecoilValue(tabBarHeightAtom);
+    const insets = useSafeAreaInsets()
     return (
+
         <Tabs
+
             screenOptions={{
                 headerShown: false,
-                tabBarShowLabel: false
+                tabBarShowLabel: false,
+                tabBarStyle: {
+                    height: tabBarHeight + insets.bottom
+                }
             }}>
             <Tabs.Screen
                 name="(home)"
@@ -108,6 +117,7 @@ const TabLayout = () => {
                     ),
                 }} />
         </Tabs>
+
     )
 }
 

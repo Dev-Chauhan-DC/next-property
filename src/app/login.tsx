@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Image } from 'react-native'
+import { View, Text, ScrollView, Image, Linking } from 'react-native'
 import React, { useState } from 'react'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Input from '../components/input';
@@ -76,12 +76,14 @@ const login = () => {
                 </View>
                 <View className='gap-3 w-full'>
                     <Input
+                        keyboardType='phone-pad'
                         onChangeText={(e) => setPhone(e)}
                         className='w-full'
                         placeholder='Phone Number' />
                     {
                         showOtp ?
                             <Input
+                                keyboardType='numeric'
                                 value={otp}
                                 onChangeText={(e) => setOtp(e)}
                                 className='w-full'
@@ -96,9 +98,13 @@ const login = () => {
                 </View>
                 <Text className='text-sm text-black-800 font-mRegular mt-[52px] text-center'>
                     By continuing, you agree to the
-                    <Text className='text-primary'> Terms of Services </Text>
+                    <Text
+                        onPress={() => Linking.openURL('https://real-estate-properties.s3.us-east-2.amazonaws.com/REM/TermsofService_REM_.html')}
+                        className='text-primary'> Terms of Services </Text>
                     and
-                    <Text className='text-primary'> Privacy Policy </Text>
+                    <Text
+                        onPress={() => Linking.openURL('https://real-estate-properties.s3.us-east-2.amazonaws.com/REM/Privacypolicy_REM_.html')}
+                        className='text-primary'> Privacy Policy </Text>
                 </Text>
             </View>
 

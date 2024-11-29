@@ -14,25 +14,25 @@ interface Props {
 const IconBox: React.FC<Props> = ({ icon, title, subTitle, className }) => {
     return (
 
-        <View className={twMerge(`flex-1 bg-gray-100 rounded-[5px] flex items-start justify-center h-[62px] `, className)}>
+        <View className={twMerge(`flex-1 bg-gray-100 rounded-[5px] flex items-start justify-center h-[62px] overflow-hidden`, className)}>
             <View
-                className='flex flex-row items-start gap-5  px-5'
+                className='flex flex-row items-start gap-5  px-5 w-full'
             >
                 {
                     icon ?
                         React.cloneElement(icon as React.ReactElement, {
-                            width: 20,
-                            height: 20,
+                            width: 24,
+                            height: 24,
                             fill: Colors.gray[400]
                         }) : null
                 }
                 <View>
                     <Text
                         numberOfLines={1}
-                        className='text-sm font-mMedium text-black-800 mb-1 pe-5 capitalize'>{title}</Text>
+                        className='text-base font-mMedium text-black-800 mb-1 pe-5 capitalize'>{title}</Text>
                     <Text
                         numberOfLines={1}
-                        className='text-xs font-mRegular text-gray-400 pe-5 capitalize'>{subTitle}</Text>
+                        className='text-sm font-mRegular text-gray-400 pe-5 capitalize'>{subTitle}</Text>
                 </View>
 
             </View>

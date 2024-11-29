@@ -163,12 +163,14 @@ const FilterScreen = () => {
                     >
                         <View className='flex flex-row items-center gap-5'>
                             <Input
+                                keyboardType="numeric"
                                 onChangeText={handleMinPriceChange}
                                 className='w-28'
                                 placeholder='Min'
                             />
                             <Text>To</Text>
                             <Input
+                                keyboardType="numeric"
                                 onChangeText={handleMaxPriceChange}
                                 className='w-28' placeholder='Max' />
                         </View>
@@ -263,10 +265,12 @@ const FilterScreen = () => {
                     >
                         <View className='flex flex-row items-center gap-5'>
                             <Input
+                                keyboardType="numeric"
                                 onChangeText={handleMinBuiltChange}
                                 className='w-28' placeholder='Min' />
                             <Text>To</Text>
                             <Input
+                                keyboardType="numeric"
                                 onChangeText={handleMaxBuiltChange}
                                 className='w-28' placeholder='Max' />
                         </View>
@@ -276,10 +280,12 @@ const FilterScreen = () => {
                     >
                         <View className='flex flex-row items-center gap-5'>
                             <Input
+                                keyboardType="numeric"
                                 onChangeText={handleMinMainTChange}
                                 className='w-28' placeholder='Min' />
                             <Text>To</Text>
                             <Input
+                                keyboardType="numeric"
                                 onChangeText={handleMaxMainTChange}
 
                                 className='w-28' placeholder='Max' />
@@ -290,11 +296,13 @@ const FilterScreen = () => {
                     >
                         <View className='flex flex-row items-center gap-5'>
                             <Input
+                                keyboardType="numeric"
                                 onChangeText={handleMinAgeChange}
 
                                 className='w-28' placeholder='Min' />
                             <Text>To</Text>
                             <Input
+                                keyboardType="numeric"
                                 onChangeText={handleMaxAgeChange}
                                 className='w-28' placeholder='Max' />
                         </View>
@@ -304,10 +312,12 @@ const FilterScreen = () => {
                     >
                         <View className='flex flex-row items-center gap-5'>
                             <Input
+                                keyboardType="numeric"
                                 onChangeText={handleMinDayChange}
                                 className='w-28' placeholder='Min' />
                             <Text>To</Text>
                             <Input
+                                keyboardType="numeric"
                                 onChangeText={handleMaxDayChange}
                                 className='w-28' placeholder='Max' />
                         </View>
@@ -351,10 +361,12 @@ const FilterScreen = () => {
                     >
                         <View className='flex flex-row items-center gap-5'>
                             <Input
+                                keyboardType="numeric"
                                 onChangeText={handleMinFloorChange}
                                 className='w-28' placeholder='Min' />
                             <Text>To</Text>
                             <Input
+                                keyboardType="numeric"
                                 onChangeText={handleMaxFloorChange}
                                 className='w-28' placeholder='Max' />
                         </View>
@@ -364,10 +376,12 @@ const FilterScreen = () => {
                     >
                         <View className='flex flex-row items-center gap-5'>
                             <Input
+                                keyboardType="numeric"
                                 onChangeText={handleMinPFloorChange}
                                 className='w-28' placeholder='Min' />
                             <Text>To</Text>
                             <Input
+                                keyboardType="numeric"
                                 onChangeText={handleMaxPFloorChange}
                                 className='w-28' placeholder='Max' />
                         </View>

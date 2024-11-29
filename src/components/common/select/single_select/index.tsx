@@ -25,19 +25,19 @@ const SingleSelect: React.FC<Props> = ({ list, onSelect, classNameItem, selected
                         onPress={() => onSelect ? onSelect(index) : null}
                         className={twMerge(`
                             ${selected === index ? 'bg-primary' : 'bg-gray-100'}
-                            gap-1 flex items-center justify-center p-2 rounded-[5px]`, classNameItem)}
+                            gap-1 flex items-center justify-center p-4 rounded-[5px]`, classNameItem)}
                         key={index}>
                         {item.icon ?
                             React.cloneElement(item.icon as React.ReactElement, {
-                                width: 20,
-                                height: 20,
+                                width: 25,
+                                height: 25,
                                 fill: selected === index ? 'white' : Colors.gray[400]
                             })
                             : null
                         }
                         <Text className={`
                             ${selected === index ? 'text-white' : 'text-gray-400'}
-                            text-[10px] font-mRegular `}>{item.title}</Text>
+                            text-sm font-mRegular `}>{item.title}</Text>
                     </Pressable>
                 )
             }

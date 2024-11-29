@@ -50,19 +50,19 @@ const MultipleSelect: React.FC<Props> = ({ list, onSelect, classNameItem, setSel
                         onPress={() => onPressHandle(index)}
                         className={twMerge(`
                             ${selectedArr.includes(index) ? 'bg-primary' : 'bg-gray-100'}
-                            gap-1 flex items-center justify-center p-2 rounded-[5px]`, classNameItem)}
+                            gap-1 flex items-center justify-center p-4 rounded-[5px]`, classNameItem)}
                         key={index}>
                         {item.icon ?
                             React.cloneElement(item.icon as React.ReactElement, {
-                                width: 20,
-                                height: 20,
+                                width: 25,
+                                height: 25,
                                 fill: selectedArr.includes(index) ? 'white' : Colors.gray[400]
                             })
                             : null
                         }
                         <Text className={`
                             ${selectedArr.includes(index) ? 'text-white' : 'text-gray-400'}
-                            text-[10px] font-mRegular `}>{item.title}</Text>
+                            text-sm font-mRegular `}>{item.title}</Text>
                     </Pressable>
                 )
             }

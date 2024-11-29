@@ -1,4 +1,4 @@
-import { View, Text, TextInput, Pressable } from 'react-native'
+import { View, Text, TextInput, Pressable, KeyboardTypeOptions } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import { Colors } from '@/src/constants/Colors';
 import { twMerge } from 'tailwind-merge';
@@ -10,9 +10,10 @@ interface Props {
     value?: string;
     onChangeText?: ((text: string) => void) | undefined;
     className?: string;
+    keyboardType?: KeyboardTypeOptions
 }
 
-const Input: React.FC<Props> = ({ placeholder, onChangeText, value, className }) => {
+const Input: React.FC<Props> = ({ keyboardType, placeholder, onChangeText, value, className }) => {
     const [focus, setFocus] = useState<boolean>(false);
     const inputRef: React.LegacyRef<TextInput> | undefined = useRef(null);
 
@@ -41,6 +42,7 @@ const Input: React.FC<Props> = ({ placeholder, onChangeText, value, className })
                 `}>{placeholder}</Text>
 
             <TextInput
+                keyboardType={keyboardType}
                 onBlur={() => {
                     if (value && value.length === 0) {
                         setFocus(false);

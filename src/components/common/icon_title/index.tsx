@@ -13,12 +13,12 @@ const IconTitle: React.FC<Props> = ({ title, icon }) => {
         <View className='flex flex-row gap-3 items-center'>
             {
                 React.cloneElement(icon as React.ReactElement, {
-                    width: 20,
-                    height: 20,
+                    width: 24,
+                    height: 24,
                     fill: Colors.black[800]
                 })
             }
-            <Text className='font-mRegular text-sm text-black-800'>{title}</Text>
+            <Text className='font-mRegular text-base text-black-800'>{title}</Text>
         </View>
     )
 }

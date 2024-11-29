@@ -2,7 +2,7 @@
   "expo": {
     "name": "NextProperty",
     "slug": "next-property",
-    "version": "1.0.1",
+    "version": "1.0.6",
     "orientation": "portrait",
     "icon": "./src/assets/images/icon.png",
     "scheme": "myapp",
@@ -17,7 +17,11 @@
         "googleMapsApiKey": "AIzaSyDVNQlGHNNa_YBrcCLcNKA8NyZDE04D52c"
       },
       "supportsTablet": true,
-      "bundleIdentifier": "com.devexpozebra.nextproperty"
+      "bundleIdentifier": "com.devexpozebra.nextproperty",
+      "buildNumber": "13",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Your location is needed to display nearby properties and enhance your search experience."
+      }
     },
     "android": {
       "config" :{
@@ -29,7 +33,8 @@
         "foregroundImage": "./src/assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.devexpozebra.nextproperty"
+      "package": "com.devexpozebra.nextproperty",
+      "versionCode": 7
     },
     "web": {
       "bundler": "metro",
