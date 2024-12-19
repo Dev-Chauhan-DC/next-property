@@ -94,7 +94,7 @@ const MapScreen = () => {
     return (
 
         <HomeLayout className='relative'>
-            {/* <Link href={'/login'}><Text className='font-mMedium text-red-500 text-sm text-center'>Login</Text></Link> */}
+            <Link href={'/builder_profile'}><Text className='font-mMedium text-red-500 text-sm text-center'>builder profile</Text></Link>
 
             <MapView
                 provider={PROVIDER_GOOGLE}

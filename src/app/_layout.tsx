@@ -59,6 +59,7 @@ export default function RootLayout() {
             <Stack.Screen name='profile_info' />
             <Stack.Screen name='login' />
             <Stack.Screen name='interested_people' />
+            <Stack.Screen name='builder_profile' />
           </Stack>
         </Index>
       </RecoilRoot>
