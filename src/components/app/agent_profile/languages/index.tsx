@@ -1,0 +1,21 @@
+import { View, Text } from 'react-native'
+import React from 'react'
+import Title from '../title'
+import Badge from '@/src/components/common/badges/badge'
+
+const Languages = () => {
+    return (
+        <View className='px-5 mb-14'>
+            <Title
+                className='mb-5'
+                title='Languages' />
+            <View className='flex-row gap-2 flex-wrap'>
+                <Badge title='Hindi' />
+                <Badge title='English' />
+                <Badge title='Gujarati' />
+            </View>
+        </View>
+    )
+}
+
+export default Languages
