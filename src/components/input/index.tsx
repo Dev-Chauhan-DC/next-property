@@ -10,10 +10,13 @@ interface Props {
     value?: string;
     onChangeText?: ((text: string) => void) | undefined;
     className?: string;
+    classNameInput?: string;
     keyboardType?: KeyboardTypeOptions
+    multiline?: boolean
+    height?: number
 }
 
-const Input: React.FC<Props> = ({ keyboardType, placeholder, onChangeText, value, className }) => {
+const Input: React.FC<Props> = ({ height, classNameInput, multiline, keyboardType, placeholder, onChangeText, value, className }) => {
     const [focus, setFocus] = useState<boolean>(false);
     const inputRef: React.LegacyRef<TextInput> | undefined = useRef(null);
 
@@ -29,12 +32,18 @@ const Input: React.FC<Props> = ({ keyboardType, placeholder, onChangeText, value
 
     return (
         <Pressable
-
             onPress={() => {
                 setFocus(true);
                 inputRef?.current?.focus();
             }}
-            className={twMerge(`border border-gray-300 rounded-[5px] h-[44px] bg-white justify-center px-[13px] gap-1`, className)}
+            className={twMerge(`
+                border border-gray-300 rounded-[5px] 
+                // ${multiline ? 'min-h-[44px] justify-start' : 'h-[44px] justify-center'}
+                bg-white  px-[13px] gap-1 py-1 flex `, className)}
+
+            style={{
+                minHeight: multiline ? height : 44
+            }}
         >
             <Text className={`
                 ${focus ? 'text-[10px]' : 'text-sm'}
@@ -42,6 +51,8 @@ const Input: React.FC<Props> = ({ keyboardType, placeholder, onChangeText, value
                 `}>{placeholder}</Text>
 
             <TextInput
+
+                multiline={multiline}
                 keyboardType={keyboardType}
                 onBlur={() => {
                     if (value && value.length === 0) {
@@ -51,10 +62,16 @@ const Input: React.FC<Props> = ({ keyboardType, placeholder, onChangeText, value
                 value={value}
                 onChangeText={onChangeText}
                 ref={inputRef}
-                className={`
+                className={twMerge(`
                     ${focus ? '' : 'hidden'}
-                    font-sm text-black-800 font-mRegular h-[17px]`}
+                    font-sm text-black-800 font-mRegular flex-1`, classNameInput)}
                 selectionColor={Colors.primary}
+                style={{
+                    textAlignVertical: multiline ? 'top' : 'auto',
+                    minHeight: multiline ?
+                        (height ? (height - 25) : 0)
+                        : 17,
+                }}
             />
 
 

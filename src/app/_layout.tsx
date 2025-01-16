@@ -58,6 +58,7 @@ export default function RootLayout() {
             <Stack.Screen name="(listing)" />
             <Stack.Screen name='profile_info' />
             <Stack.Screen name='login' />
+            <Stack.Screen name='role' />
             <Stack.Screen name='interested_people' />
             <Stack.Screen name='builder_profile' />
             <Stack.Screen name='agent_profile' />

@@ -94,8 +94,9 @@ const MapScreen = () => {
     return (
 
         <HomeLayout className='relative'>
-            <Link href={'/builder_profile'}><Text className='font-mMedium text-red-500 text-sm text-center'>builder profile</Text></Link>
+            {/* <Link href={'/builder_profile'}><Text className='font-mMedium text-red-500 text-sm text-center'>builder profile</Text></Link>
             <Link href={'/agent_profile'}><Text className='font-mMedium text-red-500 text-sm text-center'>Agent profile</Text></Link>
+            <Link href={'/role'}><Text className='font-mMedium text-red-500 text-sm text-center'>Role</Text></Link> */}
 
             <MapView
                 provider={PROVIDER_GOOGLE}
@@ -150,6 +151,7 @@ const MapScreen = () => {
                     <View
                         className='bg-white m-[10px] p-[10px] rounded-[10px]'>
                         <PropertyCard
+                            property={property}
                             image={property?.property_photos?.[0]?.photos}
                             price={property?.price}
                             ba={property?.bathroom_count}

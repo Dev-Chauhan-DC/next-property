@@ -22,6 +22,7 @@ import SwimmingPoolIcon from "@/src/assets/svgs/SwimmingPoolIcon";
 import WifiIcon from "@/src/assets/svgs/WifiIcon";
 import { ISelectList } from "@/src/components/common/select/multiple_select";
 import { IPlaceDetails } from "@/src/data/network/models/googleMap";
+import { IViewport } from "@/src/utilities/interfaces/search";
 
 export const houseType: ISelectList[] = [
     {
@@ -45,14 +46,118 @@ export const houseType: ISelectList[] = [
 
 export const roles: ISelectList[] = [{ title: "Owner" }, { title: "Builder" }, { title: "Agent" }];
 export const ownershipType: ISelectList[] = [{ title: "Self Owned" }, { title: "On Lease" }];
-export const bedroom: ISelectList[] = [{ title: "0" }, { title: "1" }, { title: "2" }, { title: "3" }, { title: "4" }, { title: "5" }];
-export const bathroom: ISelectList[] = [{ title: "0" }, { title: "1" }, { title: "2" }, { title: "3" }, { title: "4" }, { title: "5" }];
-export const hall: ISelectList[] = [{ title: "0" }, { title: "1" }, { title: "2" }, { title: "3" }, { title: "4" }, { title: "5" }];
-export const kitchen: ISelectList[] = [{ title: "0" }, { title: "1" }, { title: "2" }, { title: "3" }, { title: "4" }, { title: "5" }];
-export const balcony: ISelectList[] = [{ title: "0" }, { title: "1" }, { title: "2" }, { title: "3" }, { title: "4" }, { title: "5" }];
-export const cupboards: ISelectList[] = [{ title: "0" }, { title: "1" }, { title: "2" }, { title: "3" }, { title: "4" }, { title: "5" }];
-export const parkingSlotTwoWheel: ISelectList[] = [{ title: "0" }, { title: "1" }, { title: "2" }, { title: "3" }, { title: "4" }, { title: "5" }];
-export const parkingSlotFourWheel: ISelectList[] = [{ title: "0" }, { title: "1" }, { title: "2" }, { title: "3" }, { title: "4" }, { title: "5" }];
+export const bedroom: ISelectList[] = [
+    { title: "0" },
+    { title: "1" },
+    { title: "2" },
+    { title: "3" },
+    { title: "4" },
+    { title: "5" },
+    { title: "6" },
+    { title: "7" },
+    { title: "8" },
+    { title: "9" },
+    { title: "10" },
+
+];
+export const bathroom: ISelectList[] = [
+    { title: "0" },
+    { title: "1" },
+    { title: "2" },
+    { title: "3" },
+    { title: "4" },
+    { title: "5" },
+    { title: "6" },
+    { title: "7" },
+    { title: "8" },
+    { title: "9" },
+    { title: "10" },
+
+];
+export const hall: ISelectList[] = [
+    { title: "0" },
+    { title: "1" },
+    { title: "2" },
+    { title: "3" },
+    { title: "4" },
+    { title: "5" },
+    { title: "6" },
+    { title: "7" },
+    { title: "8" },
+    { title: "9" },
+    { title: "10" },
+
+];
+export const kitchen: ISelectList[] = [
+    { title: "0" },
+    { title: "1" },
+    { title: "2" },
+    { title: "3" },
+    { title: "4" },
+    { title: "5" },
+    { title: "6" },
+    { title: "7" },
+    { title: "8" },
+    { title: "9" },
+    { title: "10" },
+
+];
+export const balcony: ISelectList[] = [
+    { title: "0" },
+    { title: "1" },
+    { title: "2" },
+    { title: "3" },
+    { title: "4" },
+    { title: "5" },
+    { title: "6" },
+    { title: "7" },
+    { title: "8" },
+    { title: "9" },
+    { title: "10" },
+
+];
+export const cupboards: ISelectList[] = [
+    { title: "0" },
+    { title: "1" },
+    { title: "2" },
+    { title: "3" },
+    { title: "4" },
+    { title: "5" },
+    { title: "6" },
+    { title: "7" },
+    { title: "8" },
+    { title: "9" },
+    { title: "10" },
+
+];
+export const parkingSlotTwoWheel: ISelectList[] = [
+    { title: "0" },
+    { title: "1" },
+    { title: "2" },
+    { title: "3" },
+    { title: "4" },
+    { title: "5" },
+    { title: "6" },
+    { title: "7" },
+    { title: "8" },
+    { title: "9" },
+    { title: "10" },
+
+];
+export const parkingSlotFourWheel: ISelectList[] = [
+    { title: "0" },
+    { title: "1" },
+    { title: "2" },
+    { title: "3" },
+    { title: "4" },
+    { title: "5" },
+    { title: "6" },
+    { title: "7" },
+    { title: "8" },
+    { title: "9" },
+    { title: "10" },
+
+];
 export const availability: ISelectList[] = [{ title: "Immediate" }, { title: "Within 15 Days" }, { title: "Within 30 Days" }, { title: "After 30 Days" }];
 export const kitchenType: ISelectList[] = [{ title: "Modular" }, { title: "Coverd Shelves" }, { title: "Open Shelves" }];
 export const waterSupply: ISelectList[] = [{ title: "Corporation" }, { title: "Borewell" }, { title: "Both" }];
@@ -370,4 +475,15 @@ export const defaultPlaceDetails: IPlaceDetails | null = {
         website: "http://www.suratmunicipal.gov.in/"
     },
     status: "OK"
+}
+
+export const indiaViewport: IViewport = {
+    northeast: {
+        lat: 37.0911, // Northernmost point (Siachen Glacier)
+        lng: 97.395358 // Easternmost point (near Kibithu, Arunachal Pradesh)
+    },
+    southwest: {
+        lat: 6.4627,  // Southernmost point (Indira Point, Nicobar Islands)
+        lng: 68.1097  // Westernmost point (Guhar Moti, Gujarat)
+    }
 }

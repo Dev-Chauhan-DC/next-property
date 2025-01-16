@@ -53,6 +53,8 @@ export interface IFilters {
     page?: number;
     limit?: number;
     view?: 'map' | 'list';
+    project_type_id?: string;
+    builder_id?: string;
 }
 
 export type ISorting =

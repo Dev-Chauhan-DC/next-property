@@ -159,7 +159,8 @@ const ListScreen = () => {
                 data={properties}
                 renderItem={({ item }) =>
                     <PropertyCard
-
+                        isActiveHeart={item.saved_properties?.length ? true : false}
+                        property={item}
                         onPress={() => {
                             router.push({ pathname: '/property_info', params: { id: item?.id } });
                         }}

@@ -4,16 +4,18 @@ import IconBack from '../icon_back';
 import ArrowIcon from '@/src/assets/svgs/ArrowIcon';
 import { router } from 'expo-router';
 import { Colors } from '@/src/constants/Colors';
+import { twMerge } from 'tailwind-merge';
 
 
 
 interface Props {
     title?: string;
+    className?: string
 }
 
-const TitleBar: React.FC<Props> = ({ title }) => {
+const TitleBar: React.FC<Props> = ({ title, className }) => {
     return (
-        <View className='flex flex-row items-center gap-5 px-[10px] mb-[27px]'>
+        <View className={twMerge('flex flex-row items-center gap-5 px-[10px] mb-[27px]', className)}>
             <IconBack
                 onPress={() => router.back()}
                 icon={<ArrowIcon

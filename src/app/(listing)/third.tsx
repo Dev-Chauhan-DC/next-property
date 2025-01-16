@@ -29,6 +29,7 @@ const ThirdScreen = () => {
             >
                 <View className='gap-[40px] px-[10px]'>
                     <Input
+                        keyboardType='numeric'
                         value={property.price}
                         onChangeText={(e) => setProperty(prevState => ({ ...prevState, price: e }))}
                         placeholder='Expected Price (e.g. 500000) *'
@@ -38,6 +39,7 @@ const ThirdScreen = () => {
                         check={property.negotiable ? true : false}
                         title='Nagotiable *' />
                     <Input
+                        keyboardType='numeric'
                         value={property.maintenance}
                         onChangeText={(e) => setProperty(prevState => ({ ...prevState, maintenance: e }))}
                         placeholder='Monthly Maintenance Cost (e.g., 2000) *'
@@ -119,11 +121,13 @@ const ThirdScreen = () => {
                         />
                     </TitleLayout>
                     <Input
+                        keyboardType='numeric'
                         value={property.flatsInBuilding}
                         onChangeText={(e) => setProperty(prevState => ({ ...prevState, flatsInBuilding: e }))}
                         placeholder='Flats in Building (e.g. 10) *'
                     />
                     <Input
+                        keyboardType='numeric'
                         value={property.deposit}
                         onChangeText={(e) => setProperty(prevState => ({ ...prevState, deposit: e }))}
                         placeholder='Deposit Amount (e.g., 50000) *'

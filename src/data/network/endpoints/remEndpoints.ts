@@ -54,9 +54,64 @@ export const remEndpoints = {
     // Role
     role: `${prepath}/role`,
 
+    // Builder
+    builderUpdate: `${prepath}/builder`,
+    builderGetCurrent: `${prepath}/builder`,
+    builderGet: `${prepath}/builder`,
+
+
+    // Builder Team 
+    builderTeamCreate: `${prepath}/builderTeam`,
+    builderTeamGet: `${prepath}/builderTeams`,
+    builderTeamGetAllByBuilder: `${prepath}/builderTeams/builder`,
+    builderTeamUpdate: `${prepath}/builderTeams`,
+    builderTeamDelete: `${prepath}/builderTeams`,
+
+
+    // Builder Address
+    builderAddressCreate: `${prepath}/builderAddress`,
+    builderAddressGet: `${prepath}/builderAddress`,
+    builderAddressUpdate: `${prepath}/builderAddress`,
+    builderAddressDelete: `${prepath}/builderAddress`,
+    builderAddressGetAllByBuilder: `${prepath}/builderAddress/builder`,
+
+
+    // Builder Certificate 
+    builderCertificateCreate: `${prepath}/builderCertificate`,
+    builderCertificateGet: `${prepath}/builderCertificate`,
+    builderCertificateUpdate: `${prepath}/builderCertificate`,
+    builderCertificateDelete: `${prepath}/builderCertificate`,
+    builderCertificateGetAllByBuilder: `${prepath}/builderCertificate/builder`,
+
+    // Builder Update 
+    builderUpdateCreate: `${prepath}/builderUpdate`,
+    builderUpdateGet: `${prepath}/builderUpdate`,
+    builderUpdateUpdate: `${prepath}/builderUpdate`,
+    builderUpdateDelete: `${prepath}/builderUpdate`,
+    builderUpdateGetAllByBuilder: `${prepath}/builderUpdate/builder`,
 
 
 
+
+    // Agent
+    agentUpdate: `${prepath}/agent`,
+    agentGetCurrent: `${prepath}/agent`,
+    agentGet: `${prepath}/agent`,
+
+
+    // agent Address
+    agentAddressCreate: `${prepath}/agentAddress`,
+    agentAddressGet: `${prepath}/agentAddress`,
+    agentAddressUpdate: `${prepath}/agentAddress`,
+    agentAddressDelete: `${prepath}/agentAddress`,
+    agentAddressGetAllByAgent: `${prepath}/agentAddress/agent`,
+
+    // Builder Certificate 
+    agentCertificateCreate: `${prepath}/agentCertificate`,
+    agentCertificateGet: `${prepath}/agentCertificate`,
+    agentCertificateUpdate: `${prepath}/agentCertificate`,
+    agentCertificateDelete: `${prepath}/agentCertificate`,
+    agentCertificateGetAllByAgent: `${prepath}/agentCertificate/agent`,
 
 
 }

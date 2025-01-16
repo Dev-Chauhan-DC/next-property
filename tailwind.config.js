@@ -26,6 +26,9 @@ module.exports = {
           500: "#FFAA00"
         },
       },
+      borderRadius: {
+        DEFAULT: '10px',
+      }
     },
     fontFamily: {
       'mThin': ['Montserrat_100Thin'],

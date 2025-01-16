@@ -1,3 +1,5 @@
+import { IAgent } from "./agent"
+import { IBuilder } from "./builder"
 import { IUser } from "./user"
 
 export interface IPostProperty {
@@ -257,6 +259,11 @@ export interface IProperty {
     tenant?: ITenant;
     user?: IUser;
     saved_properties?: any[];
+    agent_id?: number | null,
+    builder_id?: number | null,
+    builder?: IBuilder,
+    agent_profile?: IAgent,
+    price_on_demand?: boolean
 }
 export interface IPropertyListing {
 

@@ -101,16 +101,19 @@ const FirstScreen = () => {
                         />
                     </TitleLayout>
                     <Input
+                        keyboardType='numeric'
                         value={property.plotArea}
                         onChangeText={(e) => setProperty(prevState => ({ ...prevState, plotArea: e }))}
                         placeholder='Plot Area in Sqft (e.g. 1000) *'
                     />
                     <Input
+                        keyboardType='numeric'
                         value={property.builtUpArea}
                         onChangeText={(e) => setProperty(prevState => ({ ...prevState, builtUpArea: e }))}
                         placeholder='Built-Up Area in Sqft (e.g. 1000) *'
                     />
                     <Input
+                        keyboardType='numeric'
                         value={property.carpetArea}
                         onChangeText={(e) => setProperty(prevState => ({ ...prevState, carpetArea: e }))}
                         placeholder='Carpet Area in Sqft (e.g. 1000) *'
@@ -125,16 +128,19 @@ const FirstScreen = () => {
                         />
                     </TitleLayout>
                     <Input
+                        keyboardType='numeric'
                         value={property.propertyAge}
                         onChangeText={(e) => setProperty(prevState => ({ ...prevState, propertyAge: e }))}
                         placeholder='Property Age in Years (e.g. 5) *'
                     />
                     <Input
+                        keyboardType='numeric'
                         value={property.totalFloor}
                         onChangeText={(e) => setProperty(prevState => ({ ...prevState, totalFloor: e }))}
                         placeholder='Total Floors (e.g. 5) *'
                     />
                     <Input
+                        keyboardType='numeric'
                         value={property.propertyFloor}
                         onChangeText={(e) => setProperty(prevState => ({ ...prevState, propertyFloor: e }))}
                         placeholder='Property Floor (e.g. 3) *'

@@ -14,7 +14,7 @@ interface Props {
 const BottomSheetHeader: React.FC<Props> = ({ title, onPressClose }) => {
     return (
         <View className='flex-row justify-between items-center mb-2'>
-            <Text className='text-base font-medium text-black-800'>{title}</Text>
+            <Text className='text-base font-mMedium text-black-800'>{title}</Text>
             <Pressable onPress={onPressClose} className='w-[24px] h-[24px] items-center justify-between'>
                 <CloseIcon
                     width={16}

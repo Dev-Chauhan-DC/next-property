@@ -10,7 +10,7 @@ import { propMetaClassName } from '../components/app/(tabs)/(home)/list/Property
 import IconBox from '../components/common/icon_box'
 import IconTitle from '../components/common/icon_title'
 import Button from '../components/common/button/Button'
-import { useLocalSearchParams, useRouter } from 'expo-router'
+import { Link, useLocalSearchParams, useRouter } from 'expo-router'
 import SellIcon from '../assets/svgs/SellIcon'
 import PlotAreaIcon from '../assets/svgs/PlotAreaIcon'
 import BuiltUpAreaIcon from '../assets/svgs/BuiltUpAreaIcon'
@@ -51,6 +51,7 @@ import ImageViewerModal from '../components/app/property_info/image_viewer_modal
 import PagerView from 'react-native-pager-view'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import LoadingScreen from '../components/common/loading/loading_screen'
+import UserCard from '../components/common/profile/user_card'
 
 
 
@@ -243,7 +244,7 @@ const PropertyInformationScreen = () => {
 
                 </Pressable>
                 <View className='flex gap-2 px-3.5 pt-[18px]'>
-                    <Text className='font-mSemiBold text-black-800 text-lg '>₹{property?.price?.toLocaleString('en-IN')}</Text>
+                    <Text className='font-mSemiBold text-black-800 text-lg '>{property?.price_on_demand ? 'Contact for Price' : '₹' + property?.price?.toLocaleString('en-IN')}</Text>
                     <View className='flex flex-row gap-1'>
                         <View className={propMetaClassName.container}>
                             <Text className={propMetaClassName.number}>{property?.bedroom_count?.toLocaleString('en-IN')}</Text>
@@ -322,6 +323,38 @@ const PropertyInformationScreen = () => {
 
                     </View>
                 </View>
+                {/* Profiles */}
+                {
+                    property?.builder?.name || property?.agent_profile?.name ?
+                        <View className='flex flex-row flex-wrap gap-5 px-3.5 mb-9'>
+                            {
+                                property?.builder?.name && property?.builder?.id &&
+                                <UserCard
+                                    onPress={() => {
+                                        router.push({ pathname: '/builder_profile', params: { id: property?.builder?.id } });
+                                    }}
+                                    avatar={property?.builder?.avatar || ''}
+                                    name={property?.builder?.name || ''}
+                                    role='Builder'
+                                />
+                            }
+                            {
+                                property?.agent_profile?.name && property?.agent_profile?.id &&
+                                <UserCard
+                                    onPress={() => {
+                                        router.push({ pathname: '/agent_profile', params: { id: property?.agent_profile?.id } });
+                                    }}
+                                    avatar={property?.agent_profile?.avatar || ''}
+                                    name={property?.agent_profile?.name || ''}
+                                    role='Agent'
+                                />
+                            }
+                        </View> : null
+                }
+
+
+
+
                 <View className='px-3.5 mb-9'>
                     <Text className='font-mSemiBold text-base text-black-800 mb-6'>Description</Text>
                     <Text

@@ -2,7 +2,7 @@
   "expo": {
     "name": "NextProperty",
     "slug": "next-property",
-    "version": "1.0.6",
+    "version": "1.0.11",
     "orientation": "portrait",
     "icon": "./src/assets/images/icon.png",
     "scheme": "myapp",
@@ -18,7 +18,7 @@
       },
       "supportsTablet": true,
       "bundleIdentifier": "com.devexpozebra.nextproperty",
-      "buildNumber": "13",
+      "buildNumber": "15",
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "Your location is needed to display nearby properties and enhance your search experience."
       }
@@ -34,7 +34,7 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.devexpozebra.nextproperty",
-      "versionCode": 7
+      "versionCode": 11
     },
     "web": {
       "bundler": "metro",

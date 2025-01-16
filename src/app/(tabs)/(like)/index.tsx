@@ -110,6 +110,7 @@ const LikeScreen = () => {
                 data={properties}
                 renderItem={({ item }) =>
                     <PropertyCard
+                        property={item.property}
                         compareActive={item?.property?.id ? comparePropertyList.includes(item.property.id) : false}
                         onPressCompare={() => { item?.property?.id ? compareHandle(item.property.id) : null }}
                         compare={showCompare}
@@ -145,6 +146,7 @@ const LikeScreen = () => {
 
                         className='border-t border-t-gray-100 bg-white py-2 px-7 flex flex-row justify-between items-center absolute bottom-0 left-0 w-full'>
                         <Text
+                            className='text-sm font-mRegular'
                             onPress={() => setShowCompare(false)}
                         >Cancel</Text>
                         <Button

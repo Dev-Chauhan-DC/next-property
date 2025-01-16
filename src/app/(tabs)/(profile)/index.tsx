@@ -102,6 +102,7 @@ const ProfileScreen = () => {
                 data={properties}
                 renderItem={({ item }) =>
                     <PropertyCard
+                        property={item}
                         onPress={() => {
                             router.push({ pathname: '/property_info', params: { id: item?.id } });
                         }}

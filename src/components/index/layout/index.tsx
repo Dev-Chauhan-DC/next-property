@@ -8,6 +8,9 @@ import { cookieName } from '@/src/data/local_storage/cookies'
 import { useRecoilState } from 'recoil'
 import { userState } from '@/src/global_state/recoil/atoms/user'
 import { StatusBar } from 'expo-status-bar';
+import ConfirmtionModal from '../../modals/confirmation'
+import { AlertDialogProvider } from '@/src/hooks/alert/confirmation'
+import { router, usePathname, useRouter } from 'expo-router'
 
 
 
@@ -17,6 +20,8 @@ interface Props {
 
 const Index: React.FC<Props> = ({ children }) => {
     const [user, setUser] = useRecoilState(userState);
+    const router = useRouter()
+    const pathname = usePathname()
 
 
     const getUserHandle = async () => {
@@ -33,15 +38,27 @@ const Index: React.FC<Props> = ({ children }) => {
         }
     }
 
+    useEffect(() => {
+        if (user) {
+            if (!(user.user_roles_id)) {
+                if (pathname !== '/role')
+                    router.push('/role')
+            }
+        }
+
+    }, [pathname, user])
+
 
     useEffect(() => {
         getUserHandle()
     }, [])
     return (
-        <View className='flex-1'>
-            {children}
-            <StatusBar style="dark" animated hideTransitionAnimation='fade' translucent />
-        </View>
+        <AlertDialogProvider>
+            <View className='flex-1'>
+                {children}
+                <StatusBar style="dark" animated hideTransitionAnimation='fade' translucent />
+            </View>
+        </AlertDialogProvider>
     )
 }
 

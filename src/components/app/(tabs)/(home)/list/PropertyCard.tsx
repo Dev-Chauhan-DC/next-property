@@ -7,6 +7,10 @@ import { twMerge } from 'tailwind-merge'
 import CheckIcon from '@/src/assets/svgs/CheckIcon'
 import { Colors } from '@/src/constants/Colors'
 import PeopleIcon from '@/src/assets/svgs/PeopleIcon'
+import { IProperty } from '@/src/data/network/models/property'
+import IconBack from '@/src/components/common/icon_back'
+import LikeIcon from '@/src/assets/svgs/LikeIcon'
+import LikeActiveIcon from '@/src/assets/svgs/LikeActiveIcon'
 
 export const propMetaClassName = {
     number: 'text-base font-mSemiBold text-black-800',
@@ -31,12 +35,22 @@ interface Props {
     onPress?: (event: GestureResponderEvent) => void
     onPressCompare?: (event: GestureResponderEvent) => void
     onPressInterestedPeople?: (event: GestureResponderEvent) => void
+    onPressHeart?: (event: GestureResponderEvent) => void
+    onPressActiveHeart?: (event: GestureResponderEvent) => void
     compare?: boolean
+    isHeart?: boolean
+    isActiveHeart?: boolean
     compareActive?: boolean
     interestedPeople?: boolean
+    property?: IProperty | null
 }
 
 const PropertyCard: React.FC<Props> = ({
+    isHeart,
+    isActiveHeart,
+    onPressHeart,
+    onPressActiveHeart,
+    property,
     onPressCompare,
     compareActive,
     compare,
@@ -71,6 +85,33 @@ const PropertyCard: React.FC<Props> = ({
                     contentFit="cover"
                     transition={1000}
                 />
+                <View className='absolute top-0 right-0 m-4'>
+                    {
+                        isHeart &&
+                        <Pressable onPress={onPressHeart}>
+                            <IconBack
+                                icon={<LikeIcon
+                                    width={12}
+                                    height={12}
+                                    fill={Colors.black[800]}
+                                />}
+                            />
+                        </Pressable>
+                    }
+                    {
+                        isActiveHeart &&
+                        <Pressable onPress={onPressActiveHeart}>
+                            <IconBack
+                                icon={<LikeActiveIcon
+                                    width={12}
+                                    height={12}
+                                    fill={Colors.black[800]}
+                                />}
+                            />
+                        </Pressable>
+                    }
+
+                </View>
                 {/* Compare */}
                 {
                     compare ?
@@ -116,7 +157,7 @@ const PropertyCard: React.FC<Props> = ({
 
             </View>
             <View className='flex gap-[5px] mt-[10px]'>
-                <Text className='font-mSemiBold text-black-800 text-lg '>₹{price?.toLocaleString('en-IN')}</Text>
+                <Text className='font-mSemiBold text-black-800 text-lg '>{property?.price_on_demand ? 'Contact for Price' : '₹' + price?.toLocaleString('en-IN')}</Text>
                 <View className='flex flex-row gap-1'>
                     <View className={propMetaClassName.container}>
                         <Text className={propMetaClassName.number}>{bd?.toLocaleString('en-IN')}</Text>

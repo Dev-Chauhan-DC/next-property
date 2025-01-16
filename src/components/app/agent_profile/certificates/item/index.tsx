@@ -23,7 +23,7 @@ const Certificate = () => {
                     flexGrow: 1
                 }}
                 className='justify-between   '>
-                <Text className='text-sm font-medium text-black-800'>RERA Certificate</Text>
+                <Text className='text-sm font-mMedium text-black-800'>RERA Certificate</Text>
                 <View className='gap-1.5'>
                     <View className='flex-row items-center justify-between'>
                         <Text className='text-xs font-mSemiBold text-black-800'>ID</Text>

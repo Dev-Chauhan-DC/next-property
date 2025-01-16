@@ -15,6 +15,8 @@ import { getError } from '../utilities/halper_functions/service'
 import { getUser, updateUser } from '../data/network/services/user'
 import { IUpdateUser, IUser } from '../data/network/models/user'
 import Toast from 'react-native-root-toast'
+import Builder from '../components/app/profile_info/builder'
+import Agent from '../components/app/profile_info/agent'
 
 const ProfileInfoScreen = () => {
     const logout = useLogout();
@@ -92,6 +94,18 @@ const ProfileInfoScreen = () => {
         }
 
     }, [])
+
+
+    if (user?.user_roles_id === 2) {
+        return (
+            <Builder />
+        )
+    }
+    if (user?.user_roles_id === 3) {
+        return (
+            <Agent />
+        )
+    }
 
 
 
