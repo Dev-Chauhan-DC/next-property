@@ -66,7 +66,7 @@ const MapScreen = () => {
 
     useEffect(() => {
         if (searchQuery?.result.geometry.viewport) {
-            searchAndFiltersHandle(searchQuery?.result.geometry.viewport, {});
+            searchAndFiltersHandle(searchQuery?.result.geometry.viewport, { ...filter, view: 'map' });
         }
 
     }, [searchQuery])
@@ -130,7 +130,7 @@ const MapScreen = () => {
                             <Pressable
 
                                 className='h-5 bg-red-500 rounded-[5px] items-center justify-center px-2'>
-                                <Text className='font-mMedium text-white text-sm'>{item?.price ? '₹' + formatNumberIndian(item.price) : null}</Text>
+                                <Text className='font-mMedium text-white text-sm'>{item.price_on_demand ? 'CFP' : (item?.price ? '₹' + formatNumberIndian(item.price) : null)}</Text>
                             </Pressable>
                         </Marker>
                     )
