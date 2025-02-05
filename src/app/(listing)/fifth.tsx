@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, Pressable, ActivityIndicator } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, router } from 'expo-router'
 import Counter from '@/src/components/app/(listing)/counter'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -16,11 +16,20 @@ import { createFile, readFile } from '@/src/data/network/services/file'
 import { getKeyFromS3Presigned } from '@/src/utilities/halper_functions/s3'
 import { Colors } from '@/src/constants/Colors'
 import { useRecoilState } from 'recoil'
-import { amenityArryState, propertyState } from '@/src/global_state/recoil/atoms/property'
+import { amenityArryState, imageFileIdsState, imageUrlsState, propertyPhotoState, propertyState } from '@/src/global_state/recoil/atoms/property'
 import { postProperty } from '@/src/data/network/services/property'
 import { getError } from '@/src/utilities/halper_functions/service'
-import { createPhotos } from '@/src/data/network/services/photo'
+import { createPhotos, createPhotosV2 } from '@/src/data/network/services/photo'
 import { createAmenities } from '@/src/data/network/services/amenity'
+import { Button } from '@/src/components/ui/button'
+import { Text as TextUi } from '@/src/components/ui/text'
+import { gray200 } from '@/src/constants/Images'
+import { photoCategoryGetAll } from '@/src/data/network/services/photoCategory'
+import { IPhotoCategory } from '@/src/data/network/models/photoCategory'
+import SelectModal from '@/src/components/common/select_modal'
+import { IPropertyPhoto } from '@/src/data/network/models/propertyPhoto'
+import IconBack from '@/src/components/common/icon_back'
+import { X } from 'lucide-react-native'
 
 
 
@@ -28,11 +37,16 @@ import { createAmenities } from '@/src/data/network/services/amenity'
 const FifthScreen = () => {
     const insets = useSafeAreaInsets();
     const [counterHeight, setCounterHeight] = useState<number>(0)
-    const [imageFileIds, setImageFileIds] = useState<number[]>([]);
-    const [imageUrls, setImageUrls] = useState<string[]>([]);
+    const [imageFileIds, setImageFileIds] = useRecoilState(imageFileIdsState);
+    const [imageUrls, setImageUrls] = useRecoilState(imageUrlsState);
     const [loading, setLoading] = useState<boolean>(false);
     const [property, setProperty] = useRecoilState(propertyState);
     const [amenityArray, setAmenityArray] = useRecoilState(amenityArryState);
+    const [categoryModal, setCategoryModal] = useState<boolean>(false);
+    const [photoCategories, setPhotoCategories] = useState<IPhotoCategory[]>([]);
+    // const [propPhoto, setPropPhoto] = useState<IPropertyPhoto[]>([])
+    const [propPhoto, setPropPhoto] = useRecoilState(propertyPhotoState)
+    const [selectedPropPhoto, setSelectedPropPhoto] = useState<{ PropertyPhoto: IPropertyPhoto, index: number }>();
 
 
 
@@ -91,8 +105,11 @@ const FifthScreen = () => {
 
             const readFileResult = await readFile(createFileResult.data.data.id)
 
-            setImageFileIds([...imageFileIds, createFileResult.data.data.id]);
-            setImageUrls([...imageUrls, readFileResult.data.data])
+
+            setPropPhoto(prevState => [...prevState, { url: readFileResult.data.data, file_id: createFileResult.data.data.id }])
+
+            // setImageFileIds([...imageFileIds, createFileResult.data.data.id]);
+            // setImageUrls([...imageUrls, readFileResult.data.data])
 
 
             Toast.show('Image uploaded successfully!');
@@ -104,6 +121,27 @@ const FifthScreen = () => {
         }
     };
 
+    const deleteImageHandle = (index: number) => {
+        const PPArray = JSON.parse(JSON.stringify(propPhoto));
+        PPArray.splice(index, 1);
+        setPropPhoto(PPArray);
+    }
+
+    const photosCreateHandle = async (propertyId: number) => {
+        try {
+
+            const data: IPropertyPhoto[] = JSON.parse(JSON.stringify(propPhoto));
+
+            data.map((i, index) => {
+                data[index].properties_id = propertyId
+            })
+
+            await createPhotosV2(data);
+
+        } catch (e) {
+            throw e
+        }
+    }
 
     const amenityCreateHandle = async (propertyId: number) => {
         try {
@@ -114,20 +152,20 @@ const FifthScreen = () => {
         }
     }
 
-    const photosCreateHandle = async (propertyId: number) => {
-        try {
-            await createPhotos(propertyId, imageFileIds);
-        } catch (e) {
-            throw e
-        }
-    }
+    // const photosCreateHandle = async (propertyId: number) => {
+    //     try {
+    //         await createPhotos(propertyId, imageFileIds);
+    //     } catch (e) {
+    //         throw e
+    //     }
+    // }
 
 
     const postPropertyHandle = async () => {
         try {
             setLoading(true)
 
-            if (imageFileIds.length < 3 || imageUrls.length < 3) {
+            if (propPhoto.length < 3 || propPhoto.length < 3) {
                 return Toast.show("Minimum 3 images require")
             }
 
@@ -155,6 +193,8 @@ const FifthScreen = () => {
 
             Toast.show("Property Created Successfully");
             router.push('/(home)')
+            setImageFileIds([])
+            setImageUrls([])
 
         } catch (e: any) {
             console.error(e);
@@ -164,8 +204,18 @@ const FifthScreen = () => {
         }
     }
 
+    const photoCategoryGetAllHandle = async (name?: string) => {
+        try {
+            const result = await photoCategoryGetAll(name);
+            setPhotoCategories(result.data)
+        } catch (error) {
+            console.error(error)
+        }
+    }
 
-
+    useEffect(() => {
+        photoCategoryGetAllHandle()
+    }, [])
 
 
     return (
@@ -179,16 +229,16 @@ const FifthScreen = () => {
         >
             <ScrollView showsVerticalScrollIndicator={false}
             >
-                <View className='gap-[40px] px-[10px]'>
+                <View className='gap-[40px] px-[10px] pb-10'>
 
                     <View className='flex-1 flex-row flex-wrap items-start '>
 
                         {
-                            imageUrls.map((item, index) =>
+                            propPhoto.map((item, index) =>
 
                                 <View
                                     key={index}
-                                    className='w-[50%] p-[10px]'
+                                    className='relative w-[50%] p-[10px] gap-2'
                                 >
                                     <Image
 
@@ -197,11 +247,29 @@ const FifthScreen = () => {
                                             height: 120,
                                             borderRadius: 10
                                         }}
-                                        source={item}
+                                        source={item.url || gray200}
                                     />
+                                    <IconBack
+                                        onPress={() => deleteImageHandle(index)}
+                                        className='absolute top-0 right-0 m-4'
+                                        icon={<X
+                                        />}
+                                    />
+                                    <Button
+                                        onPress={() => {
+                                            setCategoryModal(true)
+                                            setSelectedPropPhoto(prevState => ({ PropertyPhoto: item, index: index }))
+                                        }}
+                                        size={'sm'}
+                                        variant={'outline'}
+                                    >
+                                        <TextUi>{item.category_name || "Select Category"}</TextUi>
+                                    </Button>
 
 
                                 </View>)}
+
+
                         <View
                             className='w-[50%] p-[10px]'
                         >
@@ -221,6 +289,19 @@ const FifthScreen = () => {
                     </View>
                 </View>
             </ScrollView>
+            <SelectModal
+                onSelect={(currentValue) => {
+                    // setFormData(e => ({ ...e, agent_id: agents.find(a => a.name === currentValue)?.id }))
+                    const arr = JSON.parse(JSON.stringify(propPhoto));
+                    arr[selectedPropPhoto?.index || 0].category_name = currentValue;
+                    arr[selectedPropPhoto?.index || 0].category_id = photoCategories.find(i => i.name === currentValue)?.id;
+                    setPropPhoto(arr);
+                }}
+                selected={selectedPropPhoto?.PropertyPhoto.category_name || ''}
+                list={photoCategories.map(i => i?.name || '')}
+                setVisible={setCategoryModal}
+                visible={categoryModal}
+            />
             <Counter
                 onPressRight={postPropertyHandle}
                 onLayout={(e) => setCounterHeight(e.nativeEvent.layout.height)}

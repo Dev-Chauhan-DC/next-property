@@ -19,7 +19,7 @@ const Update: React.FC<Props> = ({ builderUpdate, updated, deleted }) => {
 
 
     return (
-        <View>
+        <View >
 
             <UD
                 onPress={() => Linking.openURL(builderUpdate.link || '')}

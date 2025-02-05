@@ -27,7 +27,7 @@ const ThirdScreen = () => {
         >
             <ScrollView showsVerticalScrollIndicator={false}
             >
-                <View className='gap-[40px] px-[10px]'>
+                <View className='gap-[40px] px-[10px] pb-10'>
                     <Input
                         keyboardType='numeric'
                         value={property.price}

@@ -1,4 +1,4 @@
-import { View, Text, GestureResponderEvent } from 'react-native'
+import { View, Text, GestureResponderEvent, NativeSyntheticEvent } from 'react-native'
 import React, { useEffect } from 'react'
 import { IBuilder } from '@/src/data/network/models/builder';
 import { builderUpdate } from '@/src/data/network/services/builder';
@@ -18,10 +18,11 @@ interface Props {
     getBuilderHandle?: () => Promise<void>
     updated?: () => void
     onPressClose?: (event: GestureResponderEvent) => void
+    onRequestClose?: (event: NativeSyntheticEvent<any>) => void
 
 }
 
-const UpdateAbout: React.FC<Props> = ({ onPressClose, show, builder, getBuilderHandle, updated }) => {
+const UpdateAbout: React.FC<Props> = ({ onRequestClose, onPressClose, show, builder, getBuilderHandle, updated }) => {
 
     const [formData, setFormData] = React.useState<Partial<IBuilder>>({})
     const [loading, setLoading] = React.useState<boolean>(false);
@@ -45,7 +46,7 @@ const UpdateAbout: React.FC<Props> = ({ onPressClose, show, builder, getBuilderH
 
 
     return (
-        <Dialog>
+        <Dialog onRequestClose={onRequestClose}>
             <DialogHeader
                 onPressClose={onPressClose}
                 title='About'

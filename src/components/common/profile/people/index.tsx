@@ -32,7 +32,9 @@ const People: React.FC<Props> = ({ linkedin_link, avatar, name, onPressEdit }) =
             />
             <View className='gap-1.5 flex-1'>
                 <View className='flex items-center justify-between flex-row'>
-                    <Text className='text-black-800 text-base font-mMedium'>{name}</Text>
+                    <Text
+                        numberOfLines={1}
+                        className='text-black-800 text-base font-mMedium flex-1'>{name}</Text>
                     {
                         onPressEdit && <IconBack
                             onPress={onPressEdit}

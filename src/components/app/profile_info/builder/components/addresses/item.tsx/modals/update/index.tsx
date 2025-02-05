@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View, Text, NativeSyntheticEvent } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { IBuilderAddress } from '@/src/data/network/models/builderAddress';
 import { IGeometry } from '@/src/utilities/interfaces/search';
@@ -23,10 +23,12 @@ interface Props {
     updated?: () => void
     deleted?: () => void
     builderAddress?: IBuilderAddress
+    onRequestClose?: (event: NativeSyntheticEvent<any>) => void
+
 
 }
 
-const UpdateAddressModal: React.FC<Props> = ({ deleted, onOutsideClick, show, updated, builderAddress }) => {
+const UpdateAddressModal: React.FC<Props> = ({ onRequestClose, deleted, onOutsideClick, show, updated, builderAddress }) => {
     const [formData, setFormData] = React.useState<IBuilderAddress>({ latitude: 19.058753, longitude: 72.868153 })
     const [loading, setLoading] = useState<boolean>(false);
     const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
@@ -94,7 +96,7 @@ const UpdateAddressModal: React.FC<Props> = ({ deleted, onOutsideClick, show, up
 
 
     return (
-        <Dialog show={show}>
+        <Dialog show={show} onRequestClose={onRequestClose}>
             <DialogHeader onPressClose={onOutsideClick} title='Pin Your Address Location on Map *' />
             <DialogContent>
                 <View className='flex-1 overflow-auto flex flex-col gap-4 items-center w-full'>

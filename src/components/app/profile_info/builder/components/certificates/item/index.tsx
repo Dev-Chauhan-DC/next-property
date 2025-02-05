@@ -50,6 +50,7 @@ const Certificate: React.FC<Props> = ({ deleted, builderCertificate, updated }) 
                     }} builderCertificate={builderCertificate}
                     show={updateModal}
                     onPressClose={() => setUpdateModal(false)}
+                    onRequestClose={() => setUpdateModal(false)}
                     updated={() => {
                         updated && updated()
                         setUpdateModal(false)

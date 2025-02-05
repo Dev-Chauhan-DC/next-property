@@ -41,7 +41,7 @@ const Updates: React.FC<Props> = () => {
                 icon='plus'
                 className='mb-5'
                 title='Latest Updates' />
-            <View className='flex-row flex-wrap gap-2 overflow-hidden'>
+            <View className='gap-2 overflow-hidden'>
                 {
                     builderUpdates.map((builderUpdate) =>
                         <Item
@@ -57,6 +57,7 @@ const Updates: React.FC<Props> = () => {
                 <BuilderUpdatesCreate
                     open={createModal}
                     onOpenChange={() => setCreateModal(false)}
+                    onRequestClose={() => setCreateModal(false)}
                     updated={() => {
                         setCreateModal(false)
                         builderUpdateGetHandle()

@@ -52,6 +52,7 @@ const People = () => {
             {
                 createPeopleModal &&
                 <CreatePeopleModal
+                    onRequestClose={() => setCreatePeopleModal(false)}
                     show={createPeopleModal}
                     onPressClose={() => setCreatePeopleModal(false)}
                     updated={() => {

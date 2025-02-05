@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View, Text, GestureResponderEvent } from 'react-native'
 import React from 'react'
 import IconBack from '../icon_back';
 import ArrowIcon from '@/src/assets/svgs/ArrowIcon';
@@ -10,15 +10,17 @@ import { twMerge } from 'tailwind-merge';
 
 interface Props {
     title?: string;
-    className?: string
+    className?: string;
+    icon?: React.ReactElement
+    onPressIcon?: (event: GestureResponderEvent) => void
 }
 
-const TitleBar: React.FC<Props> = ({ title, className }) => {
+const TitleBar: React.FC<Props> = ({ onPressIcon, title, className, icon }) => {
     return (
         <View className={twMerge('flex flex-row items-center gap-5 px-[10px] mb-[27px]', className)}>
             <IconBack
-                onPress={() => router.back()}
-                icon={<ArrowIcon
+                onPress={(e) => onPressIcon ? onPressIcon(e) : router.back()}
+                icon={icon ? icon : <ArrowIcon
                     width={12}
                     height={12}
                     fill={Colors.black[800]}

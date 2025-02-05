@@ -31,7 +31,7 @@ const FirstScreen = () => {
         >
             <ScrollView showsVerticalScrollIndicator={false}
             >
-                <View className='gap-[40px] px-[10px]'>
+                <View className='gap-[40px] px-[10px] pb-10'>
                     <View className='flex flex-row justify-center'>
                         <Toggle
                             selectedIndex={property.purposeId - 1}

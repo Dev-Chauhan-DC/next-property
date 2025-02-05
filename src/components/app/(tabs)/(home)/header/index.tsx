@@ -1,12 +1,13 @@
-import { View, Text, useWindowDimensions } from 'react-native'
+import { View, Text, useWindowDimensions, Pressable } from 'react-native'
 import React, { useState } from 'react'
 import MenuIcon from '@/src/assets/svgs/MenuIcon';
 import { Colors } from '@/src/constants/Colors';
 import FilterIcon from '@/src/assets/svgs/FilterIcon';
-import { Link, usePathname } from 'expo-router';
+import { Link, router, usePathname } from 'expo-router';
 import MapIcon from '@/src/assets/svgs/MapIcon';
 import { useRecoilState } from 'recoil';
 import { searchQueryState } from '@/src/global_state/recoil/atoms/search';
+import { Filter, ListFilter, MapPin, MapPinned, Rows3 } from 'lucide-react-native';
 
 
 interface Props {
@@ -15,11 +16,6 @@ interface Props {
 
 const Header: React.FC<Props> = ({ getHeight }) => {
     const pathname = usePathname()
-    const { width } = useWindowDimensions();
-    const [menuBoxWidth, setMenuBoxWidth] = useState<number>(0);
-    const [filterBoxWidth, setFilterBoxWidth] = useState<number>(0);
-    const [px, setPx] = useState<number>(10);
-    const [gap, setGap] = useState<number>(7);
     const [searchQuery, setSearchQuery] = useRecoilState(searchQueryState);
 
 
@@ -29,65 +25,51 @@ const Header: React.FC<Props> = ({ getHeight }) => {
             onLayout={(e) => {
                 getHeight && getHeight(e.nativeEvent.layout.height)
             }}
-            style={{
-                paddingHorizontal: px,
-                gap: gap,
-            }}
-            className='flex flex-row py-[7px]'>
-            {
-                pathname === '/' ?
-                    <Link href={'/(home)/list'}>
-                        <View
-                            onLayout={(e) => setMenuBoxWidth(e.nativeEvent.layout.width)}
-                            className='w-[30px] h-[30px]  rounded-full flex items-center justify-center'
-                        >
-                            <MenuIcon
-                                width={15}
-                                height={15}
-                                fill={Colors.black[800]}
-                            />
-                        </View>
-                    </Link> :
-                    <Link href={'/(home)'}>
-                        <View
-                            onLayout={(e) => setMenuBoxWidth(e.nativeEvent.layout.width)}
-                            className='w-[30px] h-[30px]  rounded-full flex items-center justify-center'
-                        >
-                            <MapIcon
-                                width={15}
-                                height={15}
-                                fill={Colors.black[800]}
-                            />
-                        </View>
-                    </Link>
-            }
+            className='flex-row py-[7px] px-2.5 gap-2 '>
 
-            <Link
-                style={{
-                    width: width - menuBoxWidth - filterBoxWidth - (px * 2) - (gap * 2)
+            <Pressable
+                onPress={() => {
+                    pathname === '/' ? router.replace('/(home)/list') : router.replace('/(home)')
                 }}
-                href={'/search'}>
-                <View
-                    style={{
-                        width: width - menuBoxWidth - filterBoxWidth - (px * 2) - (gap * 2)
-                    }}
-                    className='h-9 bg-gray-100 rounded-full flex justify-center px-3'>
-                    <Text
-                        numberOfLines={1}
-                        className='font-mRegular'>{searchQuery?.result.formatted_address}</Text>
-                </View>
-            </Link>
-            <Link href={'/filter'}>
-                <View
-                    onLayout={(e) => setFilterBoxWidth(e.nativeEvent.layout.width)}
-                    className='w-[30px] h-[30px]  rounded-full flex items-center justify-center' >
-                    <FilterIcon
-                        width={15}
-                        height={15}
-                        fill={Colors.black[800]}
+                className='w-10 h-10 rounded-full flex items-center justify-center'
+            >
+                {
+                    pathname === '/' ? <Rows3
+                        width={20}
+                        height={20}
+                        color={Colors.black[800]}
+                        strokeWidth={1.25}
+                    /> : <MapPinned
+                        strokeWidth={1.25}
+                        width={20}
+                        height={20}
+                        color={Colors.black[800]}
                     />
-                </View>
-            </Link>
+                }
+            </Pressable>
+
+
+
+            <Pressable
+                onPress={() => router.push('/search')}
+                className='h-10 bg-gray-100 rounded-full flex-row justify-start items-center px-4 flex-1'>
+                <Text
+                    numberOfLines={1}
+                    className='font-mRegular'>{searchQuery?.result.formatted_address}</Text>
+            </Pressable>
+
+
+            <Pressable
+                onPress={() => router.push('/filter')}
+                className='w-10 h-10  rounded-full flex items-center justify-center' >
+                <Filter
+                    strokeWidth={1.25}
+                    width={20}
+                    height={20}
+                    color={Colors.black[800]}
+                />
+            </Pressable>
+
         </View>
     )
 }

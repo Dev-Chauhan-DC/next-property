@@ -27,6 +27,7 @@ const About: React.FC<Props> = ({ builder, getBuilderHandle }) => {
             {
                 aboutModal &&
                 <UpdateAbout
+                    onRequestClose={() => setAboutModal(false)}
                     onPressClose={() => setAboutModal(false)}
                     builder={builder}
                     getBuilderHandle={getBuilderHandle}

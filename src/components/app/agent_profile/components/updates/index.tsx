@@ -41,7 +41,7 @@ const Updates: React.FC<Props> = () => {
                 icon='plus'
                 className='mb-5'
                 title='Latest Updates' />
-            <View className='flex-row flex-wrap gap-2 overflow-hidden'>
+            <View className='flex-col gap-2 overflow-hidden'>
                 {
                     builderUpdates.map((builderUpdate) =>
                         <Item

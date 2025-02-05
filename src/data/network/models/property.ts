@@ -1,5 +1,6 @@
 import { IAgent } from "./agent"
 import { IBuilder } from "./builder"
+import { IPropertyPhoto } from "./propertyPhoto"
 import { IUser } from "./user"
 
 export interface IPostProperty {
@@ -71,14 +72,7 @@ export interface ICardPropertyInfo {
     user: IUser
 }
 
-export interface IPropertyPhoto {
-    id: number
-    properties_id: number
-    photos: string
-    file_id: number
-    createdAt: string
-    updatedAt: string
-}
+
 
 export interface IUserRole {
     id: number
@@ -264,6 +258,8 @@ export interface IProperty {
     builder?: IBuilder,
     agent_profile?: IAgent,
     price_on_demand?: boolean
+    project_type_id?: number;
+
 }
 export interface IPropertyListing {
 

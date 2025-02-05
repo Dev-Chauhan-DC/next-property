@@ -1,7 +1,6 @@
 import { View, Text, Pressable, GestureResponderEvent } from 'react-native'
 import React from 'react'
 import { Image } from 'expo-image'
-import { useRouter } from 'expo-router'
 import { truncateText } from '@/src/utilities/halper_functions/text'
 import { twMerge } from 'tailwind-merge'
 import CheckIcon from '@/src/assets/svgs/CheckIcon'
@@ -11,6 +10,11 @@ import { IProperty } from '@/src/data/network/models/property'
 import IconBack from '@/src/components/common/icon_back'
 import LikeIcon from '@/src/assets/svgs/LikeIcon'
 import LikeActiveIcon from '@/src/assets/svgs/LikeActiveIcon'
+import EditIcon from '@/src/assets/svgs/EditIcon'
+import { DeleteIcon } from 'lucide-react-native'
+import CloseIcon from '@/src/assets/svgs/CloseIcon'
+import { gray200 } from '@/src/constants/Images'
+import { thumbnailName } from '@/src/constants/app/Property'
 
 export const propMetaClassName = {
     number: 'text-base font-mSemiBold text-black-800',
@@ -37,15 +41,23 @@ interface Props {
     onPressInterestedPeople?: (event: GestureResponderEvent) => void
     onPressHeart?: (event: GestureResponderEvent) => void
     onPressActiveHeart?: (event: GestureResponderEvent) => void
+    onPressEdit?: (event: GestureResponderEvent) => void
+    onPressDelete?: (event: GestureResponderEvent) => void
     compare?: boolean
     isHeart?: boolean
     isActiveHeart?: boolean
     compareActive?: boolean
     interestedPeople?: boolean
+    isEdit?: boolean
+    isDelete?: boolean
     property?: IProperty | null
 }
 
 const PropertyCard: React.FC<Props> = ({
+    isDelete,
+    onPressDelete,
+    onPressEdit,
+    isEdit,
     isHeart,
     isActiveHeart,
     onPressHeart,
@@ -59,7 +71,6 @@ const PropertyCard: React.FC<Props> = ({
     bd, ba, kitchen, hall, sqft, address, role, className, onPress, interestedPeople, onPressInterestedPeople
 }) => {
 
-    const router = useRouter()
 
 
     return (
@@ -78,37 +89,70 @@ const PropertyCard: React.FC<Props> = ({
                 <Image
                     style={{
                         width: '100%',
-                        height: '100%'
+                        height: '100%',
+                        objectFit: 'cover'
                     }}
-                    placeholder={image}
-                    source={image}
+                    source={property?.property_photos?.find(i => i?.property_photo_category?.name === thumbnailName)?.photos ||
+                        property?.property_photos?.[0]?.photos
+                        || gray200}
                     contentFit="cover"
                     transition={1000}
                 />
-                <View className='absolute top-0 right-0 m-4'>
+
+                <View className='absolute top-0 right-0 m-4 flex flex-row gap-3'>
                     {
                         isHeart &&
-                        <Pressable onPress={onPressHeart}>
-                            <IconBack
-                                icon={<LikeIcon
-                                    width={12}
-                                    height={12}
-                                    fill={Colors.black[800]}
-                                />}
-                            />
-                        </Pressable>
+
+                        <IconBack
+                            onPress={onPressHeart}
+                            icon={<LikeIcon
+                                width={12}
+                                height={12}
+                                fill={Colors.black[800]}
+                            />}
+                        />
+
                     }
                     {
                         isActiveHeart &&
-                        <Pressable onPress={onPressActiveHeart}>
-                            <IconBack
-                                icon={<LikeActiveIcon
-                                    width={12}
-                                    height={12}
-                                    fill={Colors.black[800]}
-                                />}
-                            />
-                        </Pressable>
+
+                        <IconBack
+                            onPress={onPressActiveHeart}
+                            icon={<LikeActiveIcon
+                                width={12}
+                                height={12}
+                                fill={Colors.black[800]}
+                            />}
+                        />
+
+                    }
+                    {
+                        isEdit &&
+
+                        <IconBack
+                            onPress={onPressEdit}
+                            icon={<EditIcon
+                                width={12}
+                                height={12}
+                                fill={Colors.black[800]}
+                            />}
+                        />
+
+
+                    }
+                    {
+                        isDelete &&
+
+                        <IconBack
+                            onPress={onPressDelete}
+                            icon={<CloseIcon
+                                width={12}
+                                height={12}
+                                fill={Colors.black[800]}
+                            />}
+                        />
+
+
                     }
 
                 </View>
@@ -192,4 +236,31 @@ const PropertyCard: React.FC<Props> = ({
     )
 }
 
-export default PropertyCard
+const areEqual = (prevProps: Props, nextProps: Props) => {
+    // Compare each prop and return false if any of them have changed
+    return (
+        prevProps.isHeart === nextProps.isHeart &&
+        prevProps.isActiveHeart === nextProps.isActiveHeart &&
+        prevProps.onPressHeart === nextProps.onPressHeart &&
+        prevProps.onPressActiveHeart === nextProps.onPressActiveHeart &&
+        prevProps.property === nextProps.property &&
+        prevProps.onPressCompare === nextProps.onPressCompare &&
+        prevProps.compareActive === nextProps.compareActive &&
+        prevProps.compare === nextProps.compare &&
+        prevProps.image === nextProps.image &&
+        prevProps.price === nextProps.price &&
+        prevProps.bd === nextProps.bd &&
+        prevProps.ba === nextProps.ba &&
+        prevProps.kitchen === nextProps.kitchen &&
+        prevProps.hall === nextProps.hall &&
+        prevProps.sqft === nextProps.sqft &&
+        prevProps.address === nextProps.address &&
+        prevProps.role === nextProps.role &&
+        prevProps.onPress === nextProps.onPress &&
+        prevProps.onPressInterestedPeople === nextProps.onPressInterestedPeople &&
+        prevProps.interestedPeople === nextProps.interestedPeople
+    );
+};
+
+
+export default React.memo(PropertyCard, areEqual)

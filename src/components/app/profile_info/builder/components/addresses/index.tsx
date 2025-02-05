@@ -13,10 +13,6 @@ const Addresses = () => {
     const [builderAddresses, setBuilderAddresses] = useState<IBuilderAddress[]>([])
 
 
-
-
-
-
     const builderAddressGetHandle = async () => {
         try {
             const result = await builderAddressGet();
@@ -57,6 +53,7 @@ const Addresses = () => {
                 <CreateAddress
                     show={createAddressModal}
                     onOutsideClick={() => setCreateAddressModal(false)}
+                    onRequestClose={() => setCreateAddressModal(false)}
                     updated={() => {
                         builderAddressGetHandle()
                         setCreateAddressModal(false)

@@ -1,4 +1,4 @@
-import { View, Text, GestureResponderEvent } from 'react-native'
+import { View, Text, GestureResponderEvent, NativeSyntheticEvent } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { IBuilderUpdate } from '@/src/data/network/models/builderUpdate'
 import { builderUpdateCreate, builderUpdateDelete, builderUpdateUpdate } from '@/src/data/network/services/builderUpdate'
@@ -13,10 +13,12 @@ interface Props {
     open: boolean
     onOpenChange?: (event: GestureResponderEvent) => void
     updated?: () => void
+    onRequestClose?: (event: NativeSyntheticEvent<any>) => void
+
 }
 
 
-const BuilderUpdatesCreate: React.FC<Props> = ({ open, onOpenChange, updated }) => {
+const BuilderUpdatesCreate: React.FC<Props> = ({ onRequestClose, open, onOpenChange, updated }) => {
     const [formData, setFormData] = useState<IBuilderUpdate>({});
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -37,7 +39,7 @@ const BuilderUpdatesCreate: React.FC<Props> = ({ open, onOpenChange, updated }) 
 
 
     return (
-        <Dialog show={open} >
+        <Dialog show={open} onRequestClose={onRequestClose}>
             <DialogHeader onPressClose={onOpenChange} title='Create Update Tag' />
 
             <View className='flex-1 px-6  overflow-auto flex flex-col gap-4 items-center w-full mt-3'>

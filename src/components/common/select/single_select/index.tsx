@@ -1,18 +1,38 @@
 import { View, Text, Pressable, ScrollView } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Colors } from '@/src/constants/Colors'
 import { twMerge } from 'tailwind-merge';
 
 
 
 interface Props {
+
     list?: { icon?: React.ReactNode, title: string }[];
     onSelect?: (index: number) => void;
     classNameItem?: string;
     selected?: number
+    defaultIndex?: number
 }
 
-const SingleSelect: React.FC<Props> = ({ list, onSelect, classNameItem, selected }) => {
+const SingleSelect: React.FC<Props> = ({ defaultIndex, list, onSelect, classNameItem, selected }) => {
+    const [current, setCurrent] = useState<number>(0);
+
+
+    useEffect(() => {
+
+        if (defaultIndex !== undefined && defaultIndex !== null) {
+            setCurrent(defaultIndex)
+        }
+
+    }, [defaultIndex])
+
+    useEffect(() => {
+
+        if (selected !== undefined && selected !== null) {
+            setCurrent(selected)
+        }
+
+    }, [selected])
 
 
 
@@ -22,21 +42,24 @@ const SingleSelect: React.FC<Props> = ({ list, onSelect, classNameItem, selected
             {
                 list?.map((item, index) =>
                     <Pressable
-                        onPress={() => onSelect ? onSelect(index) : null}
+                        onPress={() => {
+                            setCurrent(index);
+                            onSelect ? onSelect(index) : null
+                        }}
                         className={twMerge(`
-                            ${selected === index ? 'bg-primary' : 'bg-gray-100'}
+                            ${current === index ? 'bg-primary' : 'bg-gray-100'}
                             gap-1 flex items-center justify-center p-4 rounded-[5px]`, classNameItem)}
                         key={index}>
                         {item.icon ?
                             React.cloneElement(item.icon as React.ReactElement, {
                                 width: 25,
                                 height: 25,
-                                fill: selected === index ? 'white' : Colors.gray[400]
+                                fill: current === index ? 'white' : Colors.gray[400]
                             })
                             : null
                         }
                         <Text className={`
-                            ${selected === index ? 'text-white' : 'text-gray-400'}
+                            ${current === index ? 'text-white' : 'text-gray-400'}
                             text-sm font-mRegular `}>{item.title}</Text>
                     </Pressable>
                 )

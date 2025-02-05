@@ -16,21 +16,17 @@ const Update: React.FC<Props> = ({ onPress, title, onPressEdit }) => {
 
 
     return (
-        <Pressable onPress={onPress} className='bg-gray-100 flex-row items-center gap-1.5 h-8 rounded-full px-3 text-wrap'>
-            {/* <YoutubeIcon
-                width={14}
-                height={14}
-                fill={Colors.gray[400]}
-            /> */}
+        <Pressable
+            onPress={onPress}
+            className='bg-gray-100 flex-row items-start gap-1.5 rounded'>
+
 
             <Text
-                numberOfLines={1}
-                ellipsizeMode='tail'
-                className='text-xs font-mRegular text-gray-400 underline'>{title}</Text>
+                className='text-xs font-mRegular text-gray-400 underline py-2 px-3 flex-1'>{title}</Text>
             {
                 onPressEdit && <IconBack
                     onPress={onPressEdit}
-                    className='border border-gray-200'
+                    className='border border-gray-200 m-2'
                     icon={<EditIcon
                         width={12}
                         height={12}

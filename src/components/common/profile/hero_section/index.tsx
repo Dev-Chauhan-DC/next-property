@@ -51,7 +51,7 @@ const HeroSection: React.FC<Props> = ({ sourceBg, onPressEditBg, sourceAvatar, o
 
             </View>
             <View
-                className='relative'
+                className='relative p-2 bg-white'
                 style={{
                     width: 100,
                     height: 100,
@@ -64,7 +64,7 @@ const HeroSection: React.FC<Props> = ({ sourceBg, onPressEditBg, sourceAvatar, o
                         width: '100%',
                         height: '100%',
                         objectFit: 'cover',
-                        borderRadius: 200,
+                        // borderRadius: 200,
                     }}
                     source={sourceAvatar}
                 />

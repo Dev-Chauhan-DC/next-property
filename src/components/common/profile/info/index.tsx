@@ -50,9 +50,15 @@ const Info: React.FC<Props> = ({ founded, website_link, name, onPressEdit, emplo
 
             </View>
             <View className='flex flex-row gap-1.5 items-center mb-4'>
-                <Text className='font-mRegular text-base text-gray-400'>{founded}</Text>
-                <View className='w-1 h-1 bg-gray-400 rounded-full' />
-                <Text className='font-mRegular text-base text-gray-400'>{employee_size}</Text>
+                {
+                    founded && <Text className='font-mRegular text-base text-gray-400'>{founded}</Text>
+                }
+                {
+                    founded && employee_size && <View className='w-1 h-1 bg-gray-400 rounded-full' />
+                }
+                {
+                    employee_size && <Text className='font-mRegular text-base text-gray-400'>{employee_size}</Text>
+                }
             </View>
             <View className='flex flex-row gap-1 items-center'>
                 <Button

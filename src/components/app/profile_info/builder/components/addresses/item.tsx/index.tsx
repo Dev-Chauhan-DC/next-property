@@ -29,6 +29,7 @@ const Address: React.FC<Props> = ({ builderAddress, updated, deleted }) => {
                     builderAddress={builderAddress}
                     show={updateModal}
                     onOutsideClick={() => setUpdateModal(false)}
+                    onRequestClose={() => setUpdateModal(false)}
                     updated={() => {
                         setUpdateModal(false)
                         updated && updated()

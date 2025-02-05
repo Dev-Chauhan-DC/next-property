@@ -33,6 +33,8 @@ export const remEndpoints = {
     searchAndFilters: `${prepath}/properties`,
     getProperty: `${prepath}/property`,
     getPropertiesByIds: `${prepath}/properties`,
+    updateProperty: `${prepath}/property`,
+
 
 
     // Amenity Property
@@ -40,6 +42,10 @@ export const remEndpoints = {
 
     // Photo Property
     createPhotos: `${prepath}/list/property/images/file/id`,
+    createPhotosV2: `${prepath}/propertyPhoto/bulk`,
+    propertyPhotoCreate: `${prepath}/propertyPhoto`,
+    propertyPhotoUpdate: `${prepath}/propertyPhoto`,
+    propertyPhotoDelete: `${prepath}/propertyPhoto`,
 
     // Save Property
     saveProperty: `${prepath}/save/property`,
@@ -58,6 +64,10 @@ export const remEndpoints = {
     builderUpdate: `${prepath}/builder`,
     builderGetCurrent: `${prepath}/builder`,
     builderGet: `${prepath}/builder`,
+    builderGetAll: `${prepath}/builders`,
+    builderCreate: `${prepath}/builder`,
+    adminBuilderUpdate: `${prepath}/builder`,
+    adminBuilderDelete: `${prepath}/admin/builder`,
 
 
     // Builder Team 
@@ -97,6 +107,10 @@ export const remEndpoints = {
     agentUpdate: `${prepath}/agent`,
     agentGetCurrent: `${prepath}/agent`,
     agentGet: `${prepath}/agent`,
+    agentGetAll: `${prepath}/agents`,
+    agentCreate: `${prepath}/agent`,
+    adminAgentDelete: `${prepath}/admin/agent`,
+    adminAgentUpdate: `${prepath}/agent`,
 
 
     // agent Address
@@ -112,6 +126,12 @@ export const remEndpoints = {
     agentCertificateUpdate: `${prepath}/agentCertificate`,
     agentCertificateDelete: `${prepath}/agentCertificate`,
     agentCertificateGetAllByAgent: `${prepath}/agentCertificate/agent`,
+
+    // Photo Category
+
+    photoCategoryGetAll: `${prepath}/photoCategory`,
+
+
 
 
 }

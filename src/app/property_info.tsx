@@ -52,6 +52,7 @@ import PagerView from 'react-native-pager-view'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import LoadingScreen from '../components/common/loading/loading_screen'
 import UserCard from '../components/common/profile/user_card'
+import { gray200 } from '../constants/Images'
 
 
 
@@ -296,7 +297,7 @@ const PropertyInformationScreen = () => {
                     {property?.water_supply?.water_supply ? <View className={className.infoView}><IconBox icon={<WaterSupplyIcon />} title={property?.water_supply?.water_supply} subTitle="Water Supply" /></View> : null}
                     {property?.kitchen_type?.kitchen_type ? <View className={className.infoView}><IconBox icon={<KitchenIcon />} title={property?.kitchen_type?.kitchen_type} subTitle="Kitchen Type" /></View> : null}
                     {property?.cupboard ? <View className={className.infoView}><IconBox icon={<CupboardIcon />} title={property?.cupboard.toString()} subTitle="Cupboards" /></View> : null}
-                    {property?.createdAt ? <View className={className.infoView}><IconBox icon={<CalenderIcon />} title={calculateDaysAgo(property.createdAt).toString()} /></View> : null}
+                    {property?.createdAt ? <View className={className.infoView}><IconBox icon={<CalenderIcon />} title={calculateDaysAgo(property.createdAt).toString()} subTitle="Days On App" /></View> : null}
                     {property?.possession?.possession ? <View className={className.infoView}><IconBox icon={<KeyIcon />} title={property.possession.possession} subTitle="Possession" /></View> : null}
                 </View>
 
@@ -373,7 +374,8 @@ const PropertyInformationScreen = () => {
 
 
                 <ImageViewerModal
-                    images={property?.property_photos?.map(item => item.photos)}
+                    property={property}
+                    images={property?.property_photos?.map(item => item?.photos || gray200) || []}
                     visible={imageViewer}
                     setVisible={setImageViewer}
                     onRequestClose={() => setImageViewer(false)}

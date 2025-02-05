@@ -14,7 +14,9 @@ const Address: React.FC<Props> = ({ title, onPressEdit, address }) => {
     return (
         <View className='bg-gray-100 rounded-[10px] p-3.5 gap-2.5'>
             <View className='flex flex-row items-center justify-between'>
-                <Text className='text-black-800 text-sm font-mMedium'>{title}</Text>
+                <Text
+                    numberOfLines={1}
+                    className='text-black-800 text-sm font-mMedium flex-1'>{title}</Text>
                 {
                     onPressEdit && <IconBack
                         onPress={onPressEdit}

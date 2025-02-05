@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, FlatList, Modal, Pressable, ActivityIndicator } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Link, router } from 'expo-router'
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Header from '@/src/components/app/(tabs)/(home)/header';
@@ -73,27 +73,27 @@ const ListScreen = () => {
     const [page, setPage] = useState<number>(1);
     const [filter, setFilter] = useRecoilState(filterAtom);
     const [onFilterApplyClick, setOnFilterApplyClick] = useRecoilState(onFilterApplyClickAtom);
+    const [refreshing, setRefreshing] = useState(false);
+
+
+
+    const onRefresh = async () => {
+        if (searchQuery?.result.geometry.viewport) {
+            searchAndFiltersHandle(searchQuery?.result.geometry.viewport, { ...filter, page: 1 });
+            setPage(1);
+        }
+    };
 
 
 
 
 
-
-
-
-    const searchAndFiltersHandle = async (viewport: IViewport, filters: IFilters) => {
+    const searchAndFiltersHandle = useCallback(async (viewport: IViewport, filters: IFilters) => {
         try {
             setLoading(true);
             const result = await searchAndFilters(viewport, filters);
 
-            if (filters.page === 1) {
-                setProperties([]);
-                setProperties(result.data);
-            } else {
-                setProperties(prevState => [...prevState, ...result.data])
-            }
-
-
+            setProperties(prevState => (filters.page === 1 ? result.data : [...prevState, ...result.data]));
 
         } catch (e) {
             console.error(e);
@@ -102,7 +102,7 @@ const ListScreen = () => {
             setLoading(false);
 
         }
-    }
+    }, [setLoading, setProperties])
 
 
     const loadMorePressHandle = async () => {
@@ -151,6 +151,8 @@ const ListScreen = () => {
                 />
             </View>
             <FlatList
+                refreshing={refreshing}
+                onRefresh={onRefresh}
                 showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false}
                 style={{

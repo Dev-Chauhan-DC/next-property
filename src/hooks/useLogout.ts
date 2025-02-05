@@ -9,8 +9,8 @@ const useLogout = () => {
 
     const logout = async () => {
         await AsyncStorage.removeItem(cookieName.token);
-        setUser(null);
         router.push('/');
+        setUser(null);
     }
 
     return logout

@@ -34,7 +34,7 @@ const FourthScreen = () => {
         >
             <ScrollView showsVerticalScrollIndicator={false}
             >
-                <View className='gap-[40px] px-[10px]'>
+                <View className='gap-[40px] px-[10px] pb-10'>
 
                     <TitleLayout
                         title='Gated Security *'

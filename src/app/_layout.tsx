@@ -19,6 +19,7 @@ import { RootSiblingParent } from 'react-native-root-siblings';
 import Index from "../components/index/layout";
 
 
+
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
@@ -56,12 +57,15 @@ export default function RootLayout() {
             <Stack.Screen name="filter" />
             <Stack.Screen name="compare" />
             <Stack.Screen name="(listing)" />
+            <Stack.Screen name="(update)" />
             <Stack.Screen name='profile_info' />
             <Stack.Screen name='login' />
             <Stack.Screen name='role' />
             <Stack.Screen name='interested_people' />
             <Stack.Screen name='builder_profile' />
             <Stack.Screen name='agent_profile' />
+            <Stack.Screen name='theme' />
+            <Stack.Screen name='settings' />
           </Stack>
         </Index>
       </RecoilRoot>

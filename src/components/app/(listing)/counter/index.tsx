@@ -13,9 +13,10 @@ interface Props {
     className?: string
     onLayout?: (event: LayoutChangeEvent) => void
     onPressRight?: (event: GestureResponderEvent) => void
+    loading?: boolean
 }
 
-const Counter: React.FC<Props> = ({ onPressRight, onLayout, total, rightTitle, leftTitle, completed, className }) => {
+const Counter: React.FC<Props> = ({ loading, onPressRight, onLayout, total, rightTitle, leftTitle, completed, className }) => {
     return (
         <View
             onLayout={onLayout}
@@ -34,8 +35,9 @@ const Counter: React.FC<Props> = ({ onPressRight, onLayout, total, rightTitle, l
             <View className='flex flex-row justify-between px-7 h-[70px] items-center bg-white'>
                 <Text
                     onPress={() => router.back()}
-                    className=''>{leftTitle ? leftTitle : 'Back'}</Text>
+                    className='font-mMedium'>{leftTitle ? leftTitle : 'Back'}</Text>
                 <Button
+                    loading={loading}
                     onPress={onPressRight}
                     className='bg-primary w-[70px]'
                     title={rightTitle ? rightTitle : 'Next'}

@@ -31,13 +31,11 @@ const Certificate: React.FC<Props> = ({ file, title, onPressEdit, certificate_id
                 source={file}
             />
             <View
-                style={{
-                    alignSelf: 'stretch',
-                    flexGrow: 1
-                }}
-                className='justify-between   '>
-                <View className='flex flex-row items-center justify-between'>
-                    <Text className='text-sm font-mMedium text-black-800'>{title}</Text>
+                className='justify-between flex-col flex-1 '>
+                <View className='flex flex-row items-center justify-between '>
+                    <Text
+                        numberOfLines={1}
+                        className='text-sm font-mMedium text-black-800 flex-1'>{title}</Text>
                     {
                         onPressEdit && <IconBack
                             onPress={onPressEdit}
@@ -51,9 +49,11 @@ const Certificate: React.FC<Props> = ({ file, title, onPressEdit, certificate_id
                     }
 
                 </View>
-                <View className='gap-1.5'>
+                <View className='flex-col justify-end gap-1.5 flex-1'>
                     <View className='flex-row items-center justify-between'>
-                        <Text className='text-xs font-mSemiBold text-black-800'>ID</Text>
+                        <Text
+                            numberOfLines={1}
+                            className='text-xs font-mSemiBold text-black-800'>ID</Text>
                         <IconBack
                             className='bg-transparent'
                             onPress={async () => {
@@ -68,7 +68,9 @@ const Certificate: React.FC<Props> = ({ file, title, onPressEdit, certificate_id
                         />
 
                     </View>
-                    <Text className='text-sm font-mMedium text-gray-400'>{certificate_id}</Text>
+                    <Text
+                        numberOfLines={1}
+                        className='text-sm font-mMedium text-gray-400  '>{certificate_id}</Text>
                 </View>
             </View>
 

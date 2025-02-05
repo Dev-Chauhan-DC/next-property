@@ -1,4 +1,4 @@
-import { View, Text, Modal, Platform } from 'react-native'
+import { View, Text, Modal, Platform, NativeSyntheticEvent } from 'react-native'
 import React from 'react'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
@@ -6,13 +6,16 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 interface Props {
     show?: boolean
     children?: React.ReactNode
-    animationType?: "none" | "slide" | "fade"
+    animationType?: "none" | "slide" | "fade",
+    onRequestClose?: (event: NativeSyntheticEvent<any>) => void
 }
 
-const Dialog: React.FC<Props> = ({ show, children, animationType = 'slide' }) => {
+const Dialog: React.FC<Props> = ({ onRequestClose, show, children, animationType = 'slide' }) => {
     const insets = useSafeAreaInsets()
     return (
-        <Modal animationType={animationType} visible={show} className='bg-white'>
+        <Modal
+            onRequestClose={onRequestClose}
+            animationType={animationType} visible={show} className='bg-white'>
             <View
                 style={{
                     paddingBottom: insets.bottom + (Platform.OS === 'android' ? 20 : 0),

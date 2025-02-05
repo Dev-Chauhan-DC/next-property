@@ -33,6 +33,7 @@ const Update: React.FC<Props> = ({ builderUpdate, updated, deleted }) => {
                     builderUpdate={builderUpdate}
                     open={updateModal}
                     onOpenChange={() => setUpdateModal(false)}
+                    onRequestClose={() => setUpdateModal(false)}
                     updated={() => {
                         updated && updated()
                         setUpdateModal(false)

@@ -11,6 +11,8 @@ import { StatusBar } from 'expo-status-bar';
 import ConfirmtionModal from '../../modals/confirmation'
 import { AlertDialogProvider } from '@/src/hooks/alert/confirmation'
 import { router, usePathname, useRouter } from 'expo-router'
+import { PortalHost } from '@rn-primitives/portal';
+
 
 
 
@@ -33,8 +35,7 @@ const Index: React.FC<Props> = ({ children }) => {
             }
 
         } catch (e) {
-            console.error(e);
-            Toast.show(getError(e));
+            // Toast.show(getError(e));
         }
     }
 
@@ -58,6 +59,7 @@ const Index: React.FC<Props> = ({ children }) => {
                 {children}
                 <StatusBar style="dark" animated hideTransitionAnimation='fade' translucent />
             </View>
+            <PortalHost />
         </AlertDialogProvider>
     )
 }

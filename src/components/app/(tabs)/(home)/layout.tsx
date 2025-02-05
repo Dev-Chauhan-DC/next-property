@@ -11,9 +11,10 @@ import { twMerge } from 'tailwind-merge';
 interface Props {
     children: React.ReactNode,
     className?: string
+    getHeight?: (e: number) => void;
 }
 
-const HomeLayout: React.FC<Props> = ({ children, className }) => {
+const HomeLayout: React.FC<Props> = ({ getHeight, children, className }) => {
     const insets = useSafeAreaInsets();
     const { height } = useWindowDimensions();
     const [headerHeight, setHeaderHeight] = useState<number>(37);
@@ -21,19 +22,19 @@ const HomeLayout: React.FC<Props> = ({ children, className }) => {
 
     return (
         <View
-            className={twMerge(``, className)}
+            className={twMerge(`flex-col`, className)}
             style={{
                 paddingTop: insets.top,
                 backgroundColor: 'white',
                 flex: 1
             }}
         >
-            <Header getHeight={(e) => setHeaderHeight(e)} />
+            <Header getHeight={(e) => {
+                getHeight && getHeight(e)
+                setHeaderHeight(e)
+            }} />
             <View
-                style={{
-                    flex: 1
-                }}
-            >
+                className='flex-1'>
                 {children}
             </View>
         </View>

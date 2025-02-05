@@ -1,4 +1,5 @@
-import { IPropertyListing } from "@/src/data/network/models/property";
+import { IProperty, IPropertyListing } from "@/src/data/network/models/property";
+import { IPropertyPhoto } from "@/src/data/network/models/propertyPhoto";
 import { atom } from "recoil";
 
 export const propertyState = atom<IPropertyListing>({
@@ -53,7 +54,53 @@ export const propertyState = atom<IPropertyListing>({
     },
 });
 
+
+
+export const imageFileIdsState = atom<number[]>({
+    key: 'imageFileIdsStateAtom',
+    default: []
+});
+export const imageUrlsState = atom<string[]>({
+    key: 'imageUrlsStateAtom',
+    default: []
+});
+export const propertyPhotoState = atom<IPropertyPhoto[]>({
+    key: 'propertyPhotoStateAtom',
+    default: []
+});
+
 export const amenityArryState = atom<number[]>({
     key: 'amenityArryStateAtom',
     default: []
+});
+
+
+
+export const updatePropertyState = atom<IProperty>({
+    key: 'updatePropertyStateAtom',
+    default: { id: NaN }
+});
+export const updatePropertyFormDataState = atom<IProperty>({
+    key: 'updatePropertyFormDataStateAtom',
+    default: { id: NaN }
+});
+export const updateBuilderState = atom<string>({
+    key: 'updateBuilderStateAtom',
+    default: ''
+});
+export const updateAgentState = atom<string>({
+    key: 'updateAgentStateAtom',
+    default: ''
+});
+export const propPhotoState = atom<IPropertyPhoto[]>({
+    key: 'propPhotoStateAtom',
+    default: []
+});
+export const latitudeState = atom<number>({
+    key: 'latitudeStateAtom',
+    default: 19.058753
+});
+export const longitudeState = atom<number>({
+    key: 'longitudeStateAtom',
+    default: 72.868153
 });

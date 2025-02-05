@@ -77,4 +77,14 @@ export const getPropertiesByIds = async (params: { ids: number[] }): Promise<IRe
     }
 }
 
+export const updateProperty = async (id: number, property: IProperty): Promise<IResponse<IProperty[]>> => {
+    try {
+        const result = await remInstance.put(remEndpoints.updateProperty + '/' + id, property);
+        return result.data;
+    } catch (e) {
+        console.error(e);
+        throw e;
+    }
+}
+
 

@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View, Text, NativeSyntheticEvent } from 'react-native'
 import React, { useState } from 'react'
 import { IBuilderTeam } from '@/src/data/network/models/builderTeam'
 import { builderTeamCreate } from '@/src/data/network/services/builderTeam'
@@ -21,11 +21,13 @@ interface Props {
     show?: boolean;
     onPressClose?: () => void;
     updated?: () => void
+    onRequestClose?: (event: NativeSyntheticEvent<any>) => void
+
 
 }
 
 
-const CreatePeopleModal: React.FC<Props> = ({ onPressClose, show, updated }) => {
+const CreatePeopleModal: React.FC<Props> = ({ onPressClose, show, updated, onRequestClose }) => {
     const [formData, setFormData] = React.useState<Partial<IBuilderTeam>>({})
     const [avatar, setAvatar] = useState<string>('')
     const [loading, setLoading] = useState<boolean>(false);
@@ -61,7 +63,7 @@ const CreatePeopleModal: React.FC<Props> = ({ onPressClose, show, updated }) => 
 
 
     return (
-        <Dialog>
+        <Dialog onRequestClose={onRequestClose}>
             <DialogHeader
                 title='Add Role'
                 onPressClose={onPressClose}

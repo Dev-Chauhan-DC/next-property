@@ -35,6 +35,7 @@ const Item: React.FC<Props> = ({ builderTeam, deleted, updated }) => {
             {
                 updateModal &&
                 <UpdatePeopleModal
+                    onRequestClose={() => setUpdateModal(false)}
                     deleted={() => {
                         deleted && deleted()
                         setUpdateModal(false)

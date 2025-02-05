@@ -167,6 +167,8 @@ export const tenants: ISelectList[] = [{ title: "Anyone" }, { title: "Family" },
 export const furnishing: ISelectList[] = [{ title: "Full" }, { title: "Semi" }, { title: "None" }];
 export const facing: ISelectList[] = [{ title: "North" }, { title: "South" }, { title: "East" }, { title: "West" }, { title: "North - West" }, { title: "North - East" }, { title: "South - West" }, { title: "South - East" },];
 export const flooringType: ISelectList[] = [{ title: "Cement" }, { title: "Marbel / Granite" }, { title: "Wooden" }, { title: "Virtified Tiles" }, { title: "Mosaic" }];
+export const projectType: ISelectList[] = [{ title: "Completed" }, { title: "Ongoing" }, { title: "Upcoming" },];
+
 export const sort: ISelectList[] = [
     {
         title: 'Relevance',
@@ -487,3 +489,5 @@ export const indiaViewport: IViewport = {
         lng: 68.1097  // Westernmost point (Guhar Moti, Gujarat)
     }
 }
+
+export const thumbnailName = 'Thumbnail'
