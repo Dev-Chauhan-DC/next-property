@@ -21,7 +21,6 @@ import Agent from '../components/app/profile_info/agent'
 const ProfileInfoScreen = () => {
     const logout = useLogout();
     const insets = useSafeAreaInsets();
-    const router = useRouter();
     const [user, setUser] = useRecoilState(userState);
     const [fName, setFName] = useState<string>('')
     const [lName, setLName] = useState<string>('')
@@ -47,6 +46,7 @@ const ProfileInfoScreen = () => {
             setLoading(false);
         }
     }
+
     const getUserHandle = async () => {
         try {
             const result = await getUser();
@@ -101,13 +101,12 @@ const ProfileInfoScreen = () => {
             <Builder />
         )
     }
+
     if (user?.user_roles_id === 3) {
         return (
             <Agent />
         )
     }
-
-
 
     return (
         <View

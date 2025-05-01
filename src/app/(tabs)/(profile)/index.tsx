@@ -8,14 +8,20 @@ import PropertyCard from '@/src/components/app/(tabs)/(home)/list/PropertyCard'
 import { useRecoilValue } from 'recoil'
 import { userState } from '@/src/global_state/recoil/atoms/user'
 import { getError } from '@/src/utilities/halper_functions/service'
-import { deleteProperty, getUserProperties } from '@/src/data/network/services/property'
+import { deleteProperty, getUserProperties, getUserPropertiesV2 } from '@/src/data/network/services/property'
 import { IProperty } from '@/src/data/network/models/property'
 import { Colors } from '@/src/constants/Colors'
 import LoadMoreButton from '@/src/components/common/button/LoadMoreButton'
 import Toast from 'react-native-root-toast'
-import { Cog, LogOut } from 'lucide-react-native'
+import { Cog, Grip, LogOut } from 'lucide-react-native'
 import IconBack from '@/src/components/common/icon_back'
 import useLogout from '@/src/hooks/useLogout'
+import { IMeta } from '@/src/data/network/models'
+import NoData from '@/src/components/common/ui/no_data'
+import * as AvatarPrimitive from '@rn-primitives/avatar';
+import { Avatar, AvatarFallback } from '@/src/components/ui/avatar'
+import { Text as TextUI } from '@/src/components/ui/text'
+import { getInitials } from '@/src/utilities/halper_functions/text'
 
 const ProfileScreen = () => {
     const insets = useSafeAreaInsets();
@@ -25,6 +31,7 @@ const ProfileScreen = () => {
     const [properties, setProperties] = useState<IProperty[]>([])
     const [page, setPage] = useState<number>(1);
     const [refreshing, setRefreshing] = useState(false);
+    const [meta, setMeta] = useState<IMeta>()
 
 
 
@@ -38,13 +45,15 @@ const ProfileScreen = () => {
     const getUserPropertiesHandle = async (page: number, limit: number = 6) => {
         try {
             setLoading(true);
-            const result = await getUserProperties(page, limit);
+            const result = await getUserPropertiesV2(page, limit);
 
             if (page === 1) {
-                setProperties(prevState => []);
+                setProperties([]);
                 setProperties(result.data);
+                setMeta(result.meta)
             } else {
                 setProperties(prevState => [...prevState, ...result.data])
+                setMeta(result.meta)
             }
         } catch (e) {
             console.error(e);
@@ -86,6 +95,7 @@ const ProfileScreen = () => {
     }, [])
 
 
+    const userName = (user?.first_name ? user?.first_name + ' ' : '') + (user?.last_name ? user?.last_name : '') + (!user?.first_name && !user?.last_name ? 'Update Profile' : '')
 
     return (
         <View
@@ -101,15 +111,14 @@ const ProfileScreen = () => {
                 className=' px-[16px] mx-[10px] h-[67px] rounded-[10px] bg-gray-100 justify-center'>
                 <View className='flex flex-row items-center justify-between'>
                     <Pressable onPress={() => router.push('/profile_info')} className='flex flex-row items-center gap-3.5'>
-                        <View className='w-[45px] h-[45px] rounded-full bg-gray-200 '></View>
+                        <Avatar alt='Profile Avatar'>
+                            <AvatarFallback><TextUI className='text-black-800 font-mMedium'>{getInitials((userName))}</TextUI></AvatarFallback>
+                        </Avatar>
                         <View className='gap-0.5'>
                             <Text className='text-base font-mMedium text-black-800'>
-                                {
-                                    user?.first_name && user?.last_name ?
-                                        `${user?.first_name + ' ' + user?.last_name}` :
-                                        'Update Profile'
-                                }
-
+                                {user?.first_name ? user?.first_name + ' ' : ''}
+                                {user?.last_name ? user?.last_name : ''}
+                                {!user?.first_name && !user?.last_name ? 'Update Profile' : ''}
                             </Text>
                             <Text className='text-[10px] text-gray-300 font-mMedium'>Show Profile</Text>
                         </View>
@@ -117,7 +126,7 @@ const ProfileScreen = () => {
                     <IconBack
                         className='bg-transparent'
                         onPress={() => router.push('/settings')}
-                        icon={<Cog
+                        icon={<Grip
                             width={20}
                             height={20}
                             color={Colors.gray[400]}
@@ -131,7 +140,7 @@ const ProfileScreen = () => {
             <Button
                 onPress={() => router.push('/(listing)/first')}
                 className='mx-[10px] mt-[28px]'
-                title='List Property' />
+                title='List Your Property for Free' />
 
             <Text className='font-mSemiBold text-black-800 text-base mt-[20px] mb-[10px] px-[10px]'>Listed Properties</Text>
             <FlatList
@@ -145,7 +154,13 @@ const ProfileScreen = () => {
                 data={properties}
                 renderItem={({ item }) =>
                     <PropertyCard
-                        onPressDelete={() => deletePropertyHandle(item.id)}
+                        onPressDelete={() => {
+                            if (item.id) {
+                                deletePropertyHandle(item.id)
+                            }
+                        }
+
+                        }
                         isDelete={true}
                         isEdit={true}
                         property={item}
@@ -167,16 +182,22 @@ const ProfileScreen = () => {
                         interestedPeople={true}
                         onPressInterestedPeople={() => router.push({ pathname: '/interested_people', params: { id: item.id } })}
                     />}
-                keyExtractor={(item) => item.id.toString()}
+                keyExtractor={(item) => item?.id?.toString() || ''}
+                ListHeaderComponent={
+                    !loading && properties?.length === 0 ?
+                        <NoData
+                            text='List your property for free to sell or rent effortlessly'
+                        /> : null
+                }
                 ListFooterComponent={
                     loading ?
                         <View className='h-8 mb-3 items-center justify-center'>
                             <ActivityIndicator size={'small'} color={Colors.black[800]} />
                         </View>
-                        :
-                        <LoadMoreButton
-                            className='mb-3'
-                            onPress={loadMorePressHandle} />
+                        : meta?.page && meta?.totalPages && meta?.page < meta?.totalPages ?
+                            <LoadMoreButton
+                                className='mb-3'
+                                onPress={loadMorePressHandle} /> : null
                 }
             />
         </View>

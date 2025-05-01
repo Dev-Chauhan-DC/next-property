@@ -1,8 +1,11 @@
-import { View, Text, LayoutChangeEvent, GestureResponderEvent } from 'react-native'
+import { View, Text, LayoutChangeEvent, GestureResponderEvent, ActivityIndicator } from 'react-native'
 import React from 'react'
 import Button from '@/src/components/common/button/Button'
 import { twMerge } from 'tailwind-merge'
 import { router } from 'expo-router'
+import { Button as ButtonUI } from '@/src/components/ui/button'
+import { Text as TextUI } from '@/src/components/ui/text'
+import { Loader2 } from 'lucide-react-native'
 
 
 interface Props {
@@ -33,15 +36,25 @@ const Counter: React.FC<Props> = ({ loading, onPressRight, onLayout, total, righ
                 }
             </View>
             <View className='flex flex-row justify-between px-7 h-[70px] items-center bg-white'>
-                <Text
+                <ButtonUI
+                    variant={'ghost'}
+                    size={'default'}
                     onPress={() => router.back()}
-                    className='font-mMedium'>{leftTitle ? leftTitle : 'Back'}</Text>
-                <Button
-                    loading={loading}
+                >
+
+                    <TextUI>{leftTitle ? leftTitle : 'Back'}</TextUI>
+                </ButtonUI>
+                <ButtonUI
+                    size={'default'}
                     onPress={onPressRight}
-                    className='bg-primary w-[70px]'
-                    title={rightTitle ? rightTitle : 'Next'}
-                />
+                >
+                    {loading &&
+                        <ActivityIndicator
+                            size={'small'}
+                            color={'white'}
+                        />}
+                    <TextUI>{rightTitle ? rightTitle : 'Next'}</TextUI>
+                </ButtonUI>
             </View>
         </View>
     )

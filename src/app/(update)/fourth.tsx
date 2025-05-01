@@ -9,9 +9,9 @@ import TitleLayout from '@/src/components/common/title_layout'
 import SingleSelect from '@/src/components/common/select/single_select'
 import ArrowIcon from '@/src/assets/svgs/ArrowIcon'
 import MultipleSelect from '@/src/components/common/select/multiple_select'
-import { amenities, powerBackup, projectType, waterSupply } from '@/src/constants/app/Property'
+import { amenities, ElementEnum, elementManagement, powerBackup, projectType, waterSupply } from '@/src/constants/app/Property'
 import { useRecoilState } from 'recoil'
-import { amenityArryState, propertyState, updateAgentState, updateBuilderState, updatePropertyFormDataState, updatePropertyState } from '@/src/global_state/recoil/atoms/property'
+import { amenityArryState, eleManagerUpdateState, propertyState, updateAgentState, updateAmenityState, updateBuilderState, updatePropertyFormDataState, updatePropertyState } from '@/src/global_state/recoil/atoms/property'
 import Checkbox from '@/src/components/common/checkbox'
 import { Button } from '@/src/components/ui/button'
 import { Text as TextUi } from '@/src/components/ui/text'
@@ -22,6 +22,7 @@ import { IBuilder } from '@/src/data/network/models/builder'
 import { IAgent } from '@/src/data/network/models/agent'
 import { builderGetAll } from '@/src/data/network/services/builder'
 import { agentGetAll } from '@/src/data/network/services/agent'
+import MultipleSelectV2 from '@/src/components/common/select/multiple_select_v2'
 
 const FourthScreen = () => {
     const insets = useSafeAreaInsets();
@@ -40,6 +41,8 @@ const FourthScreen = () => {
     const [value, setValue] = useRecoilState(updateBuilderState)
     const [agents, setAgents] = useState<IAgent[]>([])
     const [agent, setAgent] = useRecoilState(updateAgentState)
+    const [eleManager, setEleManager] = useRecoilState(eleManagerUpdateState)
+    const [amenity, setAmenity] = useRecoilState(updateAmenityState);
 
 
 
@@ -80,52 +83,124 @@ const FourthScreen = () => {
             >
                 <View className='gap-[40px] px-[10px] pb-10'>
 
-                    <TitleLayout
-                        title='Gated Security *'
-                    >
-                        <SingleSelect
-                            defaultIndex={property?.gated_security ? 0 : 1}
-                            onSelect={(index) => setFormData(e => ({ ...e, gated_security: index ? false : true }))}
-                            list={[
-                                { title: 'Yes' },
-                                { title: 'No' }
-                            ]}
-                        />
-                    </TitleLayout>
-                    <TitleLayout
-                        title='Gym *'
-                    >
-                        <SingleSelect
-                            defaultIndex={property?.gym ? 0 : 1}
-                            onSelect={(index) => setFormData(e => ({ ...e, gym: index ? false : true }))}
-                            list={[
-                                { title: 'Yes' },
-                                { title: 'No' }
-                            ]}
-                        />
-                    </TitleLayout>
-                    <TitleLayout
-                        title='Water Supply *'
-                    >
-                        <SingleSelect
-                            onSelect={(index) => setFormData(e => ({ ...e, water_supplies_id: index + 1 }))}
-                            defaultIndex={property?.water_supplies_id && property?.water_supplies_id - 1}
-                            list={waterSupply}
-                        />
-                    </TitleLayout>
-                    <TitleLayout
-                        title='Power Backup *'
-                    >
-                        <SingleSelect
-                            onSelect={(index) => setFormData(e => ({ ...e, power_backups_id: index + 1 }))}
-                            defaultIndex={property?.power_backups_id && property?.power_backups_id - 1}
-                            list={powerBackup}
-                        />
-                    </TitleLayout>
+
+                    {/* securityEle */}
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.securityEle) &&
+                        <TitleLayout
+                            title='Gated Security *'
+                        >
+                            <SingleSelect
+                                defaultIndex={property?.gated_security ? 0 : 1}
+                                onSelect={(index) => setFormData(e => ({ ...e, gated_security: index ? false : true }))}
+                                list={[
+                                    { title: 'Yes' },
+                                    { title: 'No' }
+                                ]}
+                            />
+                        </TitleLayout>
+                    }
+
+
+
+                    {/* gymEle */}
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.gymEle) &&
+                        <TitleLayout
+                            title='Gym *'
+                        >
+                            <SingleSelect
+                                defaultIndex={property?.gym ? 0 : 1}
+                                onSelect={(index) => setFormData(e => ({ ...e, gym: index ? false : true }))}
+                                list={[
+                                    { title: 'Yes' },
+                                    { title: 'No' }
+                                ]}
+                            />
+                        </TitleLayout>
+                    }
+
+
+
+
+
+
+                    {/* waterSupEle */}
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.waterSupEle) &&
+                        <TitleLayout
+                            title='Water Supply *'
+                        >
+                            <SingleSelect
+                                onSelect={(index) => setFormData(e => ({ ...e, water_supplies_id: index + 1 }))}
+                                defaultIndex={property?.water_supplies_id && property?.water_supplies_id - 1}
+                                list={waterSupply}
+                            />
+                        </TitleLayout>
+                    }
+
+
+
+
+                    {/* powerBackEle */}
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.powerBackEle) &&
+                        <TitleLayout
+                            title='Power Backup *'
+                        >
+                            <SingleSelect
+                                onSelect={(index) => setFormData(e => ({ ...e, power_backups_id: index + 1 }))}
+                                defaultIndex={property?.power_backups_id && property?.power_backups_id - 1}
+                                list={powerBackup}
+                            />
+                        </TitleLayout>
+                    }
+
+
+
+                    {/* amenityEle */}
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.amenityEle) &&
+                        <TitleLayout
+
+                            title='Amenity *'
+                        >
+                            <MultipleSelectV2
+                                selected={amenity}
+                                setSelected={setAmenity}
+                                list={amenities}
+                            />
+                        </TitleLayout>
+                    }
+
+
+
+
+
+
+
+
+
+
+
+
+
                     <Checkbox
                         onPress={() => setFormData(e => ({ ...e, price_on_demand: e.price_on_demand ? false : true }))}
                         check={formData.price_on_demand ? true : false}
                         title='Price On Demand' />
+
+
+
+
+
+
+
                     <TitleLayout
                         title='Project Type *'
                     >
@@ -135,10 +210,16 @@ const FourthScreen = () => {
                             list={projectType}
                         />
                     </TitleLayout>
+
+
+
+
+
+
+
                     <TitleLayout
                         title='Select Builder'
                     >
-
                         <Button
                             onPress={() => setBuilderModal(true)}
                             className='flex-row items-center justify-between'
@@ -147,6 +228,7 @@ const FourthScreen = () => {
                         >
                             <TextUi>{value ? value : "Select Builder"}</TextUi>
                             <ChevronsUpDown
+                                strokeWidth={1.25}
                                 color={Colors.gray[300]}
                             />
                             <SelectModal
@@ -162,6 +244,11 @@ const FourthScreen = () => {
                             />
                         </Button>
                     </TitleLayout>
+
+
+
+
+
                     <TitleLayout
                         title='Select Builder'
                     >
@@ -174,6 +261,7 @@ const FourthScreen = () => {
                         >
                             <TextUi>{agent ? agent : "Select Agent"}</TextUi>
                             <ChevronsUpDown
+                                strokeWidth={1.25}
                                 color={Colors.gray[300]}
                             />
                             <SelectModal

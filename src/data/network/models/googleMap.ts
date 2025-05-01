@@ -36,28 +36,28 @@ export interface IPredictionTerm {
 
 
 export interface IPlaceDetails {
-    html_attributions: any[];
+    html_attributions?: any[];
     result: IResult;
-    status: string;
+    status?: string;
 }
 
 export interface IResult {
-    address_components: IAddressComponent[];
-    adr_address: string;
+    address_components?: IAddressComponent[];
+    adr_address?: string;
     formatted_address: string;
     geometry: IGeometry;
-    icon: string;
-    icon_background_color: string;
-    icon_mask_base_uri: string;
-    name: string;
-    photos: IPhoto[];
-    place_id: string;
-    reference: string;
-    types: string[];
-    url: string;
-    utc_offset: number;
-    vicinity: string;
-    website: string;
+    icon?: string;
+    icon_background_color?: string;
+    icon_mask_base_uri?: string;
+    name?: string;
+    photos?: IPhoto[];
+    place_id?: string;
+    reference?: string;
+    types?: string[];
+    url?: string;
+    utc_offset?: number;
+    vicinity?: string;
+    website?: string;
 }
 
 export interface IAddressComponent {

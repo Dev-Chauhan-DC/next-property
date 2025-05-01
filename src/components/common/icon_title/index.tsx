@@ -18,7 +18,7 @@ const IconTitle: React.FC<Props> = ({ title, icon }) => {
                     fill: Colors.black[800]
                 })
             }
-            <Text className='font-mRegular text-base text-black-800'>{title}</Text>
+            <Text className='font-mRegular text-base text-black-800 capitalize'>{title}</Text>
         </View>
     )
 }

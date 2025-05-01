@@ -8,18 +8,25 @@ import Checkbox from '@/src/components/common/checkbox'
 import TitleLayout from '@/src/components/common/title_layout'
 import SingleSelect from '@/src/components/common/select/single_select'
 import { useRecoilState } from 'recoil'
-import { propertyState } from '@/src/global_state/recoil/atoms/property'
-import { availability, cupboards, furnishing, kitchenType, parkingSlotFourWheel, parkingSlotTwoWheel, possesion } from '@/src/constants/app/Property'
+import { createPreferenceState, eleManagerState, propertyState, updatePreferenceState } from '@/src/global_state/recoil/atoms/property'
+import { availability, cupboards, ElementEnum, elementManagement, furnishing, kitchenType, parkingSlotFourWheel, parkingSlotTwoWheel, possesion } from '@/src/constants/app/Property'
+import PreferenceSelect from '@/src/components/app/(listing)/third/preference_select'
+import { Textarea } from '@/src/components/ui/textarea'
 
 const ThirdScreen = () => {
     const insets = useSafeAreaInsets();
     const [counterHeight, setCounterHeight] = useState<number>(0);
     const [property, setProperty] = useRecoilState(propertyState);
+    const [eleManager, setEleManager] = useRecoilState(eleManagerState)
+    const [preference, setPreference] = useRecoilState(createPreferenceState);
+
+
+
 
     return (
         <View
             style={{
-                paddingTop: insets.top,
+                paddingTop: insets.top + 10,
                 paddingBottom: counterHeight
 
             }}
@@ -28,110 +35,262 @@ const ThirdScreen = () => {
             <ScrollView showsVerticalScrollIndicator={false}
             >
                 <View className='gap-[40px] px-[10px] pb-10'>
-                    <Input
-                        keyboardType='numeric'
-                        value={property.price}
-                        onChangeText={(e) => setProperty(prevState => ({ ...prevState, price: e }))}
-                        placeholder='Expected Price (e.g. 500000) *'
-                    />
-                    <Checkbox
-                        onPress={() => setProperty(prevState => ({ ...prevState, negotiable: prevState.negotiable ? 0 : 1 }))}
-                        check={property.negotiable ? true : false}
-                        title='Nagotiable *' />
-                    <Input
-                        keyboardType='numeric'
-                        value={property.maintenance}
-                        onChangeText={(e) => setProperty(prevState => ({ ...prevState, maintenance: e }))}
-                        placeholder='Monthly Maintenance Cost (e.g., 2000) *'
-                    />
-                    <Checkbox
-                        onPress={() => setProperty(prevState => ({ ...prevState, currentlyUnderLoan: prevState.currentlyUnderLoan ? 0 : 1 }))}
-                        check={property.currentlyUnderLoan ? true : false}
-                        title='Currently Under Loan *' />
-                    <TitleLayout
-                        title='Availability *'
-                    >
-                        <SingleSelect
-                            selected={property.availabilityTypeId - 1}
-                            onSelect={(index) => setProperty(prevState => ({ ...prevState, availabilityTypeId: index + 1 }))}
-                            list={availability}
+
+
+
+                    {/* preferenceEle */}
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.preferenceEle) &&
+                        <TitleLayout
+                            title='Preference *'
+                        >
+
+                            <PreferenceSelect
+
+                                selected={preference}
+                                setSelected={setPreference}
+                            />
+                        </TitleLayout>
+
+
+                    }
+
+
+                    {/* priceEle */}
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.priceEle) &&
+                        <Input
+                            keyboardType='numeric'
+                            value={property.price}
+                            onChangeText={(e) => setProperty(prevState => ({ ...prevState, price: e }))}
+                            placeholder='Expected Price (e.g. 500000) *'
                         />
-                    </TitleLayout>
-                    <TitleLayout
-                        title='Furnishing *'
-                    >
-                        <SingleSelect
-                            selected={property.furnishingsId - 1}
-                            onSelect={(index) => setProperty(prevState => ({ ...prevState, furnishingsId: index + 1 }))}
-                            list={furnishing}
+                    }
+
+
+                    {/* nagotiableEle */}
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.nagotiableEle) &&
+                        <Checkbox
+                            onPress={() => setProperty(prevState => ({ ...prevState, negotiable: prevState.negotiable ? 0 : 1 }))}
+                            check={property.negotiable ? true : false}
+                            title='Nagotiable *' />
+                    }
+
+
+                    {/* maintananceEle */}
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.maintananceEle) &&
+                        <Input
+                            keyboardType='numeric'
+                            value={property.maintenance}
+                            onChangeText={(e) => setProperty(prevState => ({ ...prevState, maintenance: e }))}
+                            placeholder='Monthly Maintenance Cost (e.g., 2000) *'
                         />
-                    </TitleLayout>
-                    <TitleLayout
-                        title='Parking Slot For Two Wheeler *'
-                    >
-                        <SingleSelect
-                            selected={property.parkingSlotTwoWheelerCount}
-                            onSelect={(index) => setProperty(prevState => ({ ...prevState, parkingSlotTwoWheelerCount: index }))}
-                            list={parkingSlotTwoWheel}
+                    }
+
+
+
+                    {/* underLoanEle */}
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.underLoanEle) &&
+                        <Checkbox
+                            onPress={() => setProperty(prevState => ({ ...prevState, currentlyUnderLoan: prevState.currentlyUnderLoan ? 0 : 1 }))}
+                            check={property.currentlyUnderLoan ? true : false}
+                            title='Currently Under Loan *' />
+                    }
+
+
+                    {/* availEle */}
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.availEle) &&
+                        <TitleLayout
+                            title='Availability *'
+                        >
+                            <SingleSelect
+                                selected={property.availabilityTypeId - 1}
+                                onSelect={(index) => setProperty(prevState => ({ ...prevState, availabilityTypeId: index + 1 }))}
+                                list={availability}
+                            />
+                        </TitleLayout>
+                    }
+
+
+                    {/* furnishingEle */}
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.furnishingEle) &&
+                        <TitleLayout
+                            title='Furnishing *'
+                        >
+                            <SingleSelect
+                                selected={property.furnishingsId - 1}
+                                onSelect={(index) => setProperty(prevState => ({ ...prevState, furnishingsId: index + 1 }))}
+                                list={furnishing}
+                            />
+                        </TitleLayout>
+                    }
+
+
+
+                    {/* parkTwoEle */}
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.parkTwoEle) &&
+                        <TitleLayout
+                            title='Parking Slot For Two Wheeler *'
+                        >
+                            <SingleSelect
+                                selected={property.parkingSlotTwoWheelerCount}
+                                onSelect={(index) => setProperty(prevState => ({ ...prevState, parkingSlotTwoWheelerCount: index }))}
+                                list={parkingSlotTwoWheel}
+                            />
+                        </TitleLayout>
+                    }
+
+
+
+
+                    {/* parkFourEle */}
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.parkFourEle) &&
+                        <TitleLayout
+                            title='Parking Slot For Four Wheeler *'
+                        >
+                            <SingleSelect
+                                selected={property.parkingSlotFourWheelerCount}
+                                onSelect={(index) => setProperty(prevState => ({ ...prevState, parkingSlotFourWheelerCount: index }))}
+                                list={parkingSlotFourWheel}
+                            />
+                        </TitleLayout>
+                    }
+
+
+
+                    {/* cupboardEle */}
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.cupboardEle) &&
+                        <TitleLayout
+                            title='Cupboards *'
+                        >
+                            <SingleSelect
+                                selected={property.cupboard}
+                                onSelect={(index) => setProperty(prevState => ({ ...prevState, cupboard: index }))}
+                                list={cupboards}
+                            />
+                        </TitleLayout>
+                    }
+
+
+
+                    {/* kitchenTypeEle */}
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.kitchenTypeEle) &&
+                        <TitleLayout
+                            title='Kitchen Type *'
+                        >
+                            <SingleSelect
+                                selected={property.kitchenTypesId - 1}
+                                onSelect={(index) => setProperty(prevState => ({ ...prevState, kitchenTypesId: index + 1 }))}
+                                list={kitchenType}
+                            />
+                        </TitleLayout>
+                    }
+
+
+
+
+                    {/* descEle */}
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.descEle) &&
+                        <Textarea
+                            value={property.propertyDescription}
+                            onChangeText={(e) => setProperty(prevState => ({ ...prevState, propertyDescription: e }))}
+                            placeholder={property.homeTypeId === 5 ? 'Description About Room' : 'Property Description'}
                         />
-                    </TitleLayout>
-                    <TitleLayout
-                        title='Parking Slot For Four Wheeler *'
-                    >
-                        <SingleSelect
-                            selected={property.parkingSlotFourWheelerCount}
-                            onSelect={(index) => setProperty(prevState => ({ ...prevState, parkingSlotFourWheelerCount: index }))}
-                            list={parkingSlotFourWheel}
+                    }
+
+
+                    {/* descRoomieEle */}
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.descRoomieEle) &&
+                        <Textarea
+                            value={property.descriptionRoomie}
+                            onChangeText={(e) => setProperty(prevState => ({ ...prevState, descriptionRoomie: e }))}
+                            placeholder={'Description About Roommate'}
                         />
-                    </TitleLayout>
-                    <TitleLayout
-                        title='Cupboards *'
-                    >
-                        <SingleSelect
-                            selected={property.cupboard}
-                            onSelect={(index) => setProperty(prevState => ({ ...prevState, cupboard: index }))}
-                            list={cupboards}
+                    }
+
+
+
+                    {/* cornerEle */}
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.cornerEle) &&
+                        <Checkbox
+                            onPress={() => setProperty(prevState => ({ ...prevState, cornerProperty: prevState.cornerProperty ? 0 : 1 }))}
+                            check={property.cornerProperty ? true : false}
+                            title='Corner Property' />
+                    }
+
+
+
+
+
+                    {/* possesionEle */}
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.possesionEle) &&
+                        <TitleLayout
+                            title='Possession Status *'
+                        >
+                            <SingleSelect
+                                selected={property.possessionsId - 1}
+                                onSelect={(index) => setProperty(prevState => ({ ...prevState, possessionsId: index + 1 }))}
+                                list={possesion}
+                            />
+                        </TitleLayout>
+                    }
+
+
+
+                    {/* flatsInEle */}
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.flatsInEle) &&
+                        <Input
+                            keyboardType='numeric'
+                            value={property.flatsInBuilding}
+                            onChangeText={(e) => setProperty(prevState => ({ ...prevState, flatsInBuilding: e }))}
+                            placeholder='Flats in Building (e.g. 10) *'
                         />
-                    </TitleLayout>
-                    <TitleLayout
-                        title='Kitchen Type *'
-                    >
-                        <SingleSelect
-                            selected={property.kitchenTypesId - 1}
-                            onSelect={(index) => setProperty(prevState => ({ ...prevState, kitchenTypesId: index + 1 }))}
-                            list={kitchenType}
+                    }
+
+
+
+                    {/* depositEle */}
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.depositEle) &&
+                        <Input
+                            keyboardType='numeric'
+                            value={property.deposit}
+                            onChangeText={(e) => setProperty(prevState => ({ ...prevState, deposit: e }))}
+                            placeholder='Deposit Amount (e.g., 50000) *'
                         />
-                    </TitleLayout>
-                    <Input
-                        value={property.propertyDescription}
-                        onChangeText={(e) => setProperty(prevState => ({ ...prevState, propertyDescription: e }))}
-                        placeholder='Property Description'
-                    />
-                    <Checkbox
-                        onPress={() => setProperty(prevState => ({ ...prevState, cornerProperty: prevState.cornerProperty ? 0 : 1 }))}
-                        check={property.cornerProperty ? true : false}
-                        title='Corner Property' />
-                    <TitleLayout
-                        title='Possession Status *'
-                    >
-                        <SingleSelect
-                            selected={property.possessionsId - 1}
-                            onSelect={(index) => setProperty(prevState => ({ ...prevState, possessionsId: index + 1 }))}
-                            list={possesion}
-                        />
-                    </TitleLayout>
-                    <Input
-                        keyboardType='numeric'
-                        value={property.flatsInBuilding}
-                        onChangeText={(e) => setProperty(prevState => ({ ...prevState, flatsInBuilding: e }))}
-                        placeholder='Flats in Building (e.g. 10) *'
-                    />
-                    <Input
-                        keyboardType='numeric'
-                        value={property.deposit}
-                        onChangeText={(e) => setProperty(prevState => ({ ...prevState, deposit: e }))}
-                        placeholder='Deposit Amount (e.g., 50000) *'
-                    />
+                    }
+
                 </View>
             </ScrollView>
             <Counter

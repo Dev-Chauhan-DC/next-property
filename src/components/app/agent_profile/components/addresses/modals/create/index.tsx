@@ -15,6 +15,8 @@ import { defaultPlaceDetails } from '@/src/constants/app/Property';
 import { calculateDeltas } from '@/src/utilities/halper_functions/google_map';
 import { IAgentAddress } from '@/src/data/network/models/agentAddress';
 import { agentAddressCreate } from '@/src/data/network/services/agentAddress';
+import { IPlaceDetails } from '@/src/data/network/models/googleMap';
+import AutoCompletePlaceSearch from '@/src/components/common/placeSearch';
 
 
 interface Props {
@@ -49,11 +51,11 @@ const CreateAddress: React.FC<Props> = ({ onOutsideClick, show, updated }) => {
         }
     }
 
-    const placeDetailsHandle = async (placeId: string) => {
+    const placeDetailsHandle = async (placeDetails: IPlaceDetails) => {
         try {
             setLoading(true);
-            const result = await placeDetails(placeId);
-            setSearchQuery(result.data);
+            // const result = await placeDetails(placeId);
+            setSearchQuery(placeDetails);
         } catch (e) {
             console.error(e);
             Toast.show(getError(e));
@@ -75,11 +77,21 @@ const CreateAddress: React.FC<Props> = ({ onOutsideClick, show, updated }) => {
                         <View
 
                             className='z-50 bg-transparent w-full mb-4'>
-                            <GoogleSearchUI
+                            {/* <GoogleSearchUI
                                 displaySuggestion={displaySuggestion}
                                 loadingPlace={loading}
                                 placeholder='Search Google Map'
-                                onSelect={(prediction) => placeDetailsHandle(prediction.place_id)}
+                                // onSelect={(prediction) => placeDetailsHandle(prediction.place_id)}
+                                onSelectPlaceDetails={placeDetailsHandle}
+
+                            /> */}
+                            <AutoCompletePlaceSearch
+                                displaySuggestion={displaySuggestion}
+                                loadingPlace={loading}
+                                placeholder='Search Google Map'
+                                // onSelect={(prediction) => placeDetailsHandle(prediction.place_id)}
+                                onSelectPlaceDetails={placeDetailsHandle}
+
                             />
                         </View>
                         <View

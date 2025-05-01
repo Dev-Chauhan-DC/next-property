@@ -1,4 +1,4 @@
-import { View, Text, Modal, GestureResponderEvent, ScrollView } from 'react-native'
+import { View, Text, Modal, GestureResponderEvent, ScrollView, NativeSyntheticEvent } from 'react-native'
 import React, { useEffect } from 'react'
 import CloseIcon from '@/src/assets/svgs/CloseIcon';
 import { Colors } from '@/src/constants/Colors';
@@ -21,12 +21,14 @@ interface Props {
     getAgentHandle?: () => Promise<void>
     updated?: () => void
     onPressClose?: (event: GestureResponderEvent) => void
+    onRequestClose?: ((event: NativeSyntheticEvent<any>) => void) | undefined
+
 }
 
 
 
 
-const UpdateInfoModal: React.FC<Props> = ({ onPressClose, show, onOutsideClick, agent, getAgentHandle, updated }) => {
+const UpdateInfoModal: React.FC<Props> = ({ onRequestClose, onPressClose, show, onOutsideClick, agent, getAgentHandle, updated }) => {
     const [formData, setFormData] = React.useState<Partial<IAgent>>({})
     const [loading, setLoading] = React.useState<boolean>(false);
     const insets = useSafeAreaInsets()
@@ -69,7 +71,9 @@ const UpdateInfoModal: React.FC<Props> = ({ onPressClose, show, onOutsideClick, 
 
 
     return (
-        <Dialog show={show}>
+        <Dialog
+            onRequestClose={onRequestClose}
+            show={show}>
             <DialogHeader
                 onPressClose={onPressClose}
                 title='Edit Info' />

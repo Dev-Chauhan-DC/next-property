@@ -34,10 +34,10 @@ import CupboardIcon from '../assets/svgs/CupboardIcon'
 import CalenderIcon from '../assets/svgs/CalenderIcon'
 import KeyIcon from '../assets/svgs/KeyIcon'
 import { getError } from '../utilities/halper_functions/service'
-import { getProperty } from '../data/network/services/property'
+import { getProperty, getPropertyV2 } from '../data/network/services/property'
 import { IGetPropertyParams, IProperty } from '../data/network/models/property'
 import { calculateDaysAgo } from '../utilities/halper_functions/text'
-import { amenities } from '../constants/app/Property'
+import { amenities, meals, noticePeriod, preferences } from '../constants/app/Property'
 import { useRecoilValue } from 'recoil'
 import { userState } from '../global_state/recoil/atoms/user'
 import { getUserByID } from '../data/network/services/user'
@@ -53,6 +53,11 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import LoadingScreen from '../components/common/loading/loading_screen'
 import UserCard from '../components/common/profile/user_card'
 import { gray200 } from '../constants/Images'
+import { Button as ButtonUI } from '../components/ui/button'
+import { Text as TextUI } from '../components/ui/text'
+import { LoaderCircle, MessageCircle, Phone } from 'lucide-react-native'
+import { conversationCreate } from '../data/network/services/conversation'
+import { Grid, GridItem } from '../components/ui/gs/grid'
 
 
 
@@ -66,8 +71,9 @@ const PropertyInformationScreen = () => {
     const user = useRecoilValue(userState);
     const [owner, setOwner] = useState<IUser | null>(null);
     const [saveLoading, setSaveLoading] = useState(false);
-    const [like, setLike] = useState<boolean>(false);
+    const [like, setLike] = useState<boolean | undefined>(false);
     const [imageViewer, setImageViewer] = useState<boolean>(false);
+    const [chatLoading, setChatLoading] = useState<boolean>(false);
 
 
 
@@ -79,7 +85,7 @@ const PropertyInformationScreen = () => {
     const getPropertyHandle = async (propertyId: number, queryParams: IGetPropertyParams) => {
         try {
             setLoading(true)
-            const result = await getProperty(propertyId, queryParams);
+            const result = await getPropertyV2(propertyId, queryParams);
             setProperty(result.data);
 
         } catch (e) {
@@ -148,6 +154,18 @@ const PropertyInformationScreen = () => {
         }
     }
 
+    const conversationCreateHandle = async (property_id: number) => {
+        try {
+            setChatLoading(true)
+            await conversationCreate(property_id);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setChatLoading(false)
+            router.push('/(chat)/user')
+        }
+    }
+
 
     useEffect(() => {
         if (id) {
@@ -157,7 +175,7 @@ const PropertyInformationScreen = () => {
 
     useEffect(() => {
         if (property) {
-            setLike(property?.saved_properties?.length ? true : false)
+            setLike(property?.isSaved)
         }
     }, [property])
 
@@ -168,6 +186,15 @@ const PropertyInformationScreen = () => {
         )
     }
 
+
+
+    const parkTwoComp = property?.parking_slot_two_wheeler_count ? <View className={className.infoView}><IconBox icon={<BikeParkingIcon />} title={`${property.parking_slot_two_wheeler_count} Bike`} subTitle="Parking Slot" /></View> : null
+
+    const parkFourComp = property?.parking_slot_four_wheeler_count ? <View className={className.infoView}><IconBox icon={<ParkingIcon />} title={`${property.parking_slot_four_wheeler_count} Car`} subTitle="Parking Slot" /></View> : null
+
+    const cupboardComp = property?.cupboard ? <View className={className.infoView}><IconBox icon={<CupboardIcon />} title={property?.cupboard.toString()} subTitle="Cupboards" /></View> : null
+
+    const lookingForComp = property?.looking_for?.name ? <View className={className.infoView}><IconBox title={property.looking_for?.name} subTitle="Looking for" /></View> : null
 
 
     return (
@@ -246,62 +273,211 @@ const PropertyInformationScreen = () => {
                 </Pressable>
                 <View className='flex gap-2 px-3.5 pt-[18px]'>
                     <Text className='font-mSemiBold text-black-800 text-lg '>{property?.price_on_demand ? 'Contact for Price' : '₹' + property?.price?.toLocaleString('en-IN')}</Text>
-                    <View className='flex flex-row gap-1'>
-                        <View className={propMetaClassName.container}>
-                            <Text className={propMetaClassName.number}>{property?.bedroom_count?.toLocaleString('en-IN')}</Text>
-                            <Text className={propMetaClassName.label}>bd</Text>
-                            <Text className={propMetaClassName.line}>|</Text>
+
+
+
+                    {
+                        !([5, 6]?.includes?.(property?.home_type?.id ?? -1)) &&
+                        <View className='flex flex-row gap-1'>
+                            <View className={propMetaClassName.container}>
+                                <Text className={propMetaClassName.number}>{property?.bedroom_count?.toLocaleString('en-IN')}</Text>
+                                <Text className={propMetaClassName.label}>bd</Text>
+                                <Text className={propMetaClassName.line}>|</Text>
+                            </View>
+                            <View className={propMetaClassName.container}>
+                                <Text className={propMetaClassName.number}>{property?.bathroom_count?.toLocaleString('en-IN')}</Text>
+                                <Text className={propMetaClassName.label}>ba</Text>
+                                <Text className={propMetaClassName.line}>|</Text>
+                            </View>
+                            <View className={propMetaClassName.container}>
+                                <Text className={propMetaClassName.number}>{property?.hall_count?.toLocaleString('en-IN')}</Text>
+                                <Text className={propMetaClassName.label}>hall</Text>
+                                <Text className={propMetaClassName.line}>|</Text>
+                            </View>
+                            <View className={propMetaClassName.container}>
+                                <Text className={propMetaClassName.number}>{property?.kitchen_count?.toLocaleString('en-IN')}</Text>
+                                <Text className={propMetaClassName.label}>kitchen</Text>
+                                <Text className={propMetaClassName.line}>|</Text>
+                            </View>
+                            <View className={propMetaClassName.container}>
+                                <Text className={propMetaClassName.number}>{property?.built_up_area?.toLocaleString('en-IN')}</Text>
+                                <Text className={propMetaClassName.label}>sqft</Text>
+                                {/* <Text className={propMetaClassName.line}>|</Text> */}
+                            </View>
                         </View>
-                        <View className={propMetaClassName.container}>
-                            <Text className={propMetaClassName.number}>{property?.bathroom_count?.toLocaleString('en-IN')}</Text>
-                            <Text className={propMetaClassName.label}>ba</Text>
-                            <Text className={propMetaClassName.line}>|</Text>
-                        </View>
-                        <View className={propMetaClassName.container}>
-                            <Text className={propMetaClassName.number}>{property?.hall_count?.toLocaleString('en-IN')}</Text>
-                            <Text className={propMetaClassName.label}>hall</Text>
-                            <Text className={propMetaClassName.line}>|</Text>
-                        </View>
-                        <View className={propMetaClassName.container}>
-                            <Text className={propMetaClassName.number}>{property?.kitchen_count?.toLocaleString('en-IN')}</Text>
-                            <Text className={propMetaClassName.label}>kitchen</Text>
-                            <Text className={propMetaClassName.line}>|</Text>
-                        </View>
-                        <View className={propMetaClassName.container}>
-                            <Text className={propMetaClassName.number}>{property?.built_up_area?.toLocaleString('en-IN')}</Text>
-                            <Text className={propMetaClassName.label}>sqft</Text>
-                            {/* <Text className={propMetaClassName.line}>|</Text> */}
-                        </View>
-                    </View>
+                    }
+
+
+
+
                     <Text className='text-base font-mRegular text-gray-400 capitalize'>{property?.address}</Text>
                     <Text className='text-xs font-mBold text-gray-400'>Listed by {property?.user?.user_role?.role || 'NP User'}</Text>
+                    {/* {
+                        property?.bedroom_count &&
+                            property?.hall_count === 1 &&
+                            property?.kitchen_count === 1 &&
+                            !([5, 6]?.includes?.(property?.home_type?.id ?? -1)) ?
+
+                            <ButtonUI
+                                className='self-start '
+                                variant={'secondary'}
+                                size={'sm'}
+                            >
+                                <TextUI >{property?.bedroom_count} BHK</TextUI>
+                            </ButtonUI> : null
+                    } */}
                 </View>
                 <View className='flex flex-row flex-wrap px-2 pt-9 mb-9'>
-                    {property?.purpose?.purpose ? <View className={className.infoView}><IconBox icon={<SellIcon />} title={property.purpose.purpose} subTitle='purpose' /></View> : null}
-                    {property?.plot_area ? <View className={className.infoView}><IconBox icon={<PlotAreaIcon />} title={`${property.plot_area.toLocaleString('en-IN')} sq ft`} subTitle='plot area' /></View> : null}
-                    {property?.built_up_area ? <View className={className.infoView}><IconBox icon={<BuiltUpAreaIcon />} title={`${property.built_up_area.toLocaleString('en-IN')} sq ft`} subTitle="built up area" /></View> : null}
-                    {property?.carpet_area ? <View className={className.infoView}><IconBox icon={<CarpetAreaIcon />} title={`${property.carpet_area.toLocaleString('en-IN')} sq ft`} subTitle="carpet area" /></View> : null}
-                    {property?.availability_type?.availability_type ? <View className={className.infoView}><IconBox icon={<CalenderCheckIcon />} title={property.availability_type.availability_type} subTitle="Availability" /></View> : null}
-                    {property?.parking_slot_four_wheeler_count ? <View className={className.infoView}><IconBox icon={<ParkingIcon />} title={`${property.parking_slot_four_wheeler_count} Car`} subTitle="Parking Slot" /></View> : null}
-                    {property?.parking_slot_two_wheeler_count ? <View className={className.infoView}><IconBox icon={<BikeParkingIcon />} title={`${property.parking_slot_two_wheeler_count} Bike`} subTitle="Parking Slot" /></View> : null}
-                    {property?.corner_property ? <View className={className.infoView}><IconBox icon={<CornerIcon />} title={property.corner_property ? "Yes" : "No"} subTitle="Corner Property" /></View> : null}
-                    {property?.negotiable ? <View className={className.infoView}><IconBox icon={<NegotiableIcon />} title={property.negotiable ? "Yes" : "No"} subTitle="Negotiable" /></View> : null}
-                    {property?.tenant?.tenant ? <View className={className.infoView}><IconBox icon={<TenantIcon />} title={property.tenant.tenant} subTitle="Tenant" /></View> : null}
-                    {property?.furnishing?.furnishing ? <View className={className.infoView}><IconBox icon={<FurnishIcon />} title={property.furnishing.furnishing} subTitle="Furnishing" /></View> : null}
-                    {property?.facing?.facing ? <View className={className.infoView}><IconBox icon={<FacingIcon />} title={property.facing.facing} subTitle="Facing" /></View> : null}
-                    {property?.flooring_type?.flooring_type ? <View className={className.infoView}><IconBox icon={<FlooringIcon />} title={property.flooring_type.flooring_type} subTitle="Flooring" /></View> : null}
-                    {property?.property_age ? <View className={className.infoView}><IconBox icon={<TimerIcon />} title={`${property.property_age} Years`} subTitle="Property Age" /></View> : null}
-                    {property?.maintenance ? <View className={className.infoView}><IconBox icon={<MaintenanceIcon />} title={'₹' + property.maintenance.toLocaleString('en-IN')} subTitle="Maintenance" /></View> : null}
-                    {property?.ownership_type?.ownership_type ? <View className={className.infoView}><IconBox icon={<OwnershipIcon />} title={property?.ownership_type?.ownership_type} subTitle="Ownership Type" /></View> : null}
-                    {property?.power_backup?.power_backup ? <View className={className.infoView}><IconBox icon={<PowerBackupIcon />} title={property?.power_backup?.power_backup} subTitle="Power Backup" /></View> : null}
-                    {property?.water_supply?.water_supply ? <View className={className.infoView}><IconBox icon={<WaterSupplyIcon />} title={property?.water_supply?.water_supply} subTitle="Water Supply" /></View> : null}
-                    {property?.kitchen_type?.kitchen_type ? <View className={className.infoView}><IconBox icon={<KitchenIcon />} title={property?.kitchen_type?.kitchen_type} subTitle="Kitchen Type" /></View> : null}
-                    {property?.cupboard ? <View className={className.infoView}><IconBox icon={<CupboardIcon />} title={property?.cupboard.toString()} subTitle="Cupboards" /></View> : null}
-                    {property?.createdAt ? <View className={className.infoView}><IconBox icon={<CalenderIcon />} title={calculateDaysAgo(property.createdAt).toString()} subTitle="Days On App" /></View> : null}
-                    {property?.possession?.possession ? <View className={className.infoView}><IconBox icon={<KeyIcon />} title={property.possession.possession} subTitle="Possession" /></View> : null}
+
+
+
+                    {[1, 2, 3, 4]?.includes?.(property?.home_type?.id ?? -1) ?
+                        <>
+
+
+                            {property?.purpose?.purpose ? <View className={className.infoView}><IconBox icon={<SellIcon />} title={property.purpose.purpose} subTitle='purpose' /></View> : null}
+                            {property?.plot_area ? <View className={className.infoView}><IconBox icon={<PlotAreaIcon />} title={`${property.plot_area.toLocaleString('en-IN')} sq ft`} subTitle='plot area' /></View> : null}
+                            {property?.built_up_area ? <View className={className.infoView}><IconBox icon={<BuiltUpAreaIcon />} title={`${property.built_up_area.toLocaleString('en-IN')} sq ft`} subTitle="built up area" /></View> : null}
+                            {property?.carpet_area ? <View className={className.infoView}><IconBox icon={<CarpetAreaIcon />} title={`${property.carpet_area.toLocaleString('en-IN')} sq ft`} subTitle="carpet area" /></View> : null}
+                            {property?.availability_type?.availability_type ? <View className={className.infoView}><IconBox icon={<CalenderCheckIcon />} title={property.availability_type.availability_type} subTitle="Availability" /></View> : null}
+                            {property?.parking_slot_four_wheeler_count ? <View className={className.infoView}><IconBox icon={<ParkingIcon />} title={`${property.parking_slot_four_wheeler_count} Car`} subTitle="Parking Slot" /></View> : null}
+                            {property?.parking_slot_two_wheeler_count ? <View className={className.infoView}><IconBox icon={<BikeParkingIcon />} title={`${property.parking_slot_two_wheeler_count} Bike`} subTitle="Parking Slot" /></View> : null}
+                            {property?.corner_property ? <View className={className.infoView}><IconBox icon={<CornerIcon />} title={property.corner_property ? "Yes" : "No"} subTitle="Corner Property" /></View> : null}
+                            {property?.negotiable ? <View className={className.infoView}><IconBox icon={<NegotiableIcon />} title={property.negotiable ? "Yes" : "No"} subTitle="Negotiable" /></View> : null}
+                            {property?.tenant?.tenant ? <View className={className.infoView}><IconBox icon={<TenantIcon />} title={property.tenant.tenant} subTitle="Tenant" /></View> : null}
+                            {property?.furnishing?.furnishing ? <View className={className.infoView}><IconBox icon={<FurnishIcon />} title={property.furnishing.furnishing} subTitle="Furnishing" /></View> : null}
+                            {property?.facing?.facing ? <View className={className.infoView}><IconBox icon={<FacingIcon />} title={property.facing.facing} subTitle="Facing" /></View> : null}
+                            {property?.flooring_type?.flooring_type ? <View className={className.infoView}><IconBox icon={<FlooringIcon />} title={property.flooring_type.flooring_type} subTitle="Flooring" /></View> : null}
+                            {property?.property_age ? <View className={className.infoView}><IconBox icon={<TimerIcon />} title={`${property.property_age} Years`} subTitle="Property Age" /></View> : null}
+                            {property?.maintenance ? <View className={className.infoView}><IconBox icon={<MaintenanceIcon />} title={'₹' + property.maintenance.toLocaleString('en-IN')} subTitle="Maintenance" /></View> : null}
+                            {property?.ownership_type?.ownership_type ? <View className={className.infoView}><IconBox icon={<OwnershipIcon />} title={property?.ownership_type?.ownership_type} subTitle="Ownership Type" /></View> : null}
+                            {property?.power_backup?.power_backup ? <View className={className.infoView}><IconBox icon={<PowerBackupIcon />} title={property?.power_backup?.power_backup} subTitle="Power Backup" /></View> : null}
+                            {property?.water_supply?.water_supply ? <View className={className.infoView}><IconBox icon={<WaterSupplyIcon />} title={property?.water_supply?.water_supply} subTitle="Water Supply" /></View> : null}
+                            {property?.kitchen_type?.kitchen_type ? <View className={className.infoView}><IconBox icon={<KitchenIcon />} title={property?.kitchen_type?.kitchen_type} subTitle="Kitchen Type" /></View> : null}
+                            {property?.cupboard ? <View className={className.infoView}><IconBox icon={<CupboardIcon />} title={property?.cupboard.toString()} subTitle="Cupboards" /></View> : null}
+                            {property?.createdAt ? <View className={className.infoView}><IconBox icon={<CalenderIcon />} title={calculateDaysAgo(property.createdAt).toString()} subTitle="Days On App" /></View> : null}
+                            {property?.possession?.possession ? <View className={className.infoView}><IconBox icon={<KeyIcon />} title={property.possession.possession} subTitle="Possession" /></View> : null}
+
+                        </>
+                        :
+                        [5]?.includes?.(property?.home_type?.id ?? -1) ?
+
+                            <>
+                                {lookingForComp}
+                                {property?.occupancy?.name ? <View className={className.infoView}><IconBox title={property?.occupancy?.name} subTitle="Occupancy" /></View> : <></>}
+                            </> :
+                            [6]?.includes?.(property?.home_type?.id ?? -1) ?
+                                <>
+                                    {property?.single_sharing ? <View className={className.infoView}><IconBox title={'₹ ' + property.single_sharing.toLocaleString('en-IN')} subTitle="Single Sharing" /></View> : <></>}
+
+
+                                    {property?.double_sharing ? <View className={className.infoView}><IconBox title={'₹ ' + property.double_sharing.toLocaleString('en-IN')} subTitle="Double Sharing" /></View> : <></>}
+
+
+                                    {property?.triple_sharing ? <View className={className.infoView}><IconBox title={'₹ ' + property.triple_sharing.toLocaleString('en-IN')} subTitle="Triple Sharing" /></View> : <></>}
+
+
+
+
+                                    {property?.four_sharing ? <View className={className.infoView}><IconBox title={'₹ ' + property.four_sharing.toLocaleString('en-IN')} subTitle="Four Sharing" /></View> : <></>}
+
+
+
+                                    {lookingForComp}
+                                    {property?.deposit ? <View className={className.infoView}><IconBox title={'₹ ' + property.deposit.toLocaleString('en-IN')} subTitle="Deposite" /></View>
+                                        : <></>}
+                                    {property?.notice_period_id ? <View className={className.infoView}><IconBox title={noticePeriod.find(np => np?.meta?.serverId === property?.notice_period_id)?.title || ''} subTitle="Notice Period" /></View>
+                                        : <></>}
+                                    {parkTwoComp}
+                                    {parkFourComp}
+                                    {cupboardComp}
+
+                                </>
+                                : null}
+
                 </View>
 
                 {/* </View> */}
+
+
+
+
+                {
+                    [5]?.includes?.(property?.home_type?.id ?? -1) &&
+                    <View className='px-3.5 mb-9'>
+                        <Text className='font-mSemiBold text-base text-black-800 mb-6'>Preference</Text>
+                        <Grid
+                            className="gap-3"
+                            _extra={{
+                                className: "grid-cols-4",
+                            }}
+                        >
+                            {property?.property_preferences?.map(pref => {
+                                const thepref = preferences?.find(i => i.meta?.serverId === pref.preference_id);
+
+                                return (thepref ?
+                                    <GridItem
+                                        className=" rounded-[5px] items-center"
+                                        _extra={{
+                                            className: "col-span-1",
+                                        }}
+                                        key={pref.id}
+                                    >
+                                        <Image
+                                            style={{
+                                                width: '100%',
+                                                aspectRatio: 1,
+                                                resizeMode: 'contain',
+                                            }}
+                                            source={thepref.img ?? gray200}
+                                        />
+                                        <Text
+                                            numberOfLines={1}
+                                            ellipsizeMode="tail"
+                                            className='text-sm font-mMedium text-black-800 capitalize'>{thepref.title}</Text>
+                                    </GridItem>
+                                    : null)
+                            }
+                            )}
+                        </Grid>
+                    </View>
+                }
+
+
+                {
+                    [5]?.includes?.(property?.home_type?.id ?? -1) &&
+                    <View className='px-3.5 mb-9'>
+                        <Text className='font-mSemiBold text-base text-black-800 mb-6'>Highlights</Text>
+                        <View className='flex flex-row flex-wrap gap-3'>
+                            {
+                                property?.property_highlights?.map(highlight =>
+                                    <View className='flex items-center justify-center bg-gray-100 rounded-full'>
+                                        <Text className='px-4 py-2 text-sm capitalize text-black-800 font-mRegular'>{highlight.highlight.name}</Text>
+                                    </View>
+                                )
+                            }
+                        </View>
+                    </View>
+                }
+
+                {
+                    [6]?.includes?.(property?.home_type?.id ?? -1) &&
+                    <View className='px-3.5 mb-9'>
+                        <Text className='font-mSemiBold text-base text-black-800 mb-6'>PG Meals</Text>
+                        <View className='flex flex-row flex-wrap gap-3'>
+                            {
+                                property?.property_meal_types?.map(meal =>
+                                    <View className='flex items-center justify-center bg-gray-100 rounded-full'>
+                                        <Text className='px-4 py-2 text-sm capitalize text-black-800 font-mRegular'>{meals.find(ml => ml.meta?.serverId === meal.meal_type_id)?.title}</Text>
+                                    </View>
+                                )
+                            }
+                        </View>
+                    </View>
+                }
+
+
+
                 <View className='px-3.5 mb-9'>
                     <Text className='font-mSemiBold text-base text-black-800 mb-6'>Amenities</Text>
                     <View className='gap-5'>
@@ -357,18 +533,66 @@ const PropertyInformationScreen = () => {
 
 
                 <View className='px-3.5 mb-9'>
-                    <Text className='font-mSemiBold text-base text-black-800 mb-6'>Description</Text>
+                    <Text className='font-mSemiBold text-base text-black-800 mb-3'>{[5]?.includes?.(property?.home_type?.id ?? -1) ? 'Description about Room' : 'Description from Owner'}</Text>
                     <Text
                         className='text-base font-mRegular text-black-800'
-                    >{property?.property_description} </Text>
+                    >{property?.property_description}</Text>
                 </View>
-                <View className='px-3.5 mb-9'>
-                    <Button
-                        className='h-12'
-                        classNameTitle='text-base'
-                        loading={getUserLoading}
+                {
+                    [5]?.includes?.(property?.home_type?.id ?? -1) && property?.description_roomie ?
+                        <View className='px-3.5 mb-9'>
+                            <Text className='font-mSemiBold text-base text-black-800 mb-3'>Description about Roommate</Text>
+                            <Text
+                                className='text-base font-mRegular text-black-800'
+                            >{property?.description_roomie}</Text>
+                        </View> : null}
+                <View className='flex flex-row items-center gap-3 px-3.5 mb-9'>
+                    <ButtonUI
+                        className='flex-1'
                         onPress={onPressGetNumberHandle}
-                        title={owner?.phone_number ? owner?.phone_number : 'Get a Number'} />
+                        variant={'black'}
+                    >
+                        {
+                            getUserLoading ?
+                                <ActivityIndicator
+                                    size={'small'}
+                                    color={'white'}
+                                />
+                                : <Phone
+                                    color={'white'}
+                                    width={16}
+                                    height={16}
+                                />
+                        }
+
+                        <TextUI>{owner?.phone_number ? owner?.phone_number : 'Get a Number'}</TextUI>
+                    </ButtonUI>
+                    <ButtonUI
+                        onPress={() => {
+                            if (!user) return router.push('/login');
+                            property?.id && conversationCreateHandle(property?.id)
+                        }}
+                        className='flex-1'
+                        // onPress={onPressGetNumberHandle}
+                        variant={'black'}
+                    >
+                        {
+                            chatLoading ?
+                                <ActivityIndicator
+                                    size={'small'}
+                                    color={'white'}
+                                />
+                                : <MessageCircle
+                                    color={'white'}
+                                    width={16}
+                                    height={16}
+                                />
+                        }
+
+                        <TextUI>Chat</TextUI>
+                    </ButtonUI>
+
+
                 </View>
 
 

@@ -16,20 +16,25 @@ import { IBuilder } from '@/src/data/network/models/builder';
 import { builderGetCurrent } from '@/src/data/network/services/builder';
 import Toast from 'react-native-root-toast';
 import { getError } from '@/src/utilities/halper_functions/service';
+import LoadingScreen from '@/src/components/common/loading/loading_screen';
 
 const Builder = () => {
     const insets = useSafeAreaInsets();
     const [builder, setBuilder] = useState<IBuilder | undefined>();
+    const [loading, setLoading] = useState<boolean>(true);
 
 
 
     const getBuilderHandle = async () => {
         try {
+            setLoading(true)
             const result = await builderGetCurrent();
             setBuilder(result.data);
         } catch (e) {
             console.error(e);
             Toast.show(getError(e));
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -38,6 +43,12 @@ const Builder = () => {
     useEffect(() => {
         getBuilderHandle();
     }, [])
+
+    if (loading) {
+        return (
+            <LoadingScreen />
+        )
+    }
 
     return (
         <View

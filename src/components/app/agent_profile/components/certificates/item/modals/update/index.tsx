@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View, Text, NativeSyntheticEvent } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Dialog from '@/src/components/modals/dialog';
 import DialogHeader from '@/src/components/modals/dialog/dialog_header';
@@ -23,10 +23,12 @@ interface Props {
     updated?: () => void
     deleted?: () => void
     agentCertificate?: IAgentCertificate
+    onRequestClose?: ((event: NativeSyntheticEvent<any>) => void) | undefined
+
 
 }
 
-const UpdateCertificateModal: React.FC<Props> = ({ deleted, onPressClose, show, updated, agentCertificate }) => {
+const UpdateCertificateModal: React.FC<Props> = ({ onRequestClose, deleted, onPressClose, show, updated, agentCertificate }) => {
     const [formData, setFormData] = React.useState<Partial<IAgentCertificate>>({})
     const [avatar, setAvatar] = useState<string>('')
     const [loading, setLoading] = useState<boolean>(false);
@@ -99,7 +101,9 @@ const UpdateCertificateModal: React.FC<Props> = ({ deleted, onPressClose, show, 
 
 
     return (
-        <Dialog show={show}>
+        <Dialog
+            onRequestClose={onRequestClose}
+            show={show}>
             <DialogHeader
                 onPressClose={onPressClose}
                 title='Update Certificate'

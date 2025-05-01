@@ -18,7 +18,7 @@ import LoadingScreen from '../components/common/loading/loading_screen'
 
 const AgentProfile = () => {
     const insets = useSafeAreaInsets()
-    const [loading, setLoading] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
     const params = useLocalSearchParams();
     const id = parseInt(params.id as string);
     const [agent, setAgent] = useState<IAgent>()

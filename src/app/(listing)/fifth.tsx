@@ -16,7 +16,7 @@ import { createFile, readFile } from '@/src/data/network/services/file'
 import { getKeyFromS3Presigned } from '@/src/utilities/halper_functions/s3'
 import { Colors } from '@/src/constants/Colors'
 import { useRecoilState } from 'recoil'
-import { amenityArryState, imageFileIdsState, imageUrlsState, propertyPhotoState, propertyState } from '@/src/global_state/recoil/atoms/property'
+import { amenityArryState, eleManagerState, imageFileIdsState, imageUrlsState, propertyPhotoState, propertyState, updateHighlightState, updateMealState, updatePreferenceState } from '@/src/global_state/recoil/atoms/property'
 import { postProperty } from '@/src/data/network/services/property'
 import { getError } from '@/src/utilities/halper_functions/service'
 import { createPhotos, createPhotosV2 } from '@/src/data/network/services/photo'
@@ -30,6 +30,13 @@ import SelectModal from '@/src/components/common/select_modal'
 import { IPropertyPhoto } from '@/src/data/network/models/propertyPhoto'
 import IconBack from '@/src/components/common/icon_back'
 import { X } from 'lucide-react-native'
+import { ElementEnum, elementManagement, HouseTypeEnum } from '@/src/constants/app/Property'
+import { IHighlighBulkCreateParam } from '@/src/data/network/models/highlight'
+import { highlightBulkCreate, highlightBulkUpdate } from '@/src/data/network/services/highlight'
+import { IMealBulkCreateParam } from '@/src/data/network/models/meal'
+import { mealBulkCreate, mealBulkUpdate } from '@/src/data/network/services/meal'
+import { IPreferenceBulkCreateParam } from '@/src/data/network/models/preference'
+import { preferenceBulkCreate, preferenceBulkUpdate } from '@/src/data/network/services/preference'
 
 
 
@@ -47,7 +54,10 @@ const FifthScreen = () => {
     // const [propPhoto, setPropPhoto] = useState<IPropertyPhoto[]>([])
     const [propPhoto, setPropPhoto] = useRecoilState(propertyPhotoState)
     const [selectedPropPhoto, setSelectedPropPhoto] = useState<{ PropertyPhoto: IPropertyPhoto, index: number }>();
-
+    const [eleManager, setEleManager] = useRecoilState(eleManagerState)
+    const [highlight, setHighlight] = useRecoilState(updateHighlightState);
+    const [meal, setMeal] = useRecoilState(updateMealState);
+    const [preference, setPreference] = useRecoilState(updatePreferenceState);
 
 
     const pickImage = async () => {
@@ -161,6 +171,31 @@ const FifthScreen = () => {
     // }
 
 
+    const highlightBulkCreateHandle = async (data: IHighlighBulkCreateParam) => {
+        try {
+            await highlightBulkCreate(data)
+        } catch (error) {
+            console.error(error)
+            Toast.show(getError(error))
+        }
+    }
+    const mealBulkCreateHandle = async (data: IMealBulkCreateParam) => {
+        try {
+            await mealBulkCreate(data)
+        } catch (error) {
+            console.error(error)
+            Toast.show(getError(error))
+        }
+    }
+    const preferenceBulkCreateHandle = async (data: IPreferenceBulkCreateParam) => {
+        try {
+            await preferenceBulkCreate(data)
+        } catch (error) {
+            console.error(error)
+            Toast.show(getError(error))
+        }
+    }
+
     const postPropertyHandle = async () => {
         try {
             setLoading(true)
@@ -188,6 +223,32 @@ const FifthScreen = () => {
 
             // Photos Create
             await photosCreateHandle(result.data.data.id)
+
+            if ([HouseTypeEnum.Room].includes(eleManager)) {
+
+                // Highlight Create
+                await highlightBulkCreateHandle({
+                    ids: highlight.map(highlight => highlight + 1),
+                    propertyId: result.data.data.id
+                })
+
+                // Preference Create
+                await preferenceBulkCreateHandle({
+                    ids: preference.map(pref => pref + 1),
+                    propertyId: result.data.data.id
+                })
+
+
+
+            }
+            if ([HouseTypeEnum.PG].includes(eleManager)) {
+
+                // Meal Create
+                await mealBulkCreateHandle({
+                    ids: meal.map(m => m + 1),
+                    propertyId: result.data.data.id
+                })
+            }
 
 
 
@@ -221,87 +282,99 @@ const FifthScreen = () => {
     return (
         <View
             style={{
-                paddingTop: insets.top,
+                paddingTop: insets.top + 10,
                 paddingBottom: counterHeight
 
             }}
             className='flex-1 bg-white'
         >
-            <ScrollView showsVerticalScrollIndicator={false}
-            >
-                <View className='gap-[40px] px-[10px] pb-10'>
 
-                    <View className='flex-1 flex-row flex-wrap items-start '>
+            {
+                elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.imageEle) &&
+                <>
+                    <ScrollView showsVerticalScrollIndicator={false}
+                    >
+                        <View className='gap-[40px] px-[10px] pb-10'>
 
-                        {
-                            propPhoto.map((item, index) =>
-
-                                <View
-                                    key={index}
-                                    className='relative w-[50%] p-[10px] gap-2'
-                                >
-                                    <Image
-
-                                        style={{
-                                            width: '100%',
-                                            height: 120,
-                                            borderRadius: 10
-                                        }}
-                                        source={item.url || gray200}
-                                    />
-                                    <IconBack
-                                        onPress={() => deleteImageHandle(index)}
-                                        className='absolute top-0 right-0 m-4'
-                                        icon={<X
-                                        />}
-                                    />
-                                    <Button
-                                        onPress={() => {
-                                            setCategoryModal(true)
-                                            setSelectedPropPhoto(prevState => ({ PropertyPhoto: item, index: index }))
-                                        }}
-                                        size={'sm'}
-                                        variant={'outline'}
-                                    >
-                                        <TextUi>{item.category_name || "Select Category"}</TextUi>
-                                    </Button>
-
-
-                                </View>)}
-
-
-                        <View
-                            className='w-[50%] p-[10px]'
-                        >
-                            <Pressable
-                                onPress={pickImage}
-                                className='border rounde-[10px] border-dashed border-gray-400 h-[120px] items-center justify-center rounded-[10px]'>
+                            <View className='flex-1 flex-row flex-wrap items-start '>
 
                                 {
-                                    loading ?
-                                        <ActivityIndicator color={Colors.primary} size={'small'} />
-                                        :
-                                        <Text className='text-gray-400'>+</Text>
-                                }
+                                    propPhoto.map((item, index) =>
 
-                            </Pressable>
+                                        <View
+                                            key={index}
+                                            className='relative w-[50%] p-[10px] gap-2'
+                                        >
+                                            <Image
+
+                                                style={{
+                                                    width: '100%',
+                                                    height: 120,
+                                                    borderRadius: 10
+                                                }}
+                                                source={item.url || gray200}
+                                            />
+                                            <IconBack
+                                                onPress={() => deleteImageHandle(index)}
+                                                className='absolute top-0 right-0 m-4'
+                                                icon={<X
+                                                />}
+                                            />
+                                            <Button
+                                                onPress={() => {
+                                                    setCategoryModal(true)
+                                                    setSelectedPropPhoto(prevState => ({ PropertyPhoto: item, index: index }))
+                                                }}
+                                                size={'sm'}
+                                                variant={'outline'}
+                                            >
+                                                <TextUi>{item.category_name || "Select Category"}</TextUi>
+                                            </Button>
+
+
+                                        </View>)}
+
+
+                                <View
+                                    className='w-[50%] p-[10px]'
+                                >
+                                    <Pressable
+                                        onPress={pickImage}
+                                        className='border rounde-[10px] border-dashed border-gray-400 h-[120px] items-center justify-center rounded-[10px]'>
+
+                                        {
+                                            loading ?
+                                                <ActivityIndicator color={Colors.primary} size={'small'} />
+                                                :
+                                                <Text className='text-gray-400'>+</Text>
+                                        }
+
+                                    </Pressable>
+                                </View>
+                            </View>
                         </View>
-                    </View>
-                </View>
-            </ScrollView>
-            <SelectModal
-                onSelect={(currentValue) => {
-                    // setFormData(e => ({ ...e, agent_id: agents.find(a => a.name === currentValue)?.id }))
-                    const arr = JSON.parse(JSON.stringify(propPhoto));
-                    arr[selectedPropPhoto?.index || 0].category_name = currentValue;
-                    arr[selectedPropPhoto?.index || 0].category_id = photoCategories.find(i => i.name === currentValue)?.id;
-                    setPropPhoto(arr);
-                }}
-                selected={selectedPropPhoto?.PropertyPhoto.category_name || ''}
-                list={photoCategories.map(i => i?.name || '')}
-                setVisible={setCategoryModal}
-                visible={categoryModal}
-            />
+
+
+
+                    </ScrollView>
+                    <SelectModal
+                        onSelect={(currentValue) => {
+                            // setFormData(e => ({ ...e, agent_id: agents.find(a => a.name === currentValue)?.id }))
+                            const arr = JSON.parse(JSON.stringify(propPhoto));
+                            arr[selectedPropPhoto?.index || 0].category_name = currentValue;
+                            arr[selectedPropPhoto?.index || 0].category_id = photoCategories.find(i => i.name === currentValue)?.id;
+                            setPropPhoto(arr);
+                        }}
+                        selected={selectedPropPhoto?.PropertyPhoto.category_name || ''}
+                        list={photoCategories.map(i => i?.name || '')}
+                        setVisible={setCategoryModal}
+                        visible={categoryModal}
+                    />
+                </>
+
+
+            }
+
             <Counter
                 onPressRight={postPropertyHandle}
                 onLayout={(e) => setCounterHeight(e.nativeEvent.layout.height)}

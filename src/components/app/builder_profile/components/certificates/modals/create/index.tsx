@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View, Text, NativeSyntheticEvent } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { IBuilderCertificate } from '@/src/data/network/models/builderCertificate';
 import Dialog from '@/src/components/modals/dialog';
@@ -21,10 +21,12 @@ interface Props {
     show?: boolean;
     onPressClose?: () => void;
     updated?: () => void
+    onRequestClose?: ((event: NativeSyntheticEvent<any>) => void) | undefined
+
 
 }
 
-const CreateCertificateModal: React.FC<Props> = ({ onPressClose, show, updated }) => {
+const CreateCertificateModal: React.FC<Props> = ({ onRequestClose, onPressClose, show, updated }) => {
     const [formData, setFormData] = React.useState<IBuilderCertificate>({})
     const [certificate, setCertificate] = useState<string>('')
     const [loading, setLoading] = useState<boolean>(false);
@@ -67,7 +69,9 @@ const CreateCertificateModal: React.FC<Props> = ({ onPressClose, show, updated }
 
 
     return (
-        <Dialog show={show}>
+        <Dialog
+            onRequestClose={onRequestClose}
+            show={show}>
             <DialogHeader
                 onPressClose={onPressClose}
                 title='Update Certificate'

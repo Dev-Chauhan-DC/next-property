@@ -38,7 +38,7 @@ const Input: React.FC<Props> = ({ height, classNameInput, multiline, keyboardTyp
             }}
             className={twMerge(`
                 border border-gray-300 rounded-[5px] 
-                // ${multiline ? 'min-h-[44px] justify-start' : 'h-[44px] justify-center'}
+                // ${multiline ? 'min-h-[48px] justify-start' : 'h-[48px] justify-center'}
                 bg-white  px-[13px] gap-1 py-1 flex `, className)}
 
             style={{
@@ -46,8 +46,8 @@ const Input: React.FC<Props> = ({ height, classNameInput, multiline, keyboardTyp
             }}
         >
             <Text className={`
-                ${focus ? 'text-[10px]' : 'text-sm'}
-                 font-mRegular text-gray-300
+                ${focus ? 'text-xs' : 'text-base'}
+                 font-mRegular text-gray-400
                 `}>{placeholder}</Text>
 
             <TextInput
@@ -55,7 +55,7 @@ const Input: React.FC<Props> = ({ height, classNameInput, multiline, keyboardTyp
                 multiline={multiline}
                 keyboardType={keyboardType}
                 onBlur={() => {
-                    if (value && value.length === 0) {
+                    if (value === "") {
                         setFocus(false);
                     }
                 }}
@@ -64,7 +64,7 @@ const Input: React.FC<Props> = ({ height, classNameInput, multiline, keyboardTyp
                 ref={inputRef}
                 className={twMerge(`
                     ${focus ? '' : 'hidden'}
-                    font-sm text-black-800 font-mRegular flex-1`, classNameInput)}
+                    font-base text-black-800 font-mMedium flex-1`, classNameInput)}
                 selectionColor={Colors.primary}
                 style={{
                     textAlignVertical: multiline ? 'top' : 'auto',

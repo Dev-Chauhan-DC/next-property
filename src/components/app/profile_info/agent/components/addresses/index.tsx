@@ -55,6 +55,8 @@ const Addresses = () => {
             {
                 createAddressModal &&
                 <CreateAddress
+                    onRequestClose={() => setCreateAddressModal(false)}
+
                     show={createAddressModal}
                     onOutsideClick={() => setCreateAddressModal(false)}
                     updated={() => {

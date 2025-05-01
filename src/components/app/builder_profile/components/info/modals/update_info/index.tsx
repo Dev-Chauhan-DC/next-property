@@ -1,4 +1,4 @@
-import { View, Text, Modal, GestureResponderEvent, ScrollView } from 'react-native'
+import { View, Text, Modal, GestureResponderEvent, ScrollView, NativeSyntheticEvent } from 'react-native'
 import React, { useEffect } from 'react'
 import { IBuilder } from '@/src/data/network/models/builder';
 import CloseIcon from '@/src/assets/svgs/CloseIcon';
@@ -21,12 +21,13 @@ interface Props {
     getBuilderHandle?: () => Promise<void>
     updated?: () => void
     onPressClose?: (event: GestureResponderEvent) => void
+    onRequestClose?: ((event: NativeSyntheticEvent<any>) => void) | undefined
 }
 
 
 
 
-const UpdateInfoModal: React.FC<Props> = ({ onPressClose, show, onOutsideClick, builder, getBuilderHandle, updated }) => {
+const UpdateInfoModal: React.FC<Props> = ({ onRequestClose, onPressClose, show, onOutsideClick, builder, getBuilderHandle, updated }) => {
     const [formData, setFormData] = React.useState<Partial<IBuilder>>({})
     const [loading, setLoading] = React.useState<boolean>(false);
     const insets = useSafeAreaInsets()
@@ -69,7 +70,9 @@ const UpdateInfoModal: React.FC<Props> = ({ onPressClose, show, onOutsideClick, 
 
 
     return (
-        <Dialog show={show}>
+        <Dialog show={show}
+            onRequestClose={onRequestClose}
+        >
             <DialogHeader
                 onPressClose={onPressClose}
                 title='Edit Info' />

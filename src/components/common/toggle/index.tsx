@@ -36,7 +36,7 @@ const Toggle: React.FC<Props> = ({ list, selectedIndex, onSelect }) => {
                         <Text className={`
                             
                             ${current === index ? 'text-white' : 'text-black-800'}
-                            text-sm font-mRegular`}>{item}</Text>
+                            text-base font-mMedium`}>{item}</Text>
                     </Pressable>
                 )
             }

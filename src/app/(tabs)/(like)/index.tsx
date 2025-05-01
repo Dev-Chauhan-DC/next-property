@@ -11,23 +11,29 @@ import PropertyCard from '@/src/components/app/(tabs)/(home)/list/PropertyCard'
 import Toast from 'react-native-root-toast'
 import { getError } from '@/src/utilities/halper_functions/service'
 import { IProperty } from '@/src/data/network/models/property'
-import { getSavedProperty } from '@/src/data/network/services/saveProperty'
+import { getSavedProperty, getSavedPropertyV2 } from '@/src/data/network/services/saveProperty'
 import { IFilters } from '@/src/utilities/interfaces/search'
 import LoadMoreButton from '@/src/components/common/button/LoadMoreButton'
 import { ISaveProperty } from '@/src/data/network/models/saveProperty'
 import Button from '@/src/components/common/button/Button'
+import { IMeta } from '@/src/data/network/models'
+import NoData from '@/src/components/common/ui/no_data'
 
 const LikeScreen = () => {
+    const limit = 6;
     const insets = useSafeAreaInsets();
     const [loading, setLoading] = useState<boolean>(false);
     const [properties, setProperties] = useState<ISaveProperty[]>([]);
     const [params, setParams] = useState<IFilters>({
         page: 1,
-        limit: 6
+        limit: limit
     });
     const [comparePropertyList, setComparePropertyList] = useState<number[]>([]);
     const [submitHeight, setSubmitHeight] = useState<number>(0);
     const [showCompare, setShowCompare] = useState<boolean>(false);
+    const [refreshing, setRefreshing] = useState(false);
+    const [meta, setMeta] = useState<IMeta>()
+
 
 
 
@@ -36,13 +42,15 @@ const LikeScreen = () => {
     const getSavedPropertyHandle = async (params: IFilters) => {
         try {
             setLoading(true);
-            const result = await getSavedProperty(params);
+            const result = await getSavedPropertyV2(params);
 
             if (params.page === 1) {
                 setProperties(prevState => []);
                 setProperties(result.data);
+                setMeta(result.meta)
             } else {
                 setProperties(prevState => [...prevState, ...result.data])
+                setMeta(result.meta)
             }
 
 
@@ -81,6 +89,10 @@ const LikeScreen = () => {
         });
     };
 
+    const onRefresh = async () => {
+        getSavedPropertyHandle({ page: 1, limit: limit })
+    };
+
 
     useEffect(() => {
         getSavedPropertyHandle(params);
@@ -102,6 +114,8 @@ const LikeScreen = () => {
                 />
             </View>
             <FlatList
+                refreshing={refreshing}
+                onRefresh={onRefresh}
                 showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false}
                 style={{
@@ -110,6 +124,7 @@ const LikeScreen = () => {
                 data={properties}
                 renderItem={({ item }) =>
                     <PropertyCard
+                        isActiveHeart={true}
                         property={item.property}
                         compareActive={item?.property?.id ? comparePropertyList.includes(item.property.id) : false}
                         onPressCompare={() => { item?.property?.id ? compareHandle(item.property.id) : null }}
@@ -128,15 +143,19 @@ const LikeScreen = () => {
                         role={item?.property?.user?.user_role?.role}
                     />}
                 keyExtractor={(item) => item.id.toString()}
+                ListHeaderComponent={
+                    !loading && properties?.length === 0 ?
+                        <NoData /> : null
+                }
                 ListFooterComponent={
                     loading ?
                         <View className='h-8 mb-3 items-center justify-center'>
                             <ActivityIndicator size={'small'} color={Colors.black[800]} />
                         </View>
-                        :
-                        <LoadMoreButton
-                            className='mb-3'
-                            onPress={loadMorePressHandle} />
+                        : meta?.page && meta?.totalPages && meta?.page < meta?.totalPages ?
+                            <LoadMoreButton
+                                className='mb-3'
+                                onPress={loadMorePressHandle} /> : null
                 }
             />
             {
@@ -145,16 +164,25 @@ const LikeScreen = () => {
                         onLayout={(e) => setSubmitHeight(e.nativeEvent.layout.height)}
 
                         className='border-t border-t-gray-100 bg-white py-2 px-7 flex flex-row justify-between items-center absolute bottom-0 left-0 w-full'>
-                        <Text
-                            className='text-sm font-mRegular'
-                            onPress={() => setShowCompare(false)}
-                        >Cancel</Text>
                         <Button
+                            classNameTitle='text-black-800'
+                            title='Cancel'
+                            className='px-8 bg-transparent'
                             onPress={() => {
-                                router.push({ pathname: '/compare', params: { ids: comparePropertyList.join(',') } });
+                                setComparePropertyList([])
+                                setShowCompare(false)
                             }}
-                            className='px-8 bg-black-800 '
-                            title='Compare' />
+                        />
+
+                        {
+                            comparePropertyList.length >= 2 ? <Button
+                                onPress={() => {
+                                    router.push({ pathname: '/compare', params: { ids: comparePropertyList.join(',') } });
+                                }}
+                                className='px-8 bg-black-800 '
+                                title='Compare' /> : null
+                        }
+
                     </View> : null
             }
 

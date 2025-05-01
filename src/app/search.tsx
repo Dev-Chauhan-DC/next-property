@@ -9,6 +9,8 @@ import { IPlaceDetails } from '../data/network/models/googleMap'
 import { useRecoilState } from 'recoil'
 import { searchQueryState } from '../global_state/recoil/atoms/search'
 import { router } from 'expo-router'
+import PhotonSearchUI from '../components/common/placeSearch/photon_search_ui'
+import AutoCompletePlaceSearch from '../components/common/placeSearch'
 
 const SearchScreen = () => {
     const insets = useSafeAreaInsets();
@@ -17,11 +19,11 @@ const SearchScreen = () => {
     const inputRef = useRef<TextInput>(null)
 
 
-    const placeDetailsHandle = async (placeId: string) => {
+    const placeDetailsHandle = async (placeDetails: IPlaceDetails) => {
         try {
             setLoading(true);
-            const result = await placeDetails(placeId);
-            setSearchQuery(result.data);
+            // const result = await placeDetails(placeId);
+            setSearchQuery(placeDetails);
             router.back();
         } catch (e) {
             console.error(e);
@@ -42,12 +44,28 @@ const SearchScreen = () => {
             style={{
                 paddingTop: insets.top
             }}>
-            <GoogleSearchUI
+            {/* <GoogleSearchUI
                 inputRef={inputRef}
                 loadingPlace={loading}
                 placeholder='Search Google Map'
-                onSelect={(prediction) => placeDetailsHandle(prediction.place_id)}
+                // onSelect={(prediction) => placeDetailsHandle(prediction.place_id)}
+                onSelectPlaceDetails={placeDetailsHandle}
             />
+            <PhotonSearchUI
+                inputRef={inputRef}
+                loadingPlace={loading}
+                placeholder='Search Google Map'
+                // onSelect={(prediction) => placeDetailsHandle(prediction.place_id)}
+                onSelectPlaceDetails={placeDetailsHandle}
+            /> */}
+            <AutoCompletePlaceSearch
+                inputRef={inputRef}
+                loadingPlace={loading}
+                placeholder='Search Google Map'
+                // onSelect={(prediction) => placeDetailsHandle(prediction.place_id)}
+                onSelectPlaceDetails={placeDetailsHandle}
+            />
+
         </View>
     )
 }

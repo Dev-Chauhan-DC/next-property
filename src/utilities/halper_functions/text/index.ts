@@ -62,3 +62,12 @@ export function calculateDaysAgo(dateString: string) {
     return daysDifference;
 }
 
+export const getInitials = (name: string): string => {
+    if (!name) return '';
+
+    const words = name.trim().split(/\s+/);
+    return words
+        .slice(0, 2) // Take only the first two words
+        .map(word => word.charAt(0).toUpperCase()) // Get the first character of each word
+        .join('');
+};

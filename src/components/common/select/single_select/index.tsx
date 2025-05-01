@@ -52,15 +52,15 @@ const SingleSelect: React.FC<Props> = ({ defaultIndex, list, onSelect, className
                         key={index}>
                         {item.icon ?
                             React.cloneElement(item.icon as React.ReactElement, {
-                                width: 25,
-                                height: 25,
+                                width: 30,
+                                height: 30,
                                 fill: current === index ? 'white' : Colors.gray[400]
                             })
                             : null
                         }
                         <Text className={`
                             ${current === index ? 'text-white' : 'text-gray-400'}
-                            text-sm font-mRegular `}>{item.title}</Text>
+                            text-balance font-mMedium capitalize`}>{item.title}</Text>
                     </Pressable>
                 )
             }

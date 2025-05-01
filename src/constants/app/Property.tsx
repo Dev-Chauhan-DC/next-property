@@ -12,7 +12,9 @@ import HouseKeeperIcon from "@/src/assets/svgs/HouseKeeperIcon";
 import IntercomIcon from "@/src/assets/svgs/IntercomIcon";
 import ParkIcon from "@/src/assets/svgs/ParkIcon";
 import ParkingIcon from "@/src/assets/svgs/ParkingIcon";
+import PGIcon from "@/src/assets/svgs/PGIcon";
 import PipeIcon from "@/src/assets/svgs/PipeIcon";
+import RoomIcon from "@/src/assets/svgs/RoomIcon";
 import SaveWaterIcon from "@/src/assets/svgs/SaveWaterIcon";
 import SellIcon from "@/src/assets/svgs/SellIcon";
 import SewageIcon from "@/src/assets/svgs/SewageIcon";
@@ -23,23 +25,95 @@ import WifiIcon from "@/src/assets/svgs/WifiIcon";
 import { ISelectList } from "@/src/components/common/select/multiple_select";
 import { IPlaceDetails } from "@/src/data/network/models/googleMap";
 import { IViewport } from "@/src/utilities/interfaces/search";
+import { airpodsImg, alarmImg, backpackImg, ballImg, booksImg, dumbbellImg, foodImg, glassImg, owlImg, partyImg, petBedImg, plantImg, smokingImg } from "../Images";
+
+
+
+export enum HouseTypeEnum {
+    Apartment = "Apartment",
+    GatedCommunityVilla = "Gated Community Villa",
+    StandaloneBuilding = "Standalone Building",
+    IndependentHouseVilla = "Independent House / Villa",
+    Room = "Room",
+    PG = "PG"
+}
+
+export enum HouseTypeQPEnum {
+    apartment = "apartment",
+    gated_community_villa = "gated-community-villa",
+    standalone_building = "standalone-building",
+    independent_house_villa = "independent-house-villa",
+    room = "room",
+    pg = "pg"
+}
+
+// export const houseType: ISelectList[] = [
+//     {
+//         title: "Apartment",
+//         icon: <ApartmentIcon />
+//     },
+//     {
+//         title: "Gated Community Villa",
+//         icon: <GateIcon />
+//     },
+//     {
+//         title: "Standalone Building",
+//         icon: <BuildingIcon />
+//     },
+//     {
+//         title: "Independent House / Villa",
+//         icon: <HouseIcon />
+//     },
+// ]
 
 export const houseType: ISelectList[] = [
     {
-        title: "Apartment",
-        icon: <ApartmentIcon />
+        title: HouseTypeEnum.Apartment,
+        icon: <ApartmentIcon className="" />,
+        meta: {
+            queryParamName: HouseTypeQPEnum.apartment,
+            serverId: 1
+        }
     },
     {
-        title: "Gated Community Villa",
-        icon: <GateIcon />
+        title: HouseTypeEnum.GatedCommunityVilla,
+        icon: <GateIcon className="" />,
+        meta: {
+            queryParamName: HouseTypeQPEnum.gated_community_villa,
+            serverId: 2
+        }
     },
     {
-        title: "Standalone Building",
-        icon: <BuildingIcon />
+        title: HouseTypeEnum.StandaloneBuilding,
+        icon: <BuildingIcon className="" />,
+        meta: {
+            queryParamName: HouseTypeQPEnum.standalone_building,
+            serverId: 3
+        }
     },
     {
-        title: "Independent House / Villa",
-        icon: <HouseIcon />
+        title: HouseTypeEnum.IndependentHouseVilla,
+        icon: <HouseIcon className="" />,
+        meta: {
+            queryParamName: HouseTypeQPEnum.independent_house_villa,
+            serverId: 4
+        }
+    },
+    {
+        title: HouseTypeEnum.Room,
+        icon: <RoomIcon className="" />,
+        meta: {
+            queryParamName: HouseTypeQPEnum.room,
+            serverId: 5
+        }
+    },
+    {
+        title: HouseTypeEnum.PG,
+        icon: <PGIcon className="" />,
+        meta: {
+            queryParamName: HouseTypeQPEnum.pg,
+            serverId: 6
+        }
     },
 ]
 
@@ -167,6 +241,245 @@ export const tenants: ISelectList[] = [{ title: "Anyone" }, { title: "Family" },
 export const furnishing: ISelectList[] = [{ title: "Full" }, { title: "Semi" }, { title: "None" }];
 export const facing: ISelectList[] = [{ title: "North" }, { title: "South" }, { title: "East" }, { title: "West" }, { title: "North - West" }, { title: "North - East" }, { title: "South - West" }, { title: "South - East" },];
 export const flooringType: ISelectList[] = [{ title: "Cement" }, { title: "Marbel / Granite" }, { title: "Wooden" }, { title: "Virtified Tiles" }, { title: "Mosaic" }];
+export enum OccupancyEnum {
+    single = "single",
+    shared = "shared",
+    any = "any",
+
+}
+
+export const occupancy: ISelectList[] = [
+    {
+        title: OccupancyEnum.single,
+        meta: {
+            serverId: 1,
+        }
+    },
+    {
+        title: OccupancyEnum.shared,
+        meta: {
+            serverId: 2,
+        }
+    },
+    {
+        title: OccupancyEnum.any,
+        meta: {
+            serverId: 3,
+        }
+    },
+]
+
+export enum LookingForEnum {
+    male = "male",
+    female = "female",
+    any = "any",
+
+}
+
+export const lookingFor: ISelectList[] = [
+    {
+        title: LookingForEnum.male,
+        meta: {
+            serverId: 1,
+        }
+    },
+    {
+        title: LookingForEnum.female,
+        meta: {
+            serverId: 2,
+        }
+    },
+    {
+        title: OccupancyEnum.any,
+        meta: {
+            serverId: 3,
+        }
+    },
+]
+
+export enum PreferenceEnum {
+    late_nighter = "late nighter",
+    early_bird = "early bird",
+    studious = "studious",
+    gym_hustler = "gym hustler",
+    sporty = "sporty",
+    wanderer = "wanderer",
+    party_lover = "party lover",
+    pet_lover = "pet lover",
+    vegan = "vegan",
+    non_alcoholic = "non alcoholic",
+    music_lover = "music lover",
+    non_smoker = "non smoker",
+    foodie = "foodie",
+}
+
+
+export const preferences: ISelectList[] = [
+    {
+        title: PreferenceEnum.late_nighter,
+        img: owlImg,
+        meta: {
+            serverId: 1
+        }
+    },
+    {
+        title: PreferenceEnum.early_bird,
+        img: alarmImg,
+        meta: {
+            serverId: 2
+        }
+    },
+    {
+        title: PreferenceEnum.studious,
+        img: booksImg,
+        meta: {
+            serverId: 3
+        }
+    },
+    {
+        title: PreferenceEnum.gym_hustler,
+        img: dumbbellImg,
+        meta: {
+            serverId: 4
+        }
+    },
+    {
+        title: PreferenceEnum.sporty,
+        img: ballImg,
+        meta: {
+            serverId: 5
+        }
+    },
+    {
+        title: PreferenceEnum.wanderer,
+        img: backpackImg,
+        meta: {
+            serverId: 6
+        }
+    },
+    {
+        title: PreferenceEnum.party_lover,
+        img: partyImg,
+        meta: {
+            serverId: 7
+        }
+    },
+    {
+        title: PreferenceEnum.pet_lover,
+        img: petBedImg,
+        meta: {
+            serverId: 8
+        }
+    },
+    {
+        title: PreferenceEnum.vegan,
+        img: plantImg,
+        meta: {
+            serverId: 9
+        }
+    },
+    {
+        title: PreferenceEnum.music_lover,
+        img: airpodsImg,
+        meta: {
+            serverId: 11
+        }
+    },
+    {
+        title: PreferenceEnum.non_alcoholic,
+        img: glassImg,
+        meta: {
+            serverId: 10
+        }
+    },
+    {
+        title: PreferenceEnum.non_smoker,
+        img: smokingImg,
+        meta: {
+            serverId: 12
+        }
+    },
+    {
+        title: PreferenceEnum.foodie,
+        img: foodImg,
+        meta: {
+            serverId: 13
+        }
+    },
+
+]
+
+export enum MealsEnum {
+    Breakfast = "Breakfast",
+    Lunch = "Lunch",
+    Dinner = "Dinner",
+}
+export const meals: ISelectList[] = [
+    {
+        title: MealsEnum.Breakfast,
+        meta: {
+            serverId: 1
+        }
+    },
+    {
+        title: MealsEnum.Lunch,
+        meta: {
+            serverId: 2
+        }
+    },
+    {
+        title: MealsEnum.Dinner,
+        meta: {
+            serverId: 3
+        }
+    },
+]
+
+
+export enum NoticePeriodEnum {
+    Immediate = "Immediate",
+    Week1 = "1 Week",
+    HalfMonth = "Half Month",
+    Month1 = "1 Month",
+    Month2 = "2 Month",
+
+}
+
+
+export const noticePeriod: ISelectList[] = [
+    {
+        title: NoticePeriodEnum.Immediate,
+        meta: {
+            serverId: 1,
+        }
+    },
+    {
+        title: NoticePeriodEnum.Week1,
+        meta: {
+            serverId: 2,
+        }
+    },
+    {
+        title: NoticePeriodEnum.HalfMonth,
+        meta: {
+            serverId: 3,
+        }
+    },
+    {
+        title: NoticePeriodEnum.Month1,
+        meta: {
+            serverId: 4,
+        }
+    },
+    {
+        title: NoticePeriodEnum.Month2,
+        meta: {
+            serverId: 5,
+        }
+    },
+]
+
+
 export const projectType: ISelectList[] = [{ title: "Completed" }, { title: "Ongoing" }, { title: "Upcoming" },];
 
 export const sort: ISelectList[] = [
@@ -302,6 +615,61 @@ export const amenities: ISelectList[] = [
         title: "rain water harvesting ",
         icon: <SaveWaterIcon className="" />
     },
+]
+
+
+
+
+export enum HighlightEnum {
+    local_market_nearby = "local market nearby",
+    close_to_metro_station = "close to metro station",
+    private_attached_balcony = "private/attached balcony",
+    public_transport_nearby = "public transport nearby",
+    gated_society = "gated society",
+    no_gender_age_restrictions = "no gender/age restrictions",
+    newly_built = "newly built",
+    separate_washrooms = "separate washrooms",
+    housekeeping_services_available = "housekeeping services available",
+    gym_nearby = "gym nearby",
+    park_nearby = "park nearby",
+}
+
+export const highlights: ISelectList[] = [
+
+    {
+        title: HighlightEnum.local_market_nearby,
+    },
+    {
+        title: HighlightEnum.close_to_metro_station,
+    },
+    {
+        title: HighlightEnum.private_attached_balcony,
+    },
+    {
+        title: HighlightEnum.public_transport_nearby,
+    },
+    {
+        title: HighlightEnum.gated_society,
+    },
+    {
+        title: HighlightEnum.no_gender_age_restrictions,
+    },
+    {
+        title: HighlightEnum.newly_built,
+    },
+    {
+        title: HighlightEnum.separate_washrooms,
+    },
+    {
+        title: HighlightEnum.housekeeping_services_available,
+    },
+    {
+        title: HighlightEnum.gym_nearby,
+    },
+    {
+        title: HighlightEnum.park_nearby,
+    },
+
 ]
 
 
@@ -491,3 +859,178 @@ export const indiaViewport: IViewport = {
 }
 
 export const thumbnailName = 'Thumbnail'
+
+
+
+
+export enum ElementEnum {
+    purposeEle = "purposeEle",
+    lookingForEle = "lookingForEle",
+    homeTypeEle = "homeTypeEle",
+    addressEle = "addressEle",
+    mapEle = "mapEle",
+    bedEle = "bedEle",
+    bathEle = "bathEle",
+    hallEle = "hallEle",
+    kitchenEle = "kitchenEle",
+    balconyEle = "balconyEle",
+    plotAreaEle = "plotAreaEle",
+    builtUpEle = "builtUpEle",
+    carpetEle = "carpetEle",
+    facingEle = "facingEle",
+    occupancyEle = "occupancyEle",
+    ageEle = "ageEle",
+    totalFloorEle = "totalFloorEle",
+    propFloorEle = "propFloorEle",
+    flooringEle = "flooringEle",
+    owenershipEle = "owenershipEle",
+    priceEle = "priceEle",
+    nagotiableEle = "nagotiableEle",
+    maintananceEle = "maintananceEle",
+    underLoanEle = "underLoanEle",
+    availEle = "availEle",
+    furnishingEle = "furnishingEle",
+    parkTwoEle = "parkTwoEle",
+    parkFourEle = "parkFourEle",
+    cupboardEle = "cupboardEle",
+    kitchenTypeEle = "kitchenTypeEle",
+    descEle = "descEle",
+    descRoomieEle = "descRoomieEle",
+    cornerEle = "cornerEle",
+    possesionEle = "possesionEle",
+    flatsInEle = "flatsInEle",
+    depositEle = "depositEle",
+    securityEle = "securityEle",
+    gymEle = "gymEle",
+    waterSupEle = "waterSupEle",
+    powerBackEle = "powerBackEle",
+    amenityEle = "amenityEle",
+    tenanatEle = "tenanatEle",
+    imageEle = "imageEle",
+    preferenceEle = "preferenceEle",
+    highlightEle = "highlightEle",
+    priceOnDemandEle = "priceOnDemandEle",
+    projectTypeEle = "projectTypeEle",
+    builderEle = "builderEle",
+    agentEle = "agentEle",
+    listedByEle = "listedByEle",
+    daysOnAppEle = "daysOnAppEle",
+    relevanceEle = "relevanceEle",
+    newestEle = "newestEle",
+    singleShareEle = "singleShareEle",
+    doubleShareEle = "doubleShareEle",
+    tripleShareEle = "tripleShareEle",
+    fourShareEle = "fourShareEle",
+    noticePeriodEle = "noticePeriodEle",
+    mealsEle = "mealsEle",
+}
+
+export const elementManagement = [
+    {
+        name: HouseTypeEnum.Apartment,
+        element: [
+            ...Object.values(ElementEnum).filter(i =>
+                ![
+                    ElementEnum.mealsEle,
+                    ElementEnum.noticePeriodEle,
+                    ElementEnum.singleShareEle,
+                    ElementEnum.doubleShareEle,
+                    ElementEnum.tripleShareEle,
+                    ElementEnum.fourShareEle,
+                    ElementEnum.descRoomieEle, ElementEnum.preferenceEle, ElementEnum.highlightEle, ElementEnum.occupancyEle, ElementEnum.lookingForEle].includes(i)
+            )
+        ]
+    },
+    {
+        name: HouseTypeEnum.GatedCommunityVilla,
+        element: [
+            ...Object.values(ElementEnum).filter(i =>
+                ![
+                    ElementEnum.mealsEle,
+                    ElementEnum.noticePeriodEle,
+                    ElementEnum.singleShareEle,
+                    ElementEnum.doubleShareEle,
+                    ElementEnum.tripleShareEle,
+                    ElementEnum.fourShareEle,
+                    ElementEnum.descRoomieEle, ElementEnum.preferenceEle, ElementEnum.highlightEle, ElementEnum.occupancyEle, ElementEnum.lookingForEle].includes(i)
+            )
+        ]
+    },
+    {
+        name: HouseTypeEnum.IndependentHouseVilla,
+        element: [
+            ...Object.values(ElementEnum).filter(i =>
+                ![
+                    ElementEnum.mealsEle,
+                    ElementEnum.noticePeriodEle,
+                    ElementEnum.singleShareEle,
+                    ElementEnum.doubleShareEle,
+                    ElementEnum.tripleShareEle,
+                    ElementEnum.fourShareEle,
+                    ElementEnum.descRoomieEle, ElementEnum.preferenceEle, ElementEnum.highlightEle, ElementEnum.occupancyEle, ElementEnum.lookingForEle].includes(i)
+            )
+        ]
+    },
+    {
+        name: HouseTypeEnum.StandaloneBuilding,
+        element: [
+            ...Object.values(ElementEnum).filter(i =>
+                ![
+                    ElementEnum.mealsEle,
+                    ElementEnum.noticePeriodEle,
+                    ElementEnum.singleShareEle,
+                    ElementEnum.doubleShareEle,
+                    ElementEnum.tripleShareEle,
+                    ElementEnum.fourShareEle,
+                    ElementEnum.descRoomieEle, ElementEnum.preferenceEle, ElementEnum.highlightEle, ElementEnum.occupancyEle, ElementEnum.lookingForEle].includes(i)
+            )
+        ]
+    },
+    {
+        name: HouseTypeEnum.Room,
+        element: [
+            ElementEnum.homeTypeEle,
+            ElementEnum.priceEle,
+            ElementEnum.addressEle,
+            ElementEnum.amenityEle,
+            ElementEnum.descEle,
+            ElementEnum.mapEle,
+            ElementEnum.descRoomieEle,
+            ElementEnum.imageEle,
+            ElementEnum.preferenceEle,
+            ElementEnum.highlightEle,
+            ElementEnum.occupancyEle,
+            ElementEnum.lookingForEle,
+            ElementEnum.daysOnAppEle,
+
+        ]
+    },
+    {
+        name: HouseTypeEnum.PG,
+        element: [
+            ElementEnum.homeTypeEle,
+            ElementEnum.priceEle,
+            ElementEnum.addressEle,
+            ElementEnum.amenityEle,
+            ElementEnum.descEle,
+            ElementEnum.mapEle,
+            ElementEnum.imageEle,
+            ElementEnum.lookingForEle,
+            ElementEnum.daysOnAppEle,
+            ElementEnum.singleShareEle,
+            ElementEnum.doubleShareEle,
+            ElementEnum.tripleShareEle,
+            ElementEnum.fourShareEle,
+            ElementEnum.depositEle,
+            ElementEnum.noticePeriodEle,
+            ElementEnum.parkTwoEle,
+            ElementEnum.parkFourEle,
+            ElementEnum.cupboardEle,
+            ElementEnum.lookingForEle,
+            ElementEnum.mealsEle,
+
+        ]
+    }
+]
+
+export type IElementManagement = (typeof elementManagement)[number]['name'];

@@ -29,9 +29,11 @@ export const remEndpoints = {
     // Property
     postProperty: `${prepath}/list/property`,
     getUserProperties: `${prepath}/user/properties`,
+    getUserPropertiesV2: `${prepath}/properties/user`,
     deleteProperty: `${prepath}/property`,
-    searchAndFilters: `${prepath}/properties`,
+    searchAndFilters: `${prepath}/properties-v2`,
     getProperty: `${prepath}/property`,
+    getPropertyV2: (propertyId: number) => `${prepath}/property/${propertyId}`,
     getPropertiesByIds: `${prepath}/properties`,
     updateProperty: `${prepath}/property`,
 
@@ -39,6 +41,8 @@ export const remEndpoints = {
 
     // Amenity Property
     createAmenities: `${prepath}/list/property/amenities`,
+    amenityBulkUpdate: `${prepath}/amenity/bulk-update`,
+
 
     // Photo Property
     createPhotos: `${prepath}/list/property/images/file/id`,
@@ -50,6 +54,8 @@ export const remEndpoints = {
     // Save Property
     saveProperty: `${prepath}/save/property`,
     getSavedProperty: `${prepath}/properties/saved`,
+    getSavedPropertyV2: `${prepath}/saved-property`,
+
 
     // Create Interested People
     createInterestedPeople: `${prepath}/list/interested/person`,
@@ -131,6 +137,29 @@ export const remEndpoints = {
 
     photoCategoryGetAll: `${prepath}/photoCategory`,
 
+
+    // conversation
+    conversationCreate: `${prepath}/conversation`,
+    conversationGet: `${prepath}/conversation`,
+
+
+    // chat
+    getChats: (conversation_id: number) => `${prepath}/chat/${conversation_id}`,
+
+
+
+    // Highlight
+    highlightBulkCreate: `${prepath}/highlight/bulk-create`,
+    highlightBulkUpdate: `${prepath}/highlight/bulk-update`,
+
+
+    // Meal
+    mealBulkCreate: `${prepath}/meal/bulk-create`,
+    mealBulkUpdate: `${prepath}/meal/bulk-update`,
+
+    // Preference
+    preferenceBulkCreate: `${prepath}/preference/bulk-create`,
+    preferenceBulkUpdate: `${prepath}/preference/bulk-update`,
 
 
 

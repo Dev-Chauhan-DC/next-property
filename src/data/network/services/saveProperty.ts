@@ -32,3 +32,18 @@ export const getSavedProperty = async (params: IFilters): Promise<IResponse<ISav
         throw e
     }
 }
+
+
+export const getSavedPropertyV2 = async (params: IFilters): Promise<IResponse<ISaveProperty[]>> => {
+    try {
+        const result = await remInstance.get(remEndpoints.getSavedPropertyV2, {
+            params: {
+                ...params
+            }
+        });
+        return result.data;
+    } catch (e) {
+        console.error(e)
+        throw e
+    }
+}

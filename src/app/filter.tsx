@@ -12,8 +12,10 @@ import Button from '../components/common/button/Button';
 import { useRecoilState } from 'recoil';
 import { filterAtom, onFilterApplyClickAtom } from '../global_state/recoil/atoms/search';
 import { IFilters } from '../utilities/interfaces/search';
-import { availability, balcony, bathroom, bedroom, facing, furnishing, hall, houseType, kitchen, parkingSlotFourWheel, parkingSlotTwoWheel, possesion, roles, tenants } from '../constants/app/Property';
+import { availability, balcony, bathroom, bedroom, ElementEnum, elementManagement, facing, furnishing, hall, houseType, HouseTypeEnum, IElementManagement, kitchen, parkingSlotFourWheel, parkingSlotTwoWheel, possesion, roles, tenants } from '../constants/app/Property';
 import { router } from 'expo-router';
+import { Button as ButtonUI } from '@/src/components/ui/button'
+import { Text as TextUI } from '@/src/components/ui/text'
 
 const FilterScreen = () => {
     const insets = useSafeAreaInsets();
@@ -21,6 +23,8 @@ const FilterScreen = () => {
     const [submitHeight, setSubmitHeight] = useState<number>(0);
     const [filter, setFilter] = useRecoilState(filterAtom);
     const [onFilterApplyClick, setOnFilterApplyClick] = useRecoilState(onFilterApplyClickAtom);
+    const [eleManager, setEleManager] = useState<IElementManagement>(HouseTypeEnum.Apartment)
+
     // 
     const [minPrice, setMinPrice] = useState('');
     const [maxPrice, setMaxPrice] = useState('');
@@ -116,14 +120,21 @@ const FilterScreen = () => {
                         paddingBottom: submitHeight + 20
                     }}
                     className='px-[10px] gap-[40px]'>
-                    <View className='flex flex-row justify-center'>
-                        <Toggle
-                            onSelect={(index) => {
-                                setFilter(prevState => ({ ...prevState, purposeId: index + 1 }))
-                            }}
-                            selectedIndex={filter.purposeId ? filter.purposeId - 1 : 0}
-                            list={['Buy', 'Rent']} />
-                    </View>
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.purposeEle) &&
+                        <View className='flex flex-row justify-center'>
+                            <Toggle
+                                onSelect={(index) => {
+                                    setFilter(prevState => ({ ...prevState, purposeId: index + 1 }))
+                                }}
+                                selectedIndex={filter.purposeId ? filter.purposeId - 1 : 0}
+                                list={['Buy', 'Rent']} />
+                        </View>
+                    }
+
+
+
                     <TitleLayout
                         title='Home Type'
                     >
@@ -138,347 +149,489 @@ const FilterScreen = () => {
                                 if (arr) {
                                     setFilter(prevState => ({ ...prevState, homeTypeId: arr }));
                                 }
+
+                                if (e.includes(4)) {
+                                    setEleManager(HouseTypeEnum.Room)
+                                } else if (e.includes(5)) {
+                                    setEleManager(HouseTypeEnum.PG)
+                                } else {
+                                    setEleManager(HouseTypeEnum.Apartment)
+                                }
                             }}
                         />
                     </TitleLayout>
-                    <TitleLayout
-                        title='Listed By'
-                    >
-                        <MultipleSelect
-                            setSelected={filter.userRoleId ? filter.userRoleId.split(',').map((e: string) => parseInt(e) - 1) : []}
-                            onSelect={(e) => {
-                                const arr = e.map(e => e + 1).join(',');
-                                if (!arr) {
-                                    deleteKey('userRoleId')
-                                }
-                                if (arr) {
-                                    setFilter(prevState => ({ ...prevState, userRoleId: arr }));
-                                }
-                            }}
-                            list={roles}
-                        />
-                    </TitleLayout>
-                    <TitleLayout
-                        title='Price Range'
-                    >
-                        <View className='flex flex-row items-center gap-5'>
-                            <Input
-                                keyboardType="numeric"
-                                onChangeText={handleMinPriceChange}
-                                className='w-28'
-                                placeholder='Min'
+
+
+
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.listedByEle) &&
+                        <TitleLayout
+                            title='Listed By'
+                        >
+                            <MultipleSelect
+                                setSelected={filter.userRoleId ? filter.userRoleId.split(',').map((e: string) => parseInt(e) - 1) : []}
+                                onSelect={(e) => {
+                                    const arr = e.map(e => e + 1).join(',');
+                                    if (!arr) {
+                                        deleteKey('userRoleId')
+                                    }
+                                    if (arr) {
+                                        setFilter(prevState => ({ ...prevState, userRoleId: arr }));
+                                    }
+                                }}
+                                list={roles}
                             />
-                            <Text>To</Text>
-                            <Input
-                                keyboardType="numeric"
-                                onChangeText={handleMaxPriceChange}
-                                className='w-28' placeholder='Max' />
-                        </View>
-                    </TitleLayout>
-                    <TitleLayout
-                        title='Bedroom'
-                    >
-                        <MultipleSelect
-                            setSelected={filter.bedroomCount ? filter.bedroomCount.split(',').map((e: string) => parseInt(e)) : []}
-                            onSelect={(e) => {
-                                const arr = e.join(',');
-                                if (!arr) {
-                                    deleteKey('bedroomCount')
-                                }
-                                if (arr) {
-                                    setFilter(prevState => ({ ...prevState, bedroomCount: arr }));
-                                }
-                            }}
-                            list={bedroom}
-                        />
-                    </TitleLayout>
-                    <TitleLayout
-                        title='Bathroom'
-                    >
-                        <MultipleSelect
-                            setSelected={filter.bathroomCount ? filter.bathroomCount.split(',').map((e: string) => parseInt(e)) : []}
-                            onSelect={(e) => {
-                                const arr = e.join(',');
-                                if (!arr) {
-                                    deleteKey('bathroomCount')
-                                }
-                                if (arr) {
-                                    setFilter(prevState => ({ ...prevState, bathroomCount: arr }));
-                                }
-                            }}
-                            list={bathroom}
-                        />
-                    </TitleLayout>
-                    <TitleLayout
-                        title='Hall'
-                    >
-                        <MultipleSelect
-                            setSelected={filter.hallCount ? filter.hallCount.split(',').map((e: string) => parseInt(e)) : []}
-                            onSelect={(e) => {
-                                const arr = e.join(',');
-                                if (!arr) {
-                                    deleteKey('hallCount')
-                                }
-                                if (arr) {
-                                    setFilter(prevState => ({ ...prevState, hallCount: arr }));
-                                }
-                            }}
-                            list={hall}
-                        />
-                    </TitleLayout>
-                    <TitleLayout
-                        title='Kitchen'
-                    >
-                        <MultipleSelect
-                            setSelected={filter.kitchenCount ? filter.kitchenCount.split(',').map((e: string) => parseInt(e)) : []}
-                            onSelect={(e) => {
-                                const arr = e.join(',');
-                                if (!arr) {
-                                    deleteKey('kitchenCount')
-                                }
-                                if (arr) {
-                                    setFilter(prevState => ({ ...prevState, kitchenCount: arr }));
-                                }
-                            }}
-                            list={kitchen}
-                        />
-                    </TitleLayout>
-                    <TitleLayout
-                        title='Balcony'
-                    >
-                        <MultipleSelect
-                            setSelected={filter.balconyCount ? filter.balconyCount.split(',').map((e: string) => parseInt(e)) : []}
-                            onSelect={(e) => {
-                                const arr = e.join(',');
-                                if (!arr) {
-                                    deleteKey('balconyCount')
-                                }
-                                if (arr) {
-                                    setFilter(prevState => ({ ...prevState, balconyCount: arr }));
-                                }
-                            }}
-                            list={balcony}
-                        />
-                    </TitleLayout>
-                    <TitleLayout
-                        title='Square foot'
-                    >
-                        <View className='flex flex-row items-center gap-5'>
-                            <Input
-                                keyboardType="numeric"
-                                onChangeText={handleMinBuiltChange}
-                                className='w-28' placeholder='Min' />
-                            <Text>To</Text>
-                            <Input
-                                keyboardType="numeric"
-                                onChangeText={handleMaxBuiltChange}
-                                className='w-28' placeholder='Max' />
-                        </View>
-                    </TitleLayout>
-                    <TitleLayout
-                        title='Total Maintenance (Monthly)'
-                    >
-                        <View className='flex flex-row items-center gap-5'>
-                            <Input
-                                keyboardType="numeric"
-                                onChangeText={handleMinMainTChange}
-                                className='w-28' placeholder='Min' />
-                            <Text>To</Text>
-                            <Input
-                                keyboardType="numeric"
-                                onChangeText={handleMaxMainTChange}
+                        </TitleLayout>
+                    }
 
-                                className='w-28' placeholder='Max' />
-                        </View>
-                    </TitleLayout>
-                    <TitleLayout
-                        title='Property Age'
-                    >
-                        <View className='flex flex-row items-center gap-5'>
-                            <Input
-                                keyboardType="numeric"
-                                onChangeText={handleMinAgeChange}
 
-                                className='w-28' placeholder='Min' />
-                            <Text>To</Text>
-                            <Input
-                                keyboardType="numeric"
-                                onChangeText={handleMaxAgeChange}
-                                className='w-28' placeholder='Max' />
-                        </View>
-                    </TitleLayout>
-                    <TitleLayout
-                        title='Days on App'
-                    >
-                        <View className='flex flex-row items-center gap-5'>
-                            <Input
-                                keyboardType="numeric"
-                                onChangeText={handleMinDayChange}
-                                className='w-28' placeholder='Min' />
-                            <Text>To</Text>
-                            <Input
-                                keyboardType="numeric"
-                                onChangeText={handleMaxDayChange}
-                                className='w-28' placeholder='Max' />
-                        </View>
-                    </TitleLayout>
-                    <TitleLayout
-                        title='Parking slot for 2 wheeler'
-                    >
-                        <MultipleSelect
-                            setSelected={filter.parkingSlotTwoWheelerCount ? filter.parkingSlotTwoWheelerCount.split(',').map((e: string) => parseInt(e)) : []}
-                            onSelect={(e) => {
-                                const arr = e.join(',');
-                                if (!arr) {
-                                    deleteKey('parkingSlotTwoWheelerCount')
-                                }
-                                if (arr) {
-                                    setFilter(prevState => ({ ...prevState, parkingSlotTwoWheelerCount: arr }));
-                                }
+
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.priceEle) &&
+                        <TitleLayout
+                            title='Price Range'
+                        >
+                            <View className='flex flex-row items-center gap-5'>
+                                <Input
+                                    keyboardType="numeric"
+                                    onChangeText={handleMinPriceChange}
+                                    className='w-28'
+                                    placeholder='Min'
+                                />
+                                <Text>To</Text>
+                                <Input
+                                    keyboardType="numeric"
+                                    onChangeText={handleMaxPriceChange}
+                                    className='w-28' placeholder='Max' />
+                            </View>
+                        </TitleLayout>
+                    }
+
+
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.bedEle) &&
+                        <TitleLayout
+                            title='Bedroom'
+                        >
+                            <MultipleSelect
+                                setSelected={filter.bedroomCount ? filter.bedroomCount.split(',').map((e: string) => parseInt(e)) : []}
+                                onSelect={(e) => {
+                                    const arr = e.join(',');
+                                    if (!arr) {
+                                        deleteKey('bedroomCount')
+                                    }
+                                    if (arr) {
+                                        setFilter(prevState => ({ ...prevState, bedroomCount: arr }));
+                                    }
+                                }}
+                                list={bedroom}
+                            />
+                        </TitleLayout>
+                    }
+
+
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.bathEle) &&
+                        <TitleLayout
+                            title='Bathroom'
+                        >
+                            <MultipleSelect
+                                setSelected={filter.bathroomCount ? filter.bathroomCount.split(',').map((e: string) => parseInt(e)) : []}
+                                onSelect={(e) => {
+                                    const arr = e.join(',');
+                                    if (!arr) {
+                                        deleteKey('bathroomCount')
+                                    }
+                                    if (arr) {
+                                        setFilter(prevState => ({ ...prevState, bathroomCount: arr }));
+                                    }
+                                }}
+                                list={bathroom}
+                            />
+                        </TitleLayout>
+                    }
+
+
+
+
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.hallEle) &&
+                        <TitleLayout
+                            title='Hall'
+                        >
+                            <MultipleSelect
+                                setSelected={filter.hallCount ? filter.hallCount.split(',').map((e: string) => parseInt(e)) : []}
+                                onSelect={(e) => {
+                                    const arr = e.join(',');
+                                    if (!arr) {
+                                        deleteKey('hallCount')
+                                    }
+                                    if (arr) {
+                                        setFilter(prevState => ({ ...prevState, hallCount: arr }));
+                                    }
+                                }}
+                                list={hall}
+                            />
+                        </TitleLayout>
+                    }
+
+
+
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.kitchenEle) &&
+                        <TitleLayout
+                            title='Kitchen'
+                        >
+                            <MultipleSelect
+                                setSelected={filter.kitchenCount ? filter.kitchenCount.split(',').map((e: string) => parseInt(e)) : []}
+                                onSelect={(e) => {
+                                    const arr = e.join(',');
+                                    if (!arr) {
+                                        deleteKey('kitchenCount')
+                                    }
+                                    if (arr) {
+                                        setFilter(prevState => ({ ...prevState, kitchenCount: arr }));
+                                    }
+                                }}
+                                list={kitchen}
+                            />
+                        </TitleLayout>
+                    }
+
+
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.balconyEle) &&
+                        <TitleLayout
+                            title='Balcony'
+                        >
+                            <MultipleSelect
+                                setSelected={filter.balconyCount ? filter.balconyCount.split(',').map((e: string) => parseInt(e)) : []}
+                                onSelect={(e) => {
+                                    const arr = e.join(',');
+                                    if (!arr) {
+                                        deleteKey('balconyCount')
+                                    }
+                                    if (arr) {
+                                        setFilter(prevState => ({ ...prevState, balconyCount: arr }));
+                                    }
+                                }}
+                                list={balcony}
+                            />
+                        </TitleLayout>
+                    }
+
+
+
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.builtUpEle) &&
+                        <TitleLayout
+                            title='Square foot'
+                        >
+                            <View className='flex flex-row items-center gap-5'>
+                                <Input
+                                    keyboardType="numeric"
+                                    onChangeText={handleMinBuiltChange}
+                                    className='w-28' placeholder='Min' />
+                                <Text>To</Text>
+                                <Input
+                                    keyboardType="numeric"
+                                    onChangeText={handleMaxBuiltChange}
+                                    className='w-28' placeholder='Max' />
+                            </View>
+                        </TitleLayout>
+                    }
+
+
+
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.maintananceEle) &&
+                        <TitleLayout
+                            title='Total Maintenance (Monthly)'
+                        >
+                            <View className='flex flex-row items-center gap-5'>
+                                <Input
+                                    keyboardType="numeric"
+                                    onChangeText={handleMinMainTChange}
+                                    className='w-28' placeholder='Min' />
+                                <Text>To</Text>
+                                <Input
+                                    keyboardType="numeric"
+                                    onChangeText={handleMaxMainTChange}
+
+                                    className='w-28' placeholder='Max' />
+                            </View>
+                        </TitleLayout>
+                    }
+
+
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.ageEle) &&
+                        <TitleLayout
+                            title='Property Age'
+                        >
+                            <View className='flex flex-row items-center gap-5'>
+                                <Input
+                                    keyboardType="numeric"
+                                    onChangeText={handleMinAgeChange}
+
+                                    className='w-28' placeholder='Min' />
+                                <Text>To</Text>
+                                <Input
+                                    keyboardType="numeric"
+                                    onChangeText={handleMaxAgeChange}
+                                    className='w-28' placeholder='Max' />
+                            </View>
+                        </TitleLayout>
+                    }
+
+
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.daysOnAppEle) &&
+                        <TitleLayout
+                            title='Days on App'
+                        >
+                            <View className='flex flex-row items-center gap-5'>
+                                <Input
+                                    keyboardType="numeric"
+                                    onChangeText={handleMinDayChange}
+                                    className='w-28' placeholder='Min' />
+                                <Text>To</Text>
+                                <Input
+                                    keyboardType="numeric"
+                                    onChangeText={handleMaxDayChange}
+                                    className='w-28' placeholder='Max' />
+                            </View>
+                        </TitleLayout>
+                    }
+
+
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.parkTwoEle) &&
+                        <TitleLayout
+                            title='Parking slot for 2 wheeler'
+                        >
+                            <MultipleSelect
+                                setSelected={filter.parkingSlotTwoWheelerCount ? filter.parkingSlotTwoWheelerCount.split(',').map((e: string) => parseInt(e)) : []}
+                                onSelect={(e) => {
+                                    const arr = e.join(',');
+                                    if (!arr) {
+                                        deleteKey('parkingSlotTwoWheelerCount')
+                                    }
+                                    if (arr) {
+                                        setFilter(prevState => ({ ...prevState, parkingSlotTwoWheelerCount: arr }));
+                                    }
+                                }}
+                                list={parkingSlotTwoWheel}
+                            />
+                        </TitleLayout>
+                    }
+
+
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.parkFourEle) &&
+                        <TitleLayout
+                            title='Parking slot for 4 wheeler'
+                        >
+                            <MultipleSelect
+                                setSelected={filter.parkingSlotFourWheelerCount ? filter.parkingSlotFourWheelerCount.split(',').map((e: string) => parseInt(e)) : []}
+                                onSelect={(e) => {
+                                    const arr = e.join(',');
+                                    if (!arr) {
+                                        deleteKey('parkingSlotFourWheelerCount')
+                                    }
+                                    if (arr) {
+                                        setFilter(prevState => ({ ...prevState, parkingSlotFourWheelerCount: arr }));
+                                    }
+                                }}
+                                list={parkingSlotFourWheel}
+                            />
+                        </TitleLayout>
+                    }
+
+
+
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.totalFloorEle) &&
+                        <TitleLayout
+                            title='Total Floor'
+                        >
+                            <View className='flex flex-row items-center gap-5'>
+                                <Input
+                                    keyboardType="numeric"
+                                    onChangeText={handleMinFloorChange}
+                                    className='w-28' placeholder='Min' />
+                                <Text>To</Text>
+                                <Input
+                                    keyboardType="numeric"
+                                    onChangeText={handleMaxFloorChange}
+                                    className='w-28' placeholder='Max' />
+                            </View>
+                        </TitleLayout>
+                    }
+
+
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.propFloorEle) &&
+                        <TitleLayout
+                            title='Property Floor'
+                        >
+                            <View className='flex flex-row items-center gap-5'>
+                                <Input
+                                    keyboardType="numeric"
+                                    onChangeText={handleMinPFloorChange}
+                                    className='w-28' placeholder='Min' />
+                                <Text>To</Text>
+                                <Input
+                                    keyboardType="numeric"
+                                    onChangeText={handleMaxPFloorChange}
+                                    className='w-28' placeholder='Max' />
+                            </View>
+                        </TitleLayout>
+                    }
+
+
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.availEle) &&
+                        <TitleLayout
+                            title='Availability'
+                        >
+                            <MultipleSelect
+                                setSelected={filter.availabilityTypeId ? filter.availabilityTypeId.split(',').map((e: string) => parseInt(e)) : []}
+                                onSelect={(e) => {
+                                    const arr = e.join(',');
+                                    if (!arr) {
+                                        deleteKey('availabilityTypeId')
+                                    }
+                                    if (arr) {
+                                        setFilter(prevState => ({ ...prevState, availabilityTypeId: arr }));
+                                    }
+                                }}
+                                list={availability}
+                            />
+                        </TitleLayout>
+                    }
+
+
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.furnishingEle) &&
+                        <TitleLayout
+                            title='Furnishing'
+                        >
+                            <MultipleSelect
+                                setSelected={filter.furnishingsId ? filter.furnishingsId.split(',').map((e: string) => parseInt(e)) : []}
+                                onSelect={(e) => {
+                                    const arr = e.join(',');
+                                    if (!arr) {
+                                        deleteKey('furnishingsId')
+                                    }
+                                    if (arr) {
+                                        setFilter(prevState => ({ ...prevState, furnishingsId: arr }));
+                                    }
+                                }}
+                                list={furnishing}
+                            />
+                        </TitleLayout>
+                    }
+
+
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.facingEle) &&
+                        <TitleLayout
+                            title='Facing *'
+                        >
+                            <MultipleSelect
+                                setSelected={filter.facingId ? filter.facingId.split(',').map((e: string) => parseInt(e)) : []}
+                                onSelect={(e) => {
+                                    const arr = e.join(',');
+                                    if (!arr) {
+                                        deleteKey('facingId')
+                                    }
+                                    if (arr) {
+                                        setFilter(prevState => ({ ...prevState, facingId: arr }));
+                                    }
+                                }}
+                                list={facing}
+                            />
+                        </TitleLayout>
+                    }
+
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.cornerEle) &&
+                        <Checkbox
+                            onPress={() => {
+                                setCorner(!corner)
+                                if (corner) return deleteKey('cornerProperty');
+                                setFilter((prevState) => ({ ...prevState, cornerProperty: '1' }))
                             }}
-                            list={parkingSlotTwoWheel}
-                        />
-                    </TitleLayout>
-                    <TitleLayout
-                        title='Parking slot for 4 wheeler'
-                    >
-                        <MultipleSelect
-                            setSelected={filter.parkingSlotFourWheelerCount ? filter.parkingSlotFourWheelerCount.split(',').map((e: string) => parseInt(e)) : []}
-                            onSelect={(e) => {
-                                const arr = e.join(',');
-                                if (!arr) {
-                                    deleteKey('parkingSlotFourWheelerCount')
-                                }
-                                if (arr) {
-                                    setFilter(prevState => ({ ...prevState, parkingSlotFourWheelerCount: arr }));
-                                }
-                            }}
-                            list={parkingSlotFourWheel}
-                        />
-                    </TitleLayout>
-                    <TitleLayout
-                        title='Total Floor'
-                    >
-                        <View className='flex flex-row items-center gap-5'>
-                            <Input
-                                keyboardType="numeric"
-                                onChangeText={handleMinFloorChange}
-                                className='w-28' placeholder='Min' />
-                            <Text>To</Text>
-                            <Input
-                                keyboardType="numeric"
-                                onChangeText={handleMaxFloorChange}
-                                className='w-28' placeholder='Max' />
-                        </View>
-                    </TitleLayout>
-                    <TitleLayout
-                        title='Property Floor'
-                    >
-                        <View className='flex flex-row items-center gap-5'>
-                            <Input
-                                keyboardType="numeric"
-                                onChangeText={handleMinPFloorChange}
-                                className='w-28' placeholder='Min' />
-                            <Text>To</Text>
-                            <Input
-                                keyboardType="numeric"
-                                onChangeText={handleMaxPFloorChange}
-                                className='w-28' placeholder='Max' />
-                        </View>
-                    </TitleLayout>
-                    <TitleLayout
-                        title='Availability'
-                    >
-                        <MultipleSelect
-                            setSelected={filter.availabilityTypeId ? filter.availabilityTypeId.split(',').map((e: string) => parseInt(e)) : []}
-                            onSelect={(e) => {
-                                const arr = e.join(',');
-                                if (!arr) {
-                                    deleteKey('availabilityTypeId')
-                                }
-                                if (arr) {
-                                    setFilter(prevState => ({ ...prevState, availabilityTypeId: arr }));
-                                }
-                            }}
-                            list={availability}
-                        />
-                    </TitleLayout>
-                    <TitleLayout
-                        title='Furnishing'
-                    >
-                        <MultipleSelect
-                            setSelected={filter.furnishingsId ? filter.furnishingsId.split(',').map((e: string) => parseInt(e)) : []}
-                            onSelect={(e) => {
-                                const arr = e.join(',');
-                                if (!arr) {
-                                    deleteKey('furnishingsId')
-                                }
-                                if (arr) {
-                                    setFilter(prevState => ({ ...prevState, furnishingsId: arr }));
-                                }
-                            }}
-                            list={furnishing}
-                        />
-                    </TitleLayout>
-                    <TitleLayout
-                        title='Facing *'
-                    >
-                        <MultipleSelect
-                            setSelected={filter.facingId ? filter.facingId.split(',').map((e: string) => parseInt(e)) : []}
-                            onSelect={(e) => {
-                                const arr = e.join(',');
-                                if (!arr) {
-                                    deleteKey('facingId')
-                                }
-                                if (arr) {
-                                    setFilter(prevState => ({ ...prevState, facingId: arr }));
-                                }
-                            }}
-                            list={facing}
-                        />
-                    </TitleLayout>
-                    <Checkbox
-                        onPress={() => {
-                            setCorner(!corner)
-                            if (corner) return deleteKey('cornerProperty');
-                            setFilter((prevState) => ({ ...prevState, cornerProperty: '1' }))
-                        }}
-                        check={corner}
-                        title='Corner Property' />
-                    <TitleLayout
-                        title='Possession Status *'
-                    >
-                        <MultipleSelect
-                            setSelected={filter.possessionsId ? filter.possessionsId.split(',').map((e: string) => parseInt(e)) : []}
-                            onSelect={(e) => {
-                                const arr = e.join(',');
-                                if (!arr) {
-                                    deleteKey('possessionsId')
-                                }
-                                if (arr) {
-                                    setFilter(prevState => ({ ...prevState, possessionsId: arr }));
-                                }
-                            }}
-                            list={possesion}
-                        />
-                    </TitleLayout>
-                    <TitleLayout
-                        title='Preferred Tenants'
-                    >
-                        <MultipleSelect
-                            setSelected={filter.tenantsId ? filter.tenantsId.split(',').map((e: string) => parseInt(e)) : []}
-                            onSelect={(e) => {
-                                const arr = e.join(',');
-                                if (!arr) {
-                                    deleteKey('tenantsId')
-                                }
-                                if (arr) {
-                                    setFilter(prevState => ({ ...prevState, tenantsId: arr }));
-                                }
-                            }}
-                            list={tenants}
-                        />
-                    </TitleLayout>
+                            check={corner}
+                            title='Corner Property' />
+                    }
+
+
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.possesionEle) &&
+                        <TitleLayout
+                            title='Possession Status *'
+                        >
+                            <MultipleSelect
+                                setSelected={filter.possessionsId ? filter.possessionsId.split(',').map((e: string) => parseInt(e)) : []}
+                                onSelect={(e) => {
+                                    const arr = e.join(',');
+                                    if (!arr) {
+                                        deleteKey('possessionsId')
+                                    }
+                                    if (arr) {
+                                        setFilter(prevState => ({ ...prevState, possessionsId: arr }));
+                                    }
+                                }}
+                                list={possesion}
+                            />
+                        </TitleLayout>
+                    }
+
+
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.tenanatEle) &&
+                        <TitleLayout
+                            title='Preferred Tenants'
+                        >
+                            <MultipleSelect
+                                setSelected={filter.tenantsId ? filter.tenantsId.split(',').map((e: string) => parseInt(e)) : []}
+                                onSelect={(e) => {
+                                    const arr = e.join(',');
+                                    if (!arr) {
+                                        deleteKey('tenantsId')
+                                    }
+                                    if (arr) {
+                                        setFilter(prevState => ({ ...prevState, tenantsId: arr }));
+                                    }
+                                }}
+                                list={tenants}
+                            />
+                        </TitleLayout>
+                    }
+
                 </View>
             </ScrollView>
             <View
@@ -487,16 +640,38 @@ const FilterScreen = () => {
                     paddingBottom: insets.bottom + 8
                 }}
                 className='border-t border-t-gray-100 bg-white pt-2 px-7 flex flex-row justify-between items-center absolute bottom-0 left-0 w-full'>
-                <Text
+                {/* <Text
                     onPress={() => router.back()}
-                >Cancel</Text>
-                <Button
+                >Cancel</Text> */}
+                <ButtonUI
+                    variant={'ghost'}
+                    size={'default'}
+                    onPress={() => router.back()}
+                >
+
+                    <TextUI>Close</TextUI>
+                </ButtonUI>
+                {/* <Button
                     onPress={() => {
                         setOnFilterApplyClick(true)
                         router.back()
                     }}
                     className='px-8 bg-primary '
-                    title='Apply' />
+                    title='Apply' /> */}
+                <ButtonUI
+                    size={'default'}
+                    onPress={() => {
+                        setOnFilterApplyClick(true)
+                        router.back()
+                    }}
+                >
+                    {/* {loading &&
+                        <ActivityIndicator
+                            size={'small'}
+                            color={'white'}
+                        />} */}
+                    <TextUI>Apply</TextUI>
+                </ButtonUI>
             </View>
 
         </View>

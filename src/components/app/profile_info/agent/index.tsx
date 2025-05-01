@@ -16,20 +16,25 @@ import { getError } from '@/src/utilities/halper_functions/service';
 import HeroSection from './components/hero_section';
 import { agentGetCurrent } from '@/src/data/network/services/agent';
 import { IAgent } from '@/src/data/network/models/agent';
+import LoadingScreen from '@/src/components/common/loading/loading_screen';
 
 const Agent = () => {
     const insets = useSafeAreaInsets();
     const [agent, setAgent] = useState<IAgent | undefined>();
+    const [loading, setLoading] = useState<boolean>(true);
 
 
 
     const getAgentHandle = async () => {
         try {
+            setLoading(true)
             const result = await agentGetCurrent();
             setAgent(result.data);
         } catch (e) {
             console.error(e);
             Toast.show(getError(e));
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -38,6 +43,12 @@ const Agent = () => {
     useEffect(() => {
         getAgentHandle();
     }, [])
+
+    if (loading) {
+        return (
+            <LoadingScreen />
+        )
+    }
 
     return (
         <View

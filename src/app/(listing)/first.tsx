@@ -10,168 +10,459 @@ import ArrowIcon from '@/src/assets/svgs/ArrowIcon'
 import SingleSelect from '@/src/components/common/select/single_select'
 import Input from '@/src/components/input'
 import { useRecoilState } from 'recoil'
-import { propertyState } from '@/src/global_state/recoil/atoms/property'
-import { balcony, bathroom, bedroom, facing, flooringType, hall, houseType, kitchen, ownershipType, tenants } from '@/src/constants/app/Property'
+import { eleManagerState, propertyState, updateHighlightState, updateMealState } from '@/src/global_state/recoil/atoms/property'
+import { amenities, balcony, bathroom, bedroom, ElementEnum, elementManagement, facing, flooringType, hall, highlights, houseType, HouseTypeEnum, kitchen, lookingFor, meals, noticePeriod, occupancy, ownershipType, tenants } from '@/src/constants/app/Property'
 
 const FirstScreen = () => {
     const insets = useSafeAreaInsets();
     const [counterHeight, setCounterHeight] = useState<number>(0)
     const [property, setProperty] = useRecoilState(propertyState);
+    const [eleManager, setEleManager] = useRecoilState(eleManagerState)
+
+    const [highlight, setHighlight] = useRecoilState(updateHighlightState);
+    const [meal, setMeal] = useRecoilState(updateMealState);
+
 
 
 
     return (
         <View
             style={{
-                paddingTop: insets.top,
-                paddingBottom: counterHeight
+                paddingTop: insets.top + 10,
+                paddingBottom: counterHeight,
 
             }}
             className='flex-1 bg-white'
         >
             <ScrollView showsVerticalScrollIndicator={false}
             >
-                <View className='gap-[40px] px-[10px] pb-10'>
-                    <View className='flex flex-row justify-center'>
-                        <Toggle
-                            selectedIndex={property.purposeId - 1}
-                            onSelect={(index) => setProperty(prevState => ({ ...prevState, purposeId: index + 1 }))}
-                            list={["Sell", "Rent"]}
-                        />
+                <View className='gap-14 px-[10px] pb-10'>
 
-                    </View>
-                    <TitleLayout
-                        title='Home Type *'
-                    >
-                        <SingleSelect
-                            selected={property.homeTypeId - 1}
-                            classNameItem='h-[68px]'
-                            onSelect={(index) => setProperty(prevState => ({ ...prevState, homeTypeId: index + 1 }))}
-                            list={houseType}
-                        />
 
-                    </TitleLayout>
-                    <Input
-                        onChangeText={(e) => setProperty(prevState => ({ ...prevState, address: e }))}
-                        placeholder='Address ( visible to all users ) *'
-                    />
-                    <TitleLayout
-                        title='Bedroom *'
-                    >
-                        <SingleSelect
-                            selected={property.bedroomCount}
-                            onSelect={(index) => setProperty(prevState => ({ ...prevState, bedroomCount: index }))}
-                            list={bedroom}
+
+
+                    {/* purposeEle */}
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.purposeEle) &&
+                        <View className='flex flex-row justify-center'>
+
+                            <Toggle
+                                selectedIndex={property.purposeId - 1}
+                                onSelect={(index) => setProperty(prevState => ({ ...prevState, purposeId: index + 1 }))}
+                                list={["Sell", "Rent"]}
+                            />
+
+                        </View>
+                    }
+
+
+
+
+                    {/* homeTypeEle */}
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.homeTypeEle) &&
+                        <TitleLayout
+                            title='Home Type *'
+                        >
+                            <SingleSelect
+                                selected={property.homeTypeId - 1}
+                                classNameItem='h-[68px]'
+                                onSelect={(index) => {
+                                    setProperty(prevState => ({ ...prevState, homeTypeId: index + 1 }))
+                                    setEleManager(houseType[index].title as HouseTypeEnum)
+                                }}
+                                list={houseType}
+                            />
+
+                        </TitleLayout>
+                    }
+
+
+
+
+                    {/* singleShare */}
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.singleShareEle) &&
+                        <Input
+                            value={property.singleSharing}
+                            onChangeText={(e) => setProperty(prevState => ({ ...prevState, singleSharing: e }))}
+                            placeholder='Single Sharing Price'
                         />
-                    </TitleLayout>
-                    <TitleLayout
-                        title='Bathroom *'
-                    >
-                        <SingleSelect
-                            selected={property.bathroomCount}
-                            onSelect={(index) => setProperty(prevState => ({ ...prevState, bathroomCount: index }))}
-                            list={bathroom}
+                    }
+
+                    {/* doubleShare */}
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.doubleShareEle) &&
+                        <Input
+                            value={property.doubleSharing}
+                            onChangeText={(e) => setProperty(prevState => ({ ...prevState, doubleSharing: e }))}
+                            placeholder='Double Sharing Price'
                         />
-                    </TitleLayout>
-                    <TitleLayout
-                        title='Hall *'
-                    >
-                        <SingleSelect
-                            selected={property.hallCount}
-                            onSelect={(index) => setProperty(prevState => ({ ...prevState, hallCount: index }))}
-                            list={hall}
+                    }
+
+                    {/* tripleShare */}
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.tripleShareEle) &&
+                        <Input
+                            value={property.tripleSharing}
+                            onChangeText={(e) => setProperty(prevState => ({ ...prevState, tripleSharing: e }))}
+                            placeholder='Triple Sharing Price'
                         />
-                    </TitleLayout>
-                    <TitleLayout
-                        title='Kitchen *'
-                    >
-                        <SingleSelect
-                            selected={property.kitchenCount}
-                            onSelect={(index) => setProperty(prevState => ({ ...prevState, kitchenCount: index }))}
-                            list={kitchen}
+                    }
+
+
+                    {/* fourShare */}
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.fourShareEle) &&
+                        <Input
+                            value={property.fourSharing}
+                            onChangeText={(e) => setProperty(prevState => ({ ...prevState, fourSharing: e }))}
+                            placeholder='Four Sharing Price'
                         />
-                    </TitleLayout>
-                    <TitleLayout
-                        title='Balcony *'
-                    >
-                        <SingleSelect
-                            selected={property.balconyCount}
-                            onSelect={(index) => setProperty(prevState => ({ ...prevState, balconyCount: index }))}
-                            list={balcony}
+                    }
+
+
+
+                    {/* highlightEle */}
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.highlightEle) &&
+                        <TitleLayout
+
+                            title='Highlight *'
+                        >
+                            <MultipleSelect
+                                onSelect={(arr) => setHighlight(arr)}
+                                list={highlights}
+                            />
+                        </TitleLayout>
+                    }
+
+
+
+                    {/* occupancyEle */}
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.occupancyEle) &&
+                        <TitleLayout
+                            title='Occupancy *'
+                        >
+                            <SingleSelect
+                                selected={property.flooringTypeId - 1}
+                                onSelect={(index) => setProperty(prevState => ({ ...prevState, occupancyId: index + 1 }))}
+                                list={occupancy}
+                            />
+                        </TitleLayout>
+                    }
+
+
+
+
+                    {/* lookingForEle */}
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.lookingForEle) &&
+                        <TitleLayout
+                            title='Looking For *'
+                        >
+                            <SingleSelect
+                                selected={property.lookingForId - 1}
+                                onSelect={(index) => setProperty(prevState => ({ ...prevState, lookingForId: index + 1 }))}
+                                list={lookingFor}
+                            />
+                        </TitleLayout>
+                    }
+
+
+
+                    {/* meals */}
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.mealsEle) &&
+                        <TitleLayout
+
+                            title='Meals *'
+                        >
+                            <MultipleSelect
+                                onSelect={(arr) => setMeal(arr)}
+                                list={meals}
+                            />
+                        </TitleLayout>
+                    }
+
+                    {/* noticePeriodEle */}
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.noticePeriodEle) &&
+                        <TitleLayout
+                            title='Notice Period *'
+                        >
+                            <SingleSelect
+                                selected={property.noticePeriodId - 1}
+                                onSelect={(index) => setProperty(prevState => ({ ...prevState, noticePeriodId: index + 1 }))}
+                                list={noticePeriod}
+                            />
+                        </TitleLayout>
+                    }
+
+
+
+
+                    {/* addressEle */}
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.addressEle) &&
+                        <Input
+                            onChangeText={(e) => setProperty(prevState => ({ ...prevState, address: e }))}
+                            placeholder='Address ( visible to all users ) *'
                         />
-                    </TitleLayout>
-                    <Input
-                        keyboardType='numeric'
-                        value={property.plotArea}
-                        onChangeText={(e) => setProperty(prevState => ({ ...prevState, plotArea: e }))}
-                        placeholder='Plot Area in Sqft (e.g. 1000) *'
-                    />
-                    <Input
-                        keyboardType='numeric'
-                        value={property.builtUpArea}
-                        onChangeText={(e) => setProperty(prevState => ({ ...prevState, builtUpArea: e }))}
-                        placeholder='Built-Up Area in Sqft (e.g. 1000) *'
-                    />
-                    <Input
-                        keyboardType='numeric'
-                        value={property.carpetArea}
-                        onChangeText={(e) => setProperty(prevState => ({ ...prevState, carpetArea: e }))}
-                        placeholder='Carpet Area in Sqft (e.g. 1000) *'
-                    />
-                    <TitleLayout
-                        title='Facing *'
-                    >
-                        <SingleSelect
-                            selected={property.facingId - 1}
-                            onSelect={(index) => setProperty(prevState => ({ ...prevState, facingId: index + 1 }))}
-                            list={facing}
+                    }
+
+
+
+                    {/* bedEle */}
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.bedEle) &&
+                        <TitleLayout
+                            title='Bedroom *'
+                        >
+                            <SingleSelect
+                                selected={property.bedroomCount}
+                                onSelect={(index) => setProperty(prevState => ({ ...prevState, bedroomCount: index }))}
+                                list={bedroom}
+                            />
+                        </TitleLayout>
+                    }
+
+                    {/* bathEle */}
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.bathEle) &&
+                        <TitleLayout
+                            title='Bathroom *'
+                        >
+                            <SingleSelect
+                                selected={property.bathroomCount}
+                                onSelect={(index) => setProperty(prevState => ({ ...prevState, bathroomCount: index }))}
+                                list={bathroom}
+                            />
+                        </TitleLayout>
+                    }
+
+
+
+                    {/* hallEle */}
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.hallEle) &&
+                        <TitleLayout
+                            title='Hall *'
+                        >
+                            <SingleSelect
+                                selected={property.hallCount}
+                                onSelect={(index) => setProperty(prevState => ({ ...prevState, hallCount: index }))}
+                                list={hall}
+                            />
+                        </TitleLayout>
+                    }
+
+
+
+                    {/* kitchenEle */}
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.kitchenEle) &&
+                        <TitleLayout
+                            title='Kitchen *'
+                        >
+                            <SingleSelect
+                                selected={property.kitchenCount}
+                                onSelect={(index) => setProperty(prevState => ({ ...prevState, kitchenCount: index }))}
+                                list={kitchen}
+                            />
+                        </TitleLayout>
+                    }
+
+
+
+                    {/* balconyEle */}
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.balconyEle) &&
+                        <TitleLayout
+                            title='Balcony *'
+                        >
+                            <SingleSelect
+                                selected={property.balconyCount}
+                                onSelect={(index) => setProperty(prevState => ({ ...prevState, balconyCount: index }))}
+                                list={balcony}
+                            />
+                        </TitleLayout>
+                    }
+
+
+
+                    {/* plotAreaEle */}
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.plotAreaEle) &&
+                        <Input
+                            keyboardType='numeric'
+                            value={property.plotArea}
+                            onChangeText={(e) => setProperty(prevState => ({ ...prevState, plotArea: e }))}
+                            placeholder='Plot Area in Sqft (e.g. 1000) *'
                         />
-                    </TitleLayout>
-                    <Input
-                        keyboardType='numeric'
-                        value={property.propertyAge}
-                        onChangeText={(e) => setProperty(prevState => ({ ...prevState, propertyAge: e }))}
-                        placeholder='Property Age in Years (e.g. 5) *'
-                    />
-                    <Input
-                        keyboardType='numeric'
-                        value={property.totalFloor}
-                        onChangeText={(e) => setProperty(prevState => ({ ...prevState, totalFloor: e }))}
-                        placeholder='Total Floors (e.g. 5) *'
-                    />
-                    <Input
-                        keyboardType='numeric'
-                        value={property.propertyFloor}
-                        onChangeText={(e) => setProperty(prevState => ({ ...prevState, propertyFloor: e }))}
-                        placeholder='Property Floor (e.g. 3) *'
-                    />
-                    <TitleLayout
-                        title='Flooring Type *'
-                    >
-                        <SingleSelect
-                            selected={property.flooringTypeId - 1}
-                            onSelect={(index) => setProperty(prevState => ({ ...prevState, flooringTypeId: index + 1 }))}
-                            list={flooringType}
+                    }
+
+
+
+                    {/* builtUpEle */}
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.builtUpEle) &&
+                        <Input
+                            keyboardType='numeric'
+                            value={property.builtUpArea}
+                            onChangeText={(e) => setProperty(prevState => ({ ...prevState, builtUpArea: e }))}
+                            placeholder='Built-Up Area in Sqft (e.g. 1000) *'
                         />
-                    </TitleLayout>
-                    <TitleLayout
-                        title='Ownership type *'
-                    >
-                        <SingleSelect
-                            selected={property.ownershipTypeId - 1}
-                            onSelect={(index) => setProperty(prevState => ({ ...prevState, ownershipTypeId: index + 1 }))}
-                            list={ownershipType}
+                    }
+
+
+
+
+                    {/* carpetEle */}
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.carpetEle) &&
+                        <Input
+                            keyboardType='numeric'
+                            value={property.carpetArea}
+                            onChangeText={(e) => setProperty(prevState => ({ ...prevState, carpetArea: e }))}
+                            placeholder='Carpet Area in Sqft (e.g. 1000) *'
                         />
-                    </TitleLayout>
-                    <TitleLayout
-                        title='Tenants *'
-                    >
-                        <SingleSelect
-                            selected={property.tenantsId - 1}
-                            onSelect={(index) => setProperty(prevState => ({ ...prevState, tenantsId: index + 1 }))}
-                            list={tenants}
+                    }
+
+
+
+
+
+                    {/* facingEle */}
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.facingEle) &&
+                        <TitleLayout
+                            title='Facing *'
+                        >
+                            <SingleSelect
+                                selected={property.facingId - 1}
+                                onSelect={(index) => setProperty(prevState => ({ ...prevState, facingId: index + 1 }))}
+                                list={facing}
+                            />
+                        </TitleLayout>
+                    }
+
+
+
+
+
+                    {/* ageEle */}
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.ageEle) &&
+                        <Input
+                            keyboardType='numeric'
+                            value={property.propertyAge}
+                            onChangeText={(e) => setProperty(prevState => ({ ...prevState, propertyAge: e }))}
+                            placeholder='Property Age in Years (e.g. 5) *'
                         />
-                    </TitleLayout>
+                    }
+
+
+
+
+                    {/* totalFloorEle */}
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.totalFloorEle) &&
+                        <Input
+                            keyboardType='numeric'
+                            value={property.totalFloor}
+                            onChangeText={(e) => setProperty(prevState => ({ ...prevState, totalFloor: e }))}
+                            placeholder='Total Floors (e.g. 5) *'
+                        />
+                    }
+
+
+
+                    {/* propFloorEle */}
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.propFloorEle) &&
+                        <Input
+                            keyboardType='numeric'
+                            value={property.propertyFloor}
+                            onChangeText={(e) => setProperty(prevState => ({ ...prevState, propertyFloor: e }))}
+                            placeholder='Property Floor (e.g. 3) *'
+                        />
+                    }
+
+
+
+
+                    {/* flooringEle */}
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.flooringEle) &&
+                        <TitleLayout
+                            title='Flooring Type *'
+                        >
+                            <SingleSelect
+                                selected={property.flooringTypeId - 1}
+                                onSelect={(index) => setProperty(prevState => ({ ...prevState, flooringTypeId: index + 1 }))}
+                                list={flooringType}
+                            />
+                        </TitleLayout>
+                    }
+
+
+
+
+                    {/* owenershipEle */}
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.owenershipEle) &&
+                        <TitleLayout
+                            title='Ownership type *'
+                        >
+                            <SingleSelect
+                                selected={property.ownershipTypeId - 1}
+                                onSelect={(index) => setProperty(prevState => ({ ...prevState, ownershipTypeId: index + 1 }))}
+                                list={ownershipType}
+                            />
+                        </TitleLayout>
+                    }
+
+
+                    {/* tenanatEle */}
+
+                    {
+                        elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.tenanatEle) &&
+                        <TitleLayout
+                            title='Tenants *'
+                        >
+                            <SingleSelect
+                                selected={property.tenantsId - 1}
+                                onSelect={(index) => setProperty(prevState => ({ ...prevState, tenantsId: index + 1 }))}
+                                list={tenants}
+                            />
+                        </TitleLayout>
+                    }
+
+
+
 
                 </View>
             </ScrollView>

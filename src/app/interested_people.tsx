@@ -58,18 +58,18 @@ const interestedPeople = () => {
         <SafeAreaView className='bg-white flex-1'>
             <TitleBar title='People who have seen your number' />
             <ScrollView className='flex-1'>
+                <View className='flex gap-3'>
+                    {
+                        users.map((item, index) =>
 
-                {
-                    users.map((item, index) =>
-
-                        <Item
-                            key={index}
-                            name={(item.user.first_name ? (item.user.first_name + ' ') : '') + (item.user.last_name ? item.user.last_name : '')}
-                            number={item.user.phone_number}
-                        />
-                    )
-                }
-
+                            <Item
+                                key={index}
+                                name={(item.user.first_name ? (item.user.first_name + ' ') : '') + (item.user.last_name ? item.user.last_name : '')}
+                                number={item.user.phone_number}
+                            />
+                        )
+                    }
+                </View>
                 <View className='mx-5 mt-5'>
                     <LoadMoreButton
                         onPress={() => {

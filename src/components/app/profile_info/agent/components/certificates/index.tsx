@@ -50,6 +50,7 @@ const Certificates = () => {
             {
                 createModal &&
                 <CreateCertificateModal
+                    onRequestClose={() => setCreateModal(false)}
                     show={createModal}
                     onPressClose={() => setCreateModal(false)}
                     updated={() => {

@@ -12,7 +12,7 @@ interface Props {
 const TitleLayout: React.FC<Props> = ({ className, children, title }) => {
     return (
         <View className={twMerge(``, className)}>
-            <Text className='text-sm text-black-800 font-mMedium mb-3'>{title}</Text>
+            <Text className='text-lg text-black-800 font-mMedium mb-3'>{title}</Text>
             {children}
         </View>
     )

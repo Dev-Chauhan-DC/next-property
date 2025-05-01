@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View, Text, NativeSyntheticEvent } from 'react-native'
 import React, { useState } from 'react'
 import { IGeometry } from '@/src/utilities/interfaces/search';
 import Toast from 'react-native-root-toast';
@@ -15,16 +15,19 @@ import { defaultPlaceDetails } from '@/src/constants/app/Property';
 import { calculateDeltas } from '@/src/utilities/halper_functions/google_map';
 import { IAgentAddress } from '@/src/data/network/models/agentAddress';
 import { agentAddressCreate } from '@/src/data/network/services/agentAddress';
+import { IPlaceDetails } from '@/src/data/network/models/googleMap';
+import AutoCompletePlaceSearch from '@/src/components/common/placeSearch';
 
 
 interface Props {
     show?: boolean;
     onOutsideClick?: () => void;
     updated?: () => void
+    onRequestClose?: ((event: NativeSyntheticEvent<any>) => void) | undefined
 
 }
 
-const CreateAddress: React.FC<Props> = ({ onOutsideClick, show, updated }) => {
+const CreateAddress: React.FC<Props> = ({ onRequestClose, onOutsideClick, show, updated }) => {
     const [formData, setFormData] = React.useState<IAgentAddress>({ latitude: 19.058753, longitude: 72.868153 })
     const [avatar, setAvatar] = useState<string>('')
     const [loading, setLoading] = useState<boolean>(false);
@@ -49,11 +52,11 @@ const CreateAddress: React.FC<Props> = ({ onOutsideClick, show, updated }) => {
         }
     }
 
-    const placeDetailsHandle = async (placeId: string) => {
+    const placeDetailsHandle = async (placeDetails: IPlaceDetails) => {
         try {
             setLoading(true);
-            const result = await placeDetails(placeId);
-            setSearchQuery(result.data);
+            // const result = await placeDetails(placeId);
+            setSearchQuery(placeDetails);
         } catch (e) {
             console.error(e);
             Toast.show(getError(e));
@@ -66,7 +69,7 @@ const CreateAddress: React.FC<Props> = ({ onOutsideClick, show, updated }) => {
 
 
     return (
-        <Dialog>
+        <Dialog onRequestClose={onRequestClose}>
             <DialogHeader onPressClose={onOutsideClick} title='Pin Your Address Location on Map *' />
             <DialogContent>
                 <View className='flex-1 overflow-auto flex flex-col gap-4 items-center w-full'>
@@ -75,11 +78,21 @@ const CreateAddress: React.FC<Props> = ({ onOutsideClick, show, updated }) => {
                         <View
 
                             className='z-50 bg-transparent w-full mb-4'>
-                            <GoogleSearchUI
+                            {/* <GoogleSearchUI
                                 displaySuggestion={displaySuggestion}
                                 loadingPlace={loading}
                                 placeholder='Search Google Map'
-                                onSelect={(prediction) => placeDetailsHandle(prediction.place_id)}
+                                // onSelect={(prediction) => placeDetailsHandle(prediction.place_id)}
+                                onSelectPlaceDetails={placeDetailsHandle}
+
+                            /> */}
+                            <AutoCompletePlaceSearch
+                                displaySuggestion={displaySuggestion}
+                                loadingPlace={loading}
+                                placeholder='Search Google Map'
+                                // onSelect={(prediction) => placeDetailsHandle(prediction.place_id)}
+                                onSelectPlaceDetails={placeDetailsHandle}
+
                             />
                         </View>
                         <View

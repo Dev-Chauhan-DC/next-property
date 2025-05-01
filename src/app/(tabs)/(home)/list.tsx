@@ -21,6 +21,9 @@ import { sort } from '@/src/constants/app/Property';
 import { result } from 'lodash';
 import { saveProperty } from '@/src/data/network/services/saveProperty';
 import { userState } from '@/src/global_state/recoil/atoms/user';
+import { IMeta } from '@/src/data/network/models';
+import MegniFineGlassIcon from '@/src/assets/svgs/MegniFineGlassIcon';
+import NoData from '@/src/components/common/ui/no_data';
 export const DATA = [
     {
         id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
@@ -74,6 +77,7 @@ const ListScreen = () => {
     const [filter, setFilter] = useRecoilState(filterAtom);
     const [onFilterApplyClick, setOnFilterApplyClick] = useRecoilState(onFilterApplyClickAtom);
     const [refreshing, setRefreshing] = useState(false);
+    const [meta, setMeta] = useState<IMeta>()
 
 
 
@@ -85,15 +89,13 @@ const ListScreen = () => {
     };
 
 
-
-
-
     const searchAndFiltersHandle = useCallback(async (viewport: IViewport, filters: IFilters) => {
         try {
             setLoading(true);
-            const result = await searchAndFilters(viewport, filters);
+            const result = await searchAndFilters(viewport, { ...filters, view: 'list', limit: 6 });
 
             setProperties(prevState => (filters.page === 1 ? result.data : [...prevState, ...result.data]));
+            setMeta(result.meta)
 
         } catch (e) {
             console.error(e);
@@ -161,7 +163,7 @@ const ListScreen = () => {
                 data={properties}
                 renderItem={({ item }) =>
                     <PropertyCard
-                        isActiveHeart={item.saved_properties?.length ? true : false}
+                        isActiveHeart={item.isSaved}
                         property={item}
                         onPress={() => {
                             router.push({ pathname: '/property_info', params: { id: item?.id } });
@@ -177,20 +179,25 @@ const ListScreen = () => {
                         role={item.user?.user_role?.role}
                     />}
                 keyExtractor={(item) => item.id.toString()}
+                ListHeaderComponent={
+                    !loading && properties?.length === 0 ?
+                        <NoData /> : null
+                }
                 ListFooterComponent={
                     loading ?
                         <View className='h-8 mb-3 items-center justify-center'>
                             <ActivityIndicator size={'small'} color={Colors.black[800]} />
                         </View>
-                        :
-                        <LoadMoreButton
-                            className='mb-3'
-                            onPress={loadMorePressHandle} />
+                        : meta?.page && meta?.totalPages && meta?.page < meta?.totalPages ?
+                            <LoadMoreButton
+                                className='mb-3'
+                                onPress={loadMorePressHandle} /> : null
                 }
             />
 
             <SortModal
                 onPressClose={() => setSortModal(false)}
+                onRequestClose={() => setSortModal(false)}
                 onPressOutSide={() => setSortModal(false)}
                 visible={sortModal}
                 onSelect={(index) => {

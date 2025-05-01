@@ -30,6 +30,21 @@ export const getUserProperties = async (page: number, limit?: number): Promise<I
     }
 }
 
+export const getUserPropertiesV2 = async (page: number, limit?: number) => {
+    try {
+        const result = await remInstance.get(remEndpoints.getUserPropertiesV2, {
+            params: {
+                page,
+                limit
+            }
+        });
+        return result.data;
+    } catch (e) {
+        console.error(e);
+        throw e;
+    }
+}
+
 
 export const deleteProperty = async (propertyId: number) => {
     try {
@@ -57,6 +72,19 @@ export const searchAndFilters = async (viewport: IViewport, filters: IFilters): 
 export const getProperty = async (propertyId: number, queryParams: IGetPropertyParams): Promise<IResponse<IProperty>> => {
     try {
         const result = await remInstance.post(remEndpoints.getProperty, { propertyId }, { params: queryParams });
+        return result.data;
+    } catch (e) {
+        console.error(e);
+        throw e;
+    }
+}
+
+export const getPropertyV2 = async (propertyId: number, queryParams: IGetPropertyParams): Promise<IResponse<IProperty>> => {
+    try {
+        const result = await remInstance.get(remEndpoints.getPropertyV2(propertyId),
+            {
+                params: queryParams
+            });
         return result.data;
     } catch (e) {
         console.error(e);

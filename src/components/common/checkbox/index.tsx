@@ -17,7 +17,7 @@ const Checkbox: React.FC<Props> = ({ title, check, onPress }) => {
             className='flex flex-row items-center gap-3'>
             <View
                 className={`
-                    ${check ? 'bg-primary' : 'bg-gray-100'}
+                    ${check ? 'bg-primary' : 'bg-gray-200'}
                     w-6 h-6 rounded-[5px]  flex items-center justify-center`}
             >
                 {
@@ -31,7 +31,7 @@ const Checkbox: React.FC<Props> = ({ title, check, onPress }) => {
 
 
             </View>
-            <Text className='text-sm font-mRegular text-gray-400'>{title}</Text>
+            <Text className='text-base font-mRegular text-gray-400'>{title}</Text>
         </Pressable>
     )
 }

@@ -5,7 +5,7 @@ import { cn } from '@/src/lib/utils';
 import { TextClassContext } from '@/src/components/ui/text';
 
 const buttonVariants = cva(
-  'group flex items-center justify-center rounded-md web:ring-offset-background web:transition-colors web:focus-visible:outline-none web:focus-visible:ring-2 web:focus-visible:ring-ring web:focus-visible:ring-offset-2',
+  'group flex items-center justify-center flex-row gap-3 rounded-md web:ring-offset-background web:transition-colors web:focus-visible:outline-none web:focus-visible:ring-2 web:focus-visible:ring-ring web:focus-visible:ring-offset-2',
   {
     variants: {
       variant: {
@@ -14,8 +14,10 @@ const buttonVariants = cva(
         outline:
           'border border-input bg-background web:hover:bg-accent web:hover:text-accent-foreground active:bg-gray-100',
         secondary: 'bg-secondary web:hover:opacity-80 active:opacity-80',
+        black: 'bg-black-800 web:hover:opacity-80 active:opacity-80',
         ghost: 'web:hover:bg-accent web:hover:text-accent-foreground active:bg-accent',
         link: 'web:underline-offset-4 web:hover:underline web:focus:underline',
+        outlineDestructive: 'group-active:text-red-500 border border-red-500 bg-background text-red-500',
       },
       size: {
         default: 'h-10 px-4 py-2 native:h-12 native:px-5 native:py-3',
@@ -36,16 +38,18 @@ const buttonTextVariants = cva(
   {
     variants: {
       variant: {
-        default: 'text-primary-foreground',
+        default: 'text-primary-foreground ',
         destructive: 'text-destructive-foreground',
         outline: 'group-active:text-accent-foreground',
+        outlineDestructive: 'group-active:text-red-500 text-red-500',
         secondary: 'text-secondary-foreground group-active:text-secondary-foreground',
+        black: 'text-white group-active:text-white font-mMedium',
         ghost: 'group-active:text-accent-foreground',
         link: 'text-primary group-active:underline',
       },
       size: {
         default: '',
-        sm: '',
+        sm: 'native:text-sm',
         lg: 'native:text-lg',
         icon: '',
       },
@@ -64,7 +68,7 @@ const Button = React.forwardRef<React.ElementRef<typeof Pressable>, ButtonProps>
   ({ className, variant, size, ...props }, ref) => {
     return (
       <TextClassContext.Provider
-        value={buttonTextVariants({ variant, size, className: 'web:pointer-events-none font-mRegular' })}
+        value={buttonTextVariants({ variant, size, className: 'web:pointer-events-none font-mMedium' })}
       >
         <Pressable
           className={cn(

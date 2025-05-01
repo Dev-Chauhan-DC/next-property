@@ -23,7 +23,9 @@ import {
 } from '../components/ui/dialog';
 import { Button } from '../components/ui/button';
 import { LogOut } from 'lucide-react-native';
-
+import { ButtonText } from '@/src/components/ui/gs/button';
+import { Actionsheet, ActionsheetBackdrop, ActionsheetContent, ActionsheetDragIndicator, ActionsheetDragIndicatorWrapper, ActionsheetItem, ActionsheetItemText } from '../components/ui/gs/actionsheet';
+import { Button as BtnGS } from '@/src/components/ui/gs/button';
 
 const theme = () => {
     const insets = useSafeAreaInsets();
@@ -33,6 +35,8 @@ const theme = () => {
         left: 0,
         right: 0,
     };
+    const [showActionsheet, setShowActionsheet] = React.useState(false)
+    const handleClose = () => setShowActionsheet(false)
     return (
         <View
             style={{
@@ -110,7 +114,33 @@ const theme = () => {
             <Button variant='secondary'>
                 <Text>Edit Profile</Text>
             </Button>
-
+            {/* Action sheet */}
+            <BtnGS onPress={() => setShowActionsheet(true)}>
+                <ButtonText>Open Actionsheet</ButtonText>
+            </BtnGS>
+            <Actionsheet isOpen={showActionsheet} onClose={handleClose}>
+                <ActionsheetBackdrop />
+                <ActionsheetContent>
+                    <ActionsheetDragIndicatorWrapper>
+                        <ActionsheetDragIndicator />
+                    </ActionsheetDragIndicatorWrapper>
+                    <ActionsheetItem onPress={handleClose}>
+                        <ActionsheetItemText>Edit Message</ActionsheetItemText>
+                    </ActionsheetItem>
+                    <ActionsheetItem onPress={handleClose}>
+                        <ActionsheetItemText>Mark Unread</ActionsheetItemText>
+                    </ActionsheetItem>
+                    <ActionsheetItem onPress={handleClose}>
+                        <ActionsheetItemText>Remind Me</ActionsheetItemText>
+                    </ActionsheetItem>
+                    <ActionsheetItem onPress={handleClose}>
+                        <ActionsheetItemText>Add to Saved Items</ActionsheetItemText>
+                    </ActionsheetItem>
+                    <ActionsheetItem isDisabled onPress={handleClose}>
+                        <ActionsheetItemText>Delete</ActionsheetItemText>
+                    </ActionsheetItem>
+                </ActionsheetContent>
+            </Actionsheet>
         </View>
     )
 }

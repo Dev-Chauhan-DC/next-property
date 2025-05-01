@@ -1,4 +1,4 @@
-import { View, Text, GestureResponderEvent } from 'react-native'
+import { View, Text, GestureResponderEvent, NativeSyntheticEvent } from 'react-native'
 import React, { useEffect } from 'react'
 import Toast from 'react-native-root-toast';
 import { getError } from '@/src/utilities/halper_functions/service';
@@ -18,10 +18,11 @@ interface Props {
     getAgentHandle?: () => Promise<void>
     updated?: () => void
     onPressClose?: (event: GestureResponderEvent) => void
+    onRequestClose?: ((event: NativeSyntheticEvent<any>) => void) | undefined
 
 }
 
-const UpdateAbout: React.FC<Props> = ({ onPressClose, show, agent, getAgentHandle, updated }) => {
+const UpdateAbout: React.FC<Props> = ({ onRequestClose, onPressClose, show, agent, getAgentHandle, updated }) => {
 
     const [formData, setFormData] = React.useState<Partial<IAgent>>({})
     const [loading, setLoading] = React.useState<boolean>(false);
@@ -45,7 +46,7 @@ const UpdateAbout: React.FC<Props> = ({ onPressClose, show, agent, getAgentHandl
 
 
     return (
-        <Dialog>
+        <Dialog onRequestClose={onRequestClose}>
             <DialogHeader
                 onPressClose={onPressClose}
                 title='About'

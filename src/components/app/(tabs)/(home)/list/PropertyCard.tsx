@@ -87,6 +87,7 @@ const PropertyCard: React.FC<Props> = ({
                 }}
                 className='relative '>
                 <Image
+                    cachePolicy={'memory-disk'}
                     style={{
                         width: '100%',
                         height: '100%',

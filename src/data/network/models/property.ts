@@ -1,5 +1,10 @@
 import { IAgent } from "./agent"
 import { IBuilder } from "./builder"
+import { IPropertyHighlights } from "./highlight"
+import { ILookingFor } from "./lookingFor"
+import { IPropertyMeals } from "./meal"
+import { IOccupancy } from "./occupancy"
+import { IPropertyPreferences } from "./preference"
 import { IPropertyPhoto } from "./propertyPhoto"
 import { IUser } from "./user"
 
@@ -186,7 +191,7 @@ export interface ITenant {
 
 
 export interface IProperty {
-    id: number;
+    id?: number;
     user_id?: number;
     purpose_id?: number;
     home_types_id?: number;
@@ -223,6 +228,7 @@ export interface IProperty {
     cupboard?: number;
     kitchen_types_id?: number;
     property_description?: string;
+    description_roomie?: string;
     gated_security?: boolean;
     gym?: boolean;
     water_supplies_id?: number;
@@ -231,6 +237,7 @@ export interface IProperty {
     verified_property?: boolean;
     agent_certification?: boolean;
     possessions_id?: number;
+    project_type_id?: number;
     flats_in_building?: number;
     deposit?: number;
     tenants_id?: number;
@@ -258,8 +265,19 @@ export interface IProperty {
     builder?: IBuilder,
     agent_profile?: IAgent,
     price_on_demand?: boolean
-    project_type_id?: number;
-
+    isSaved?: boolean
+    looking_for?: ILookingFor
+    looking_for_id?: number
+    occupancy?: IOccupancy
+    property_preferences?: IPropertyPreferences[]
+    property_highlights?: IPropertyHighlights[]
+    property_meal_types?: IPropertyMeals[]
+    single_sharing?: number | string;
+    double_sharing?: number | string;
+    triple_sharing?: number | string;
+    four_sharing?: number | string;
+    notice_period_id?: number;
+    occupancy_id?: number
 }
 export interface IPropertyListing {
 
@@ -284,10 +302,17 @@ export interface IPropertyListing {
     totalFloor: string
     propertyFloor: string
     flooringTypeId: number
+    noticePeriodId: number
+    lookingForId: number
+    occupancyId: number
     ownershipTypeId: number
     latitude: number
     longitude: number
     price: string
+    singleSharing: string
+    doubleSharing: string
+    tripleSharing: string
+    fourSharing: string
     negotiable: number
     maintenance: string
     currentlyUnderLoan: number
@@ -298,6 +323,7 @@ export interface IPropertyListing {
     cupboard: number
     kitchenTypesId: number
     propertyDescription: string
+    descriptionRoomie: string
     gatedSecurity: number
     gym: number
     waterSuppliesId: number

@@ -1,3 +1,4 @@
+import { HouseTypeEnum, IElementManagement } from "@/src/constants/app/Property";
 import { IProperty, IPropertyListing } from "@/src/data/network/models/property";
 import { IPropertyPhoto } from "@/src/data/network/models/propertyPhoto";
 import { atom } from "recoil";
@@ -51,6 +52,15 @@ export const propertyState = atom<IPropertyListing>({
         longitude: 0,
         verifiedProperty: 0,
         tenantsId: 1,
+        occupancyId: 1,
+        lookingForId: 1,
+        doubleSharing: '',
+        tripleSharing: '',
+        singleSharing: '',
+        fourSharing: '',
+        descriptionRoomie: '',
+        noticePeriodId: 1
+
     },
 });
 
@@ -80,6 +90,48 @@ export const updatePropertyState = atom<IProperty>({
     key: 'updatePropertyStateAtom',
     default: { id: NaN }
 });
+
+
+
+export const updateHighlightState = atom<number[]>({
+    key: 'updateHighlightStateAtom',
+    default: []
+});
+export const updateMealState = atom<number[]>({
+    key: 'updateMealStateAtom',
+    default: []
+});
+export const updatePreferenceState = atom<number[]>({
+    key: 'updatePreferenceStateAtom',
+    default: []
+});
+
+
+
+
+export const createPropertyState = atom<IProperty>({
+    key: 'createPropertyStateAtom',
+    default: { id: NaN }
+});
+
+
+export const createHighlightState = atom<number[]>({
+    key: 'createHighlightStateAtom',
+    default: []
+});
+export const createMealState = atom<number[]>({
+    key: 'createMealStateAtom',
+    default: []
+});
+export const createPreferenceState = atom<number[]>({
+    key: 'createPreferenceStateAtom',
+    default: []
+});
+
+export const updateAmenityState = atom<number[]>({
+    key: 'updateAmenityStateAtom',
+    default: []
+});
 export const updatePropertyFormDataState = atom<IProperty>({
     key: 'updatePropertyFormDataStateAtom',
     default: { id: NaN }
@@ -103,4 +155,15 @@ export const latitudeState = atom<number>({
 export const longitudeState = atom<number>({
     key: 'longitudeStateAtom',
     default: 72.868153
+});
+
+
+export const eleManagerState = atom<IElementManagement>({
+    key: 'eleManagerStateAtom',
+    default: HouseTypeEnum.Apartment
+});
+
+export const eleManagerUpdateState = atom<IElementManagement>({
+    key: 'eleManagerUpdateStateAtom',
+    default: HouseTypeEnum.Apartment
 });

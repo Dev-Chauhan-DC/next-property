@@ -1,4 +1,4 @@
-import { View, Text, Modal, ScrollView } from 'react-native'
+import { View, Text, Modal, ScrollView, Platform, NativeSyntheticEvent } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Input } from '@/src/components/ui/input';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -39,12 +39,15 @@ const SelectModal: React.FC<Props> = ({ title, onSelect, list, visible, setVisib
         <Modal
             visible={visible}
             animationType='slide'
+            onRequestClose={() => {
+                setVisible?.(false)
+            }}
         >
             <View
                 className='flex-1 bg-white'
                 style={{
-                    paddingTop: insets.top,
-                    paddingBottom: insets.bottom
+                    paddingTop: Platform.OS === 'ios' ? insets.top : 0,
+                    paddingBottom: Platform.OS === 'ios' ? insets.bottom : 0
                 }}
             >
                 <TitleBar
@@ -54,6 +57,7 @@ const SelectModal: React.FC<Props> = ({ title, onSelect, list, visible, setVisib
                         height={20}
                     />}
                     title={title ? title : 'Select Category'}
+                    className='mb-4'
                 />
                 <View className='px-5'>
                     <Input
@@ -74,10 +78,10 @@ const SelectModal: React.FC<Props> = ({ title, onSelect, list, visible, setVisib
                                         onSelect && onSelect(item)
                                         setVisible && setVisible(false)
                                     }}
-                                    className='items-start'
+                                    className='items-start justify-start'
                                     key={index}
                                     variant={selected === item ? 'secondary' : 'ghost'}
-                                ><TextUi>{item}</TextUi>
+                                ><TextUi className='text-start'>{item}</TextUi>
                                 </Button>
                             )
                         }

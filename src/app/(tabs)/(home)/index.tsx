@@ -8,7 +8,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { filterAtom, onFilterApplyClickAtom, searchQueryState } from '@/src/global_state/recoil/atoms/search';
 import Toast from 'react-native-root-toast';
 import { getError } from '@/src/utilities/halper_functions/service';
-import { getProperty, searchAndFilters } from '@/src/data/network/services/property';
+import { getProperty, getPropertyV2, searchAndFilters } from '@/src/data/network/services/property';
 import { IFilters, IViewport } from '@/src/utilities/interfaces/search';
 import { IGetPropertyParams, IProperty } from '@/src/data/network/models/property';
 import { calculateDeltas } from '@/src/utilities/halper_functions/google_map';
@@ -39,7 +39,7 @@ const MapScreen = () => {
 
     const searchAndFiltersHandle = async (viewport: IViewport, filters: IFilters) => {
         try {
-            const result = await searchAndFilters(viewport, filters);
+            const result = await searchAndFilters(viewport, { ...filters, view: 'map' });
             setProperties(result.data);
 
 
@@ -54,14 +54,14 @@ const MapScreen = () => {
     const getPropertyHandle = async (propertyId: number, queryParams: IGetPropertyParams) => {
         try {
             setLoadingProp(true)
-            const result = await getProperty(propertyId, queryParams);
+            const result = await getPropertyV2(propertyId, queryParams);
+            setLoadingProp(false);
             setProperty(result.data);
         } catch (e) {
             console.error(e);
             Toast.show(getError(e));
         } finally {
             setLoadingProp(false);
-
         }
     }
 
@@ -96,7 +96,9 @@ const MapScreen = () => {
         properties.map((item, index) =>
             <Marker
                 tracksViewChanges={false}
-                onPress={() => getPropertyHandle(item.id, { view: 'card' })}
+                onPress={() => {
+                    if (item?.id) { getPropertyHandle(item?.id, { view: 'card' }) }
+                }}
                 key={index}
                 coordinate={{
                     latitude: item?.latitude || 0,
@@ -104,7 +106,6 @@ const MapScreen = () => {
                 }}
             >
                 <Pressable
-
                     className='h-5 bg-red-500 rounded-[5px] items-center justify-center px-2'>
                     <Text className='font-mMedium text-white text-sm'>{item.price_on_demand ? 'CFP' : (item?.price ? '₹' + formatNumberIndian(item.price) : null)}</Text>
                 </Pressable>
@@ -128,6 +129,7 @@ const MapScreen = () => {
                 <View
                     className='bg-white m-[10px] p-[10px] rounded-[10px]'>
                     <PropertyCard
+                        isActiveHeart={property?.isSaved}
                         property={property}
                         image={property?.property_photos?.[0]?.photos}
                         price={property?.price}
@@ -184,9 +186,9 @@ const MapScreen = () => {
     return (
 
         <HomeLayout className='relative'>
-            {/* {
-                process.env.NODE_ENV === "development" && <Link href={'/(listing)/fifth'}><Text className='font-mMedium text-red-500 text-sm text-center'>Theme</Text></Link>
-            } */}
+            {
+                process.env.NODE_ENV === "development" && <Link href={'/theme'}><Text className='font-mMedium text-red-500 text-sm text-center'>Theme</Text></Link>
+            }
             {mapView}
             {propertyCard}
             {

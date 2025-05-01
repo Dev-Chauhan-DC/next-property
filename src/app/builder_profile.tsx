@@ -25,10 +25,11 @@ import { builderAddressGetAllByBuilder } from '../data/network/services/builderA
 import { builderCertificateGetAllByBuilder } from '../data/network/services/builderCertificate';
 import { builderUpdateGetAllByBuilder } from '../data/network/services/builderUpdate';
 import { useLocalSearchParams } from 'expo-router';
+import LoadingScreen from '../components/common/loading/loading_screen';
 
 const BuilderProfile = () => {
     const insets = useSafeAreaInsets();
-    const [loading, setLoading] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
     const params = useLocalSearchParams();
     const id = parseInt(params.id as string);
     const [builder, setBuilder] = useState<IBuilder>()
@@ -41,6 +42,7 @@ const BuilderProfile = () => {
 
     const getProfile = async () => {
         try {
+            setLoading(true)
             const builderResult = await builderGet(id);
             setBuilder(builderResult.data)
             const builderTeamsResult = await builderTeamGetAllByBuilder(id)
@@ -62,6 +64,11 @@ const BuilderProfile = () => {
         getProfile()
     }, [])
 
+    if (loading) {
+        return (
+            <LoadingScreen />
+        )
+    }
 
 
     return (

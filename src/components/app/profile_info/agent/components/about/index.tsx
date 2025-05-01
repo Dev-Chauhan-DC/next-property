@@ -26,7 +26,9 @@ const About: React.FC<Props> = ({ agent, getAgentHandle }) => {
 
             {
                 aboutModal &&
+
                 <UpdateAbout
+                    onRequestClose={() => setAboutModal(false)}
                     onPressClose={() => setAboutModal(false)}
                     agent={agent}
                     getAgentHandle={getAgentHandle}

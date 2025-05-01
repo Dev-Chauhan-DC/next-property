@@ -39,6 +39,7 @@ const Info: React.FC<Props> = ({ agent, getAgentHandle }) => {
             {
                 updateModal &&
                 <UpdateInfoModal
+                    onRequestClose={() => setUpdateModal(false)}
                     onPressClose={() => setUpdateModal(false)}
                     show={updateModal}
                     agent={agent}
