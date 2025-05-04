@@ -55,9 +55,10 @@ import UserCard from '../components/common/profile/user_card'
 import { gray200 } from '../constants/Images'
 import { Button as ButtonUI } from '../components/ui/button'
 import { Text as TextUI } from '../components/ui/text'
-import { LoaderCircle, MessageCircle, Phone } from 'lucide-react-native'
+import { ChevronLeftIcon, ChevronRightIcon, LoaderCircle, MessageCircle, Phone } from 'lucide-react-native'
 import { conversationCreate } from '../data/network/services/conversation'
 import { Grid, GridItem } from '../components/ui/gs/grid'
+import { Button as ButtonGlue, ButtonIcon } from "@/src/components/ui/gs/button"
 
 
 
@@ -239,8 +240,8 @@ const PropertyInformationScreen = () => {
                         }
 
                     </PagerView>
-                    <IconBack
-                        onPress={() => router.back()}
+                    {/* <IconBack
+                       
                         style={{
                             marginTop: 7,
                         }}
@@ -250,8 +251,22 @@ const PropertyInformationScreen = () => {
                             height={11}
                             fill={Colors.black[800]}
                         />}
-                    />
-                    <IconBack
+                    /> */}
+                    <ButtonGlue
+                        onPress={() => router.back()}
+                        className='mx-4 my-4 absolute top-0 left-0 rounded-full'
+                        size='icon'
+                        variant='solid'
+                        action='white'
+
+                    >
+                        <ChevronLeftIcon
+                            width={16}
+                            height={16}
+                            color={Colors.black[800]}
+                        />
+                    </ButtonGlue>
+                    {/* <IconBack
                         onPress={() => property?.id && savePropertyHandle(property?.id)}
                         style={{
                             marginTop: 7,
@@ -268,11 +283,30 @@ const PropertyInformationScreen = () => {
                                 height={11}
                                 fill={Colors.black[800]}
                             />}
-                    />
+                    /> */}
+                    <ButtonGlue
+                        onPress={() => property?.id && savePropertyHandle(property?.id)}
+                        className='mx-4 my-4 absolute top-0 right-0 rounded-full'
+                        size='icon'
+                        variant='solid'
+                        action='white'
+
+                    >{
+                            like ? <LikeActiveIcon
+                                width={14}
+                                height={14}
+                                fill={Colors.black[800]}
+                            /> : <LikeIcon
+
+                                width={14}
+                                height={14}
+                                fill={Colors.black[800]}
+                            />}
+                    </ButtonGlue>
 
                 </Pressable>
                 <View className='flex gap-2 px-3.5 pt-[18px]'>
-                    <Text className='font-mSemiBold text-black-800 text-lg '>{property?.price_on_demand ? 'Contact for Price' : '₹' + property?.price?.toLocaleString('en-IN')}</Text>
+                    <Text className='font-mSemiBold text-black-800 text-xl '>{property?.price_on_demand ? 'Contact for Price' : '₹' + property?.price?.toLocaleString('en-IN')}</Text>
 
 
 
@@ -403,61 +437,63 @@ const PropertyInformationScreen = () => {
 
 
                 {
-                    [5]?.includes?.(property?.home_type?.id ?? -1) &&
-                    <View className='px-3.5 mb-9'>
-                        <Text className='font-mSemiBold text-base text-black-800 mb-6'>Preference</Text>
-                        <Grid
-                            className="gap-3"
-                            _extra={{
-                                className: "grid-cols-4",
-                            }}
-                        >
-                            {property?.property_preferences?.map(pref => {
-                                const thepref = preferences?.find(i => i.meta?.serverId === pref.preference_id);
+                    ([5]?.includes?.(property?.home_type?.id ?? -1) && property?.property_preferences?.length !== 0) ?
+                        <View className='px-3.5 mb-9'>
+                            <Text className='font-mSemiBold text-base text-black-800 mb-6'>Preference</Text>
+                            <Grid
+                                className="gap-3"
+                                _extra={{
+                                    className: "grid-cols-4",
+                                }}
+                            >
+                                {property?.property_preferences?.map(pref => {
+                                    const thepref = preferences?.find(i => i.meta?.serverId === pref.preference_id);
 
-                                return (thepref ?
-                                    <GridItem
-                                        className=" rounded-[5px] items-center"
-                                        _extra={{
-                                            className: "col-span-1",
-                                        }}
-                                        key={pref.id}
-                                    >
-                                        <Image
-                                            style={{
-                                                width: '100%',
-                                                aspectRatio: 1,
-                                                resizeMode: 'contain',
+                                    return (thepref ?
+                                        <GridItem
+                                            className=" rounded-[5px] items-center"
+                                            _extra={{
+                                                className: "col-span-1",
                                             }}
-                                            source={thepref.img ?? gray200}
-                                        />
-                                        <Text
-                                            numberOfLines={1}
-                                            ellipsizeMode="tail"
-                                            className='text-sm font-mMedium text-black-800 capitalize'>{thepref.title}</Text>
-                                    </GridItem>
-                                    : null)
-                            }
-                            )}
-                        </Grid>
-                    </View>
+                                            key={pref.id}
+                                        >
+                                            <Image
+                                                style={{
+                                                    width: '100%',
+                                                    aspectRatio: 1,
+                                                    resizeMode: 'contain',
+                                                }}
+                                                source={thepref.img ?? gray200}
+                                            />
+                                            <Text
+                                                numberOfLines={1}
+                                                ellipsizeMode="tail"
+                                                className='text-sm font-mMedium text-black-800 capitalize'>{thepref.title}</Text>
+                                        </GridItem>
+                                        : null)
+                                }
+                                )}
+                            </Grid>
+                        </View> : null
                 }
 
 
                 {
-                    [5]?.includes?.(property?.home_type?.id ?? -1) &&
-                    <View className='px-3.5 mb-9'>
-                        <Text className='font-mSemiBold text-base text-black-800 mb-6'>Highlights</Text>
-                        <View className='flex flex-row flex-wrap gap-3'>
-                            {
-                                property?.property_highlights?.map(highlight =>
-                                    <View className='flex items-center justify-center bg-gray-100 rounded-full'>
-                                        <Text className='px-4 py-2 text-sm capitalize text-black-800 font-mRegular'>{highlight.highlight.name}</Text>
-                                    </View>
-                                )
-                            }
-                        </View>
-                    </View>
+                    ([5]?.includes?.(property?.home_type?.id ?? -1) && property?.property_highlights?.length !== 0) ?
+                        <View className='px-3.5 mb-9'>
+                            <Text className='font-mSemiBold text-base text-black-800 mb-6'>Highlights</Text>
+                            <View className='flex flex-row flex-wrap gap-3'>
+                                {
+                                    property?.property_highlights?.map(highlight =>
+                                        <View
+                                            key={highlight.id}
+                                            className='flex items-center justify-center bg-gray-100 rounded-full'>
+                                            <Text className='px-4 py-2 text-sm capitalize text-black-800 font-mRegular'>{highlight.highlight.name}</Text>
+                                        </View>
+                                    )
+                                }
+                            </View>
+                        </View> : <></>
                 }
 
                 {
@@ -467,7 +503,9 @@ const PropertyInformationScreen = () => {
                         <View className='flex flex-row flex-wrap gap-3'>
                             {
                                 property?.property_meal_types?.map(meal =>
-                                    <View className='flex items-center justify-center bg-gray-100 rounded-full'>
+                                    <View
+                                        key={meal.id}
+                                        className='flex items-center justify-center bg-gray-100 rounded-full'>
                                         <Text className='px-4 py-2 text-sm capitalize text-black-800 font-mRegular'>{meals.find(ml => ml.meta?.serverId === meal.meal_type_id)?.title}</Text>
                                     </View>
                                 )
@@ -478,28 +516,33 @@ const PropertyInformationScreen = () => {
 
 
 
-                <View className='px-3.5 mb-9'>
-                    <Text className='font-mSemiBold text-base text-black-800 mb-6'>Amenities</Text>
-                    <View className='gap-5'>
-                        {
-                            property?.property_amenities?.map((item, index) => {
+                {
+                    property?.property_amenities?.length !== 0 ?
+                        <View className='px-3.5 mb-9'>
+                            <Text className='font-mSemiBold text-base text-black-800 mb-6'>Amenities</Text>
+                            <View className='gap-5'>
+                                {
+                                    property?.property_amenities?.map((item, index) => {
 
-                                if (item?.amenity?.amenitie) {
-                                    return (<IconTitle
-                                        key={index}
-                                        title={item?.amenity?.amenitie}
-                                        icon={amenities.find(i => i.title === item.amenity?.amenitie)?.icon}
-                                    />)
+                                        if (item?.amenity?.amenitie) {
+                                            return (<IconTitle
+                                                key={item.id}
+                                                title={item?.amenity?.amenitie}
+                                                icon={amenities.find(i => i.title === item.amenity?.amenitie)?.icon}
+                                            />)
+                                        }
+
+
+                                    }
+                                    )
                                 }
 
 
-                            }
-                            )
-                        }
+                            </View>
+                        </View>
+                        : null
+                }
 
-
-                    </View>
-                </View>
                 {/* Profiles */}
                 {
                     property?.builder?.name || property?.agent_profile?.name ?
@@ -532,12 +575,26 @@ const PropertyInformationScreen = () => {
 
 
 
-                <View className='px-3.5 mb-9'>
-                    <Text className='font-mSemiBold text-base text-black-800 mb-3'>{[5]?.includes?.(property?.home_type?.id ?? -1) ? 'Description about Room' : 'Description from Owner'}</Text>
-                    <Text
-                        className='text-base font-mRegular text-black-800'
-                    >{property?.property_description}</Text>
-                </View>
+                {
+                    property?.property_description ?
+
+                        <View className='px-3.5 mb-9'>
+                            <Text className='font-mSemiBold text-base text-black-800 mb-3'>{[5]?.includes?.(property?.home_type?.id ?? -1) ? 'Description about Room' : 'Description from Owner'}</Text>
+                            <Text
+                                className='text-base font-mRegular text-black-800'
+                            >{property?.property_description}</Text>
+                        </View>
+                        : null
+                }
+
+
+
+
+
+
+
+
+
                 {
                     [5]?.includes?.(property?.home_type?.id ?? -1) && property?.description_roomie ?
                         <View className='px-3.5 mb-9'>
@@ -546,7 +603,14 @@ const PropertyInformationScreen = () => {
                                 className='text-base font-mRegular text-black-800'
                             >{property?.description_roomie}</Text>
                         </View> : null}
-                <View className='flex flex-row items-center gap-3 px-3.5 mb-9'>
+
+
+
+
+
+
+
+                <View className=' flex flex-row items-center gap-3 px-3.5 mb-9'>
                     <ButtonUI
                         className='flex-1'
                         onPress={onPressGetNumberHandle}

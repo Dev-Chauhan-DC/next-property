@@ -15,6 +15,8 @@ import { balcony, bathroom, bedroom, ElementEnum, elementManagement, facing, flo
 import { getProperty, updateProperty } from '@/src/data/network/services/property'
 import { IProperty } from '@/src/data/network/models/property'
 import MultipleSelectV2 from '@/src/components/common/select/multiple_select_v2'
+import { twMerge } from 'tailwind-merge'
+import { numberSelectClass, textSelectClass } from '../filter'
 
 const FirstScreen = () => {
     const insets = useSafeAreaInsets();
@@ -366,6 +368,8 @@ const FirstScreen = () => {
                             title='Bedroom *'
                         >
                             <SingleSelect
+                                textClassName={twMerge(``, textSelectClass)}
+                                classNameItem={twMerge(``, numberSelectClass)}
                                 defaultIndex={property?.bedroom_count}
                                 onSelect={(index) => setFormData(e => ({ ...e, bedroom_count: index }))}
                                 list={bedroom}
@@ -387,6 +391,8 @@ const FirstScreen = () => {
                             title='Bathroom *'
                         >
                             <SingleSelect
+                                textClassName={twMerge(``, textSelectClass)}
+                                classNameItem={twMerge(``, numberSelectClass)}
                                 defaultIndex={property?.bedroom_count}
                                 onSelect={(index) => setFormData(e => ({ ...e, bathroom_count: index }))}
                                 list={bathroom}
@@ -408,6 +414,8 @@ const FirstScreen = () => {
                             title='Hall *'
                         >
                             <SingleSelect
+                                textClassName={twMerge(``, textSelectClass)}
+                                classNameItem={twMerge(``, numberSelectClass)}
                                 onSelect={(index) => setFormData(e => ({ ...e, hall_count: index }))}
                                 defaultIndex={property?.hall_count}
                                 list={hall}
@@ -433,6 +441,8 @@ const FirstScreen = () => {
                             title='Kitchen *'
                         >
                             <SingleSelect
+                                textClassName={twMerge(``, textSelectClass)}
+                                classNameItem={twMerge(``, numberSelectClass)}
                                 onSelect={(index) => setFormData(e => ({ ...e, kitchen_count: index }))}
                                 defaultIndex={property?.kitchen_count}
                                 list={kitchen}
@@ -456,6 +466,8 @@ const FirstScreen = () => {
                             title='Balcony *'
                         >
                             <SingleSelect
+                                textClassName={twMerge(``, textSelectClass)}
+                                classNameItem={twMerge(``, numberSelectClass)}
                                 onSelect={(index) => setFormData(e => ({ ...e, balcony_count: index }))}
                                 defaultIndex={property?.balcony_count}
                                 list={balcony}

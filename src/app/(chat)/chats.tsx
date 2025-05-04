@@ -88,12 +88,12 @@ const chats = () => {
                         />
                         <Avatar alt="Zach Nugent's Avatar" className='h-12 w-12'>
                             <AvatarFallback>
-                                <Text>{secondUser?.first_name ? getInitials(secondUser?.first_name) : null}</Text>
+                                <TextUI>{secondUser?.first_name ? getInitials(secondUser?.first_name) : null}</TextUI>
                             </AvatarFallback>
                         </Avatar>
                     </Pressable>
                     <View>
-                        <Text className='text-black-800 text-sm truncate font-mMedium mb-1'>{secondUser?.first_name}</Text>
+                        <Text className='text-black-800 text-base truncate font-mMedium mb-1'>{secondUser?.first_name}</Text>
                         <Text className='text-gray-300 text-xs truncate font-mMedium'>id: {secondUser?.id}</Text>
                     </View>
                 </View>
@@ -109,8 +109,8 @@ const chats = () => {
                             <View className={`
                                 ${chat.item.sender_id === user?.id ? 'flex flex-col items-end' : 'flex flex-col items-start'}
                                 bg-gray-100 p-2 rounded-lg max-w-[70%]`}>
-                                <Text className='text-black-800 text-sm font-mMedium'>{chat.item.message}</Text>
-                                <Text className='text-[10px] text-gray-300'>{moment(chat.item.createdAt).tz("Asia/Kolkata").format("hh:mm A")}</Text>
+                                <Text className='text-black-800 text-base font-mRegular'>{chat.item.message}</Text>
+                                <Text className='text-xs font-mMedium text-gray-300'>{moment(chat.item.createdAt).tz("Asia/Kolkata").format("hh:mm A")}</Text>
                             </View>
                         </View>
                     }

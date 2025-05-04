@@ -20,11 +20,12 @@ interface Props {
     list?: ISelectList[];
     onSelect?: (arr: number[]) => void;
     classNameItem?: string;
+    textClassName?: string;
     setSelected: React.Dispatch<React.SetStateAction<number[]>>
     selected: number[]
 }
 
-const MultipleSelectV2: React.FC<Props> = ({ setSelected, selected, list, onSelect, classNameItem }) => {
+const MultipleSelectV2: React.FC<Props> = ({ textClassName, setSelected, selected, list, onSelect, classNameItem }) => {
 
 
     const onPressHandle = (index: number) => {
@@ -39,6 +40,7 @@ const MultipleSelectV2: React.FC<Props> = ({ setSelected, selected, list, onSele
         }
 
         // Update state and pass updated array to onSelect callback
+        setSelected(updatedArr)
         if (onSelect) onSelect(updatedArr);
     };
 
@@ -54,19 +56,23 @@ const MultipleSelectV2: React.FC<Props> = ({ setSelected, selected, list, onSele
                         onPress={() => onPressHandle(index)}
                         className={twMerge(`
                             ${selected.includes(index) ? 'bg-primary' : 'bg-gray-100'}
-                            gap-1 flex items-center justify-center p-4 rounded-[5px]`, classNameItem)}
+                            gap-1 flex items-center justify-center rounded-[5px]
+                            ${item.icon ? 'p-4' : 'px-4 py-2'}
+                            `, classNameItem)}
                         key={index}>
                         {item.icon ?
                             React.cloneElement(item.icon as React.ReactElement, {
+
                                 width: 30,
                                 height: 30,
-                                fill: selected.includes(index) ? 'white' : Colors.gray[400]
+                                stroke: selected.includes(index) ? 'white' : Colors.gray[400],
+                                strokeWidth: 1.2
                             })
                             : null
                         }
-                        <Text className={`
+                        <Text className={twMerge(`
                             ${selected.includes(index) ? 'text-white' : 'text-gray-400'}
-                            text-base font-mMedium capitalize`}>{item.title}</Text>
+                            text-base font-mMedium capitalize`, textClassName)}>{item.title}</Text>
                     </Pressable>
                 )
             }

@@ -95,6 +95,7 @@ const MapScreen = () => {
     const markers = useMemo(() => (
         properties.map((item, index) =>
             <Marker
+                className='font-mBold text-white text-sm'
                 tracksViewChanges={false}
                 onPress={() => {
                     if (item?.id) { getPropertyHandle(item?.id, { view: 'card' }) }
@@ -106,8 +107,8 @@ const MapScreen = () => {
                 }}
             >
                 <Pressable
-                    className='h-5 bg-red-500 rounded-[5px] items-center justify-center px-2'>
-                    <Text className='font-mMedium text-white text-sm'>{item.price_on_demand ? 'CFP' : (item?.price ? '₹' + formatNumberIndian(item.price) : null)}</Text>
+                    className='h-6 bg-red-500 rounded-[5px] items-center justify-center px-2'>
+                    <Text className='font-mBold text-white text-sm'>{item.price_on_demand ? 'CFP' : (item?.price ? '₹' + formatNumberIndian(item.price) : null)}</Text>
                 </Pressable>
             </Marker>
         )
@@ -166,6 +167,7 @@ const MapScreen = () => {
 
         return (
             <MapView2
+                className='font-mBold'
                 clusterColor={Colors.red[500]}
                 provider={PROVIDER_GOOGLE}
                 style={{
@@ -186,9 +188,9 @@ const MapScreen = () => {
     return (
 
         <HomeLayout className='relative'>
-            {
+            {/* {
                 process.env.NODE_ENV === "development" && <Link href={'/theme'}><Text className='font-mMedium text-red-500 text-sm text-center'>Theme</Text></Link>
-            }
+            } */}
             {mapView}
             {propertyCard}
             {

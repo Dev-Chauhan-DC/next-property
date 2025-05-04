@@ -9,9 +9,11 @@ import TitleLayout from '@/src/components/common/title_layout'
 import SingleSelect from '@/src/components/common/select/single_select'
 import { useRecoilState } from 'recoil'
 import { createPreferenceState, eleManagerState, propertyState, updatePreferenceState } from '@/src/global_state/recoil/atoms/property'
-import { availability, cupboards, ElementEnum, elementManagement, furnishing, kitchenType, parkingSlotFourWheel, parkingSlotTwoWheel, possesion } from '@/src/constants/app/Property'
+import { availability, cupboards, ElementEnum, elementManagement, furnishing, houseType, HouseTypeEnum, kitchenType, parkingSlotFourWheel, parkingSlotTwoWheel, possesion } from '@/src/constants/app/Property'
 import PreferenceSelect from '@/src/components/app/(listing)/third/preference_select'
 import { Textarea } from '@/src/components/ui/textarea'
+import { twMerge } from 'tailwind-merge'
+import { numberSelectClass, textSelectClass } from '../filter'
 
 const ThirdScreen = () => {
     const insets = useSafeAreaInsets();
@@ -65,7 +67,11 @@ const ThirdScreen = () => {
                             keyboardType='numeric'
                             value={property.price}
                             onChangeText={(e) => setProperty(prevState => ({ ...prevState, price: e }))}
-                            placeholder='Expected Price (e.g. 500000) *'
+                            placeholder={
+                                [
+                                    houseType.find(i => i.title === HouseTypeEnum.Room)?.meta?.serverId,
+                                    houseType.find(i => i.title === HouseTypeEnum.PG)?.meta?.serverId,
+                                ].includes(property.homeTypeId) ? 'Expected Rent per Month (e.g. 5000) *' : 'Expected Price (e.g. 500000) *'}
                         />
                     }
 
@@ -147,6 +153,8 @@ const ThirdScreen = () => {
                             title='Parking Slot For Two Wheeler *'
                         >
                             <SingleSelect
+                                textClassName={twMerge(``, textSelectClass)}
+                                classNameItem={twMerge(``, numberSelectClass)}
                                 selected={property.parkingSlotTwoWheelerCount}
                                 onSelect={(index) => setProperty(prevState => ({ ...prevState, parkingSlotTwoWheelerCount: index }))}
                                 list={parkingSlotTwoWheel}
@@ -165,6 +173,8 @@ const ThirdScreen = () => {
                             title='Parking Slot For Four Wheeler *'
                         >
                             <SingleSelect
+                                textClassName={twMerge(``, textSelectClass)}
+                                classNameItem={twMerge(``, numberSelectClass)}
                                 selected={property.parkingSlotFourWheelerCount}
                                 onSelect={(index) => setProperty(prevState => ({ ...prevState, parkingSlotFourWheelerCount: index }))}
                                 list={parkingSlotFourWheel}
@@ -182,6 +192,8 @@ const ThirdScreen = () => {
                             title='Cupboards *'
                         >
                             <SingleSelect
+                                textClassName={twMerge(``, textSelectClass)}
+                                classNameItem={twMerge(``, numberSelectClass)}
                                 selected={property.cupboard}
                                 onSelect={(index) => setProperty(prevState => ({ ...prevState, cupboard: index }))}
                                 list={cupboards}

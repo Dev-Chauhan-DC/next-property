@@ -1,7 +1,6 @@
 import * as SplashScreen from 'expo-splash-screen';
 import "@/src/app/global.css";
 import { GluestackUIProvider } from "@/src/components/ui/gs/gluestack-ui-provider";
-SplashScreen.preventAutoHideAsync();
 import { Stack } from "expo-router";
 import './global.css'
 import {
@@ -44,7 +43,7 @@ export default function RootLayout() {
   useEffect(() => {
     async function prepare() {
       try {
-        await new Promise(resolve => setTimeout(resolve, 3000)); // 3-second delay
+        await new Promise(resolve => setTimeout(resolve, 2000));
         await SplashScreen.hideAsync()
       } catch (e) {
         // console.warn(e);

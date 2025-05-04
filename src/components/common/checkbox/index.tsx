@@ -31,7 +31,7 @@ const Checkbox: React.FC<Props> = ({ title, check, onPress }) => {
 
 
             </View>
-            <Text className='text-base font-mRegular text-gray-400'>{title}</Text>
+            <Text className='text-base font-mMedium text-black-800'>{title}</Text>
         </Pressable>
     )
 }

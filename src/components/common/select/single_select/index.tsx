@@ -10,11 +10,12 @@ interface Props {
     list?: { icon?: React.ReactNode, title: string }[];
     onSelect?: (index: number) => void;
     classNameItem?: string;
+    textClassName?: string;
     selected?: number
     defaultIndex?: number
 }
 
-const SingleSelect: React.FC<Props> = ({ defaultIndex, list, onSelect, classNameItem, selected }) => {
+const SingleSelect: React.FC<Props> = ({ textClassName, defaultIndex, list, onSelect, classNameItem, selected }) => {
     const [current, setCurrent] = useState<number>(0);
 
 
@@ -48,19 +49,22 @@ const SingleSelect: React.FC<Props> = ({ defaultIndex, list, onSelect, className
                         }}
                         className={twMerge(`
                             ${current === index ? 'bg-primary' : 'bg-gray-100'}
-                            gap-1 flex items-center justify-center p-4 rounded-[5px]`, classNameItem)}
+                            gap-1 flex items-center justify-center rounded-[5px]
+                            ${item.icon ? 'p-4' : 'px-4 py-2'}
+                            `, classNameItem)}
                         key={index}>
                         {item.icon ?
                             React.cloneElement(item.icon as React.ReactElement, {
                                 width: 30,
                                 height: 30,
-                                fill: current === index ? 'white' : Colors.gray[400]
+                                stroke: current === index ? 'white' : Colors.gray[400],
+                                strokeWidth: 1.2
                             })
                             : null
                         }
-                        <Text className={`
+                        <Text className={twMerge(`
                             ${current === index ? 'text-white' : 'text-gray-400'}
-                            text-balance font-mMedium capitalize`}>{item.title}</Text>
+                            text-balance font-mMedium capitalize`, textClassName)}>{item.title}</Text>
                     </Pressable>
                 )
             }

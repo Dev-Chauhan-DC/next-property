@@ -45,12 +45,12 @@ const settings = () => {
                 <View className='flex-1'>
                     <Button
                         onPress={() => router.push('/(chat)/user')}
-                        variant={'secondary'}
+                        variant={'black'}
                     >
                         <MessageCircleIcon
                             width={14}
                             height={14}
-                            color={Colors.black[800]}
+                            color={'white'}
                         />
                         <Text>Chats</Text>
                     </Button>
@@ -86,14 +86,18 @@ const settings = () => {
                         <Text>company@nexsyys.com</Text>
                     </Button>
                     <Button
+                        variant={'secondary'}
                         onPress={onLogoutPress}
-                        variant={'outlineDestructive'}
-                        className='flex flex-row gap-3'>
-                        <LogOut
+                    ><Text>Delete Account</Text></Button>
+                    <Button
+                        onPress={onLogoutPress}
+                        variant={'secondary'}
+                        className=''>
+                        {/* <LogOut
                             width={14}
                             height={14}
                             color={Colors.red[500]}
-                        />
+                        /> */}
                         <Text>Logout</Text>
                     </Button>
                 </View>

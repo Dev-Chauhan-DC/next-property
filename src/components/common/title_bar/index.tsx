@@ -19,7 +19,12 @@ interface Props {
 
 const TitleBar: React.FC<Props> = ({ onPressIcon, title, className, icon }) => {
     return (
-        <View className={twMerge('flex flex-row items-center gap-5 p-2.5', className)}>
+        <View
+
+            style={{
+                boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)'
+            }}
+            className={twMerge('flex flex-row items-center gap-5 p-2.5 ', className)}>
             {/* <IconBack
                 onPress={(e) => onPressIcon ? onPressIcon(e) : router.back()}
                 icon={icon ? icon : <ArrowIcon
@@ -35,8 +40,8 @@ const TitleBar: React.FC<Props> = ({ onPressIcon, title, className, icon }) => {
                 className='rounded-full'
             >
                 <ChevronLeftIcon
-                    width={16}
-                    height={16}
+                    width={20}
+                    height={20}
                     stroke={Colors.black[800]}
                 />
             </ButtonUI>

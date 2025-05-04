@@ -56,7 +56,7 @@ const Index: React.FC<Props> = ({ children, loaded, error }) => {
 
     useEffect(() => {
         if (user) {
-            if (!(user.user_roles_id)) {
+            if (!(user?.user_roles_id) || !(user?.first_name)) {
                 if (pathname !== '/role')
                     router.push('/role')
             }

@@ -1,29 +1,34 @@
 import { View, Text, Pressable, GestureResponderEvent } from 'react-native'
 import React from 'react'
 import { Colors } from '@/src/constants/Colors';
+import { Button } from '../../ui/button';
+import { twMerge } from 'tailwind-merge';
 
 
 interface Props {
     icon: React.ReactNode;
     title: string
     onPress?: (event: GestureResponderEvent) => void
+    className?: string
 }
 
-const ButtonIcon: React.FC<Props> = ({ icon, title, onPress }) => {
+const ButtonIcon: React.FC<Props> = ({ icon, title, onPress, className }) => {
     return (
-        <Pressable
+        <Button
+            variant={'secondary'}
+            size={'sm'}
             onPress={onPress}
-            className='rounded-full px-[14px] py-[5px] flex flex-row items-center gap-[3px] border border-gray-300  '>
+            className={twMerge('rounded-full px-[14px] py-[5px] flex flex-row items-center gap-2 bg-white border border-gray-200  ', className)}>
             {
                 icon ?
                     React.cloneElement(icon as React.ReactElement, {
-                        width: 12,
-                        height: 12,
+                        width: 16,
+                        height: 16,
                         fill: Colors.black[800]
                     }) : null
             }
-            <Text className='text-xs text-black-800 font-mRegular'>{title}</Text>
-        </Pressable>
+            <Text className='text-base text-black-800 font-mRegular'>{title}</Text>
+        </Button>
     )
 }
 

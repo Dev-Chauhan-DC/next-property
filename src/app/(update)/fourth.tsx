@@ -228,7 +228,7 @@ const FourthScreen = () => {
                         >
                             <TextUi>{value ? value : "Select Builder"}</TextUi>
                             <ChevronsUpDown
-                                strokeWidth={1.25}
+                                strokeWidth={1.5}
                                 color={Colors.gray[300]}
                             />
                             <SelectModal
@@ -261,7 +261,7 @@ const FourthScreen = () => {
                         >
                             <TextUi>{agent ? agent : "Select Agent"}</TextUi>
                             <ChevronsUpDown
-                                strokeWidth={1.25}
+                                strokeWidth={1.5}
                                 color={Colors.gray[300]}
                             />
                             <SelectModal

@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View, Text, ActivityIndicator } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import ArrowIcon from '../assets/svgs/ArrowIcon'
 import IconBack from '../components/common/icon_back'
@@ -6,7 +6,7 @@ import { Colors } from '../constants/Colors'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Link, useRouter } from 'expo-router'
 import Input from '../components/input'
-import Button from '../components/common/button/Button'
+import { Button } from '../components/ui/button'
 import TitleBar from '../components/common/title_bar'
 import useLogout from '../hooks/useLogout'
 import { useRecoilState } from 'recoil'
@@ -17,6 +17,7 @@ import { IUpdateUser, IUser } from '../data/network/models/user'
 import Toast from 'react-native-root-toast'
 import Builder from '../components/app/profile_info/builder'
 import Agent from '../components/app/profile_info/agent'
+import { Text as TextUI } from '../components/ui/text'
 
 const ProfileInfoScreen = () => {
     const logout = useLogout();
@@ -60,7 +61,7 @@ const ProfileInfoScreen = () => {
     const onPressUpdateHandle = async () => {
         await updateUserHandle({
             firstName: fName,
-            lastName: lName,
+            // lastName: lName,
             email: email,
             agencyName: agency,
             companyName: company,
@@ -83,7 +84,7 @@ const ProfileInfoScreen = () => {
 
         if (user) {
             if (user.first_name) setFName(user.first_name);
-            if (user.last_name) setLName(user.last_name);
+            // if (user.last_name) setLName(user.last_name);
             if (user.phone_number) setPhone(user.phone_number);
             if (user.email) setEmail(user.email);
             if (user.secondary_number) setSNumber(user.secondary_number);
@@ -115,19 +116,19 @@ const ProfileInfoScreen = () => {
                 paddingTop: insets.top,
             }}
         >
-            <TitleBar title='Personal Information' />
+            <TitleBar title='Personal Information' className='mb-5' />
             <View className='gap-4 px-[10px]'>
 
                 <Input
                     onChangeText={(e) => setFName(e)}
                     value={fName}
-                    placeholder='First Name'
+                    placeholder='Full Name'
                 />
-                <Input
+                {/* <Input
                     onChangeText={(e) => setLName(e)}
                     value={lName}
                     placeholder='Last Name'
-                />
+                /> */}
                 <Input
                     onChangeText={(e) => setPhone(e)}
                     value={phone}
@@ -159,18 +160,19 @@ const ProfileInfoScreen = () => {
                     placeholder='Company Name'
                 />
                 <Button
-                    loading={loading}
+                    variant={'black'}
                     onPress={onPressUpdateHandle}
-                    title='Update Information'
-                />
+                    disabled={loading}
+                >
+                    {loading ? <ActivityIndicator size={'small'} color={'white'} /> : null}
+                    <TextUI>Update Information</TextUI>
+                </Button>
+
                 <Button
-                    className='bg-red-500 '
+                    variant={'ghost'}
                     onPress={() => logout()}
-                    title='Delete Account'
-                />
-                <Text
-                    onPress={() => logout()}
-                    className='font-mMedium text-red-500 text-sm text-center'>Logout</Text>
+                ><TextUI>Logout</TextUI></Button>
+
             </View>
 
 

@@ -11,10 +11,11 @@ import IconBack from '@/src/components/common/icon_back'
 import LikeIcon from '@/src/assets/svgs/LikeIcon'
 import LikeActiveIcon from '@/src/assets/svgs/LikeActiveIcon'
 import EditIcon from '@/src/assets/svgs/EditIcon'
-import { DeleteIcon } from 'lucide-react-native'
+import { DeleteIcon, Pencil, Trash, UsersRound } from 'lucide-react-native'
 import CloseIcon from '@/src/assets/svgs/CloseIcon'
 import { gray200 } from '@/src/constants/Images'
 import { thumbnailName } from '@/src/constants/app/Property'
+import { Button } from '@/src/components/ui/button'
 
 export const propMetaClassName = {
     number: 'text-base font-mSemiBold text-black-800',
@@ -132,10 +133,9 @@ const PropertyCard: React.FC<Props> = ({
 
                         <IconBack
                             onPress={onPressEdit}
-                            icon={<EditIcon
-                                width={12}
-                                height={12}
-                                fill={Colors.black[800]}
+                            icon={<Pencil
+                                color={Colors.black[800]}
+                                strokeWidth={1.3}
                             />}
                         />
 
@@ -146,10 +146,10 @@ const PropertyCard: React.FC<Props> = ({
 
                         <IconBack
                             onPress={onPressDelete}
-                            icon={<CloseIcon
-                                width={12}
-                                height={12}
-                                fill={Colors.black[800]}
+                            icon={<Trash
+                                color={Colors.black[800]}
+                                stroke={Colors.black[800]}
+                                strokeWidth={1.3}
                             />}
                         />
 
@@ -185,53 +185,69 @@ const PropertyCard: React.FC<Props> = ({
                 }
                 {
                     interestedPeople ?
-                        <Pressable
+                        <Button
+                            size={'sm'}
                             onPress={onPressInterestedPeople}
-                            className='gap-2 m-2 px-2.5 absolute bottom-0 right-0 h-8 bg-white rounded-full flex-row items-center justify-center'>
-                            <PeopleIcon
-
-                                fill={Colors.black[800]}
+                            className='gap-2 m-2 px-3 absolute bottom-0 right-0 h-8 bg-white rounded-full flex-row items-center justify-center'>
+                            <UsersRound
+                                strokeWidth={1.3}
+                                color={Colors.black[800]}
                                 width={20}
                                 height={20}
                             />
                             <Text className='text-black-800 text-sm font-mMedium'>Interested People</Text>
-                        </Pressable>
+                        </Button>
                         :
                         null
                 }
 
             </View>
             <View className='flex gap-[5px] mt-[10px]'>
-                <Text className='font-mSemiBold text-black-800 text-lg '>{property?.price_on_demand ? 'Contact for Price' : '₹' + price?.toLocaleString('en-IN')}</Text>
-                <View className='flex flex-row gap-1'>
-                    <View className={propMetaClassName.container}>
-                        <Text className={propMetaClassName.number}>{bd?.toLocaleString('en-IN')}</Text>
-                        <Text className={propMetaClassName.label}>bd</Text>
-                        <Text className={propMetaClassName.line}>|</Text>
-                    </View>
-                    <View className={propMetaClassName.container}>
-                        <Text className={propMetaClassName.number}>{ba?.toLocaleString('en-IN')}</Text>
-                        <Text className={propMetaClassName.label}>ba</Text>
-                        <Text className={propMetaClassName.line}>|</Text>
-                    </View>
-                    <View className={propMetaClassName.container}>
-                        <Text className={propMetaClassName.number}>{hall?.toLocaleString('en-IN')}</Text>
-                        <Text className={propMetaClassName.label}>hall</Text>
-                        <Text className={propMetaClassName.line}>|</Text>
-                    </View>
-                    <View className={propMetaClassName.container}>
-                        <Text className={propMetaClassName.number}>{kitchen?.toLocaleString('en-IN')}</Text>
-                        <Text className={propMetaClassName.label}>kitchen</Text>
-                        <Text className={propMetaClassName.line}>|</Text>
-                    </View>
-                    <View className={propMetaClassName.container}>
-                        <Text className={propMetaClassName.number}>{sqft?.toLocaleString('en-IN')}</Text>
-                        <Text className={propMetaClassName.label}>sqft</Text>
-                        {/* <Text className={propMetaClassName.line}>|</Text> */}
-                    </View>
+                <View className='flex flex-row gap-1 items-center '>
+                    <Text className='font-mSemiBold text-black-800 text-lg/none '>
+                        {property?.price_on_demand ? 'Contact for Price' : '₹' + price?.toLocaleString('en-IN')}</Text>
+                    {[5, 6].includes(property?.home_types_id ?? -1) ?
+                        <Text className='text-xs/none text-gray-400 font-mMedium'> / Month</Text>
+                        : null}
                 </View>
-                <Text className='text-base font-mRegular text-gray-400 capitalize'>{address && truncateText(address, 100, 'center')}</Text>
-                <Text className='text-xs font-mBold text-gray-400 capitalize'>Listed by {role ? role : 'NP User'}</Text>
+                {
+                    [1, 2, 3, 4].includes(property?.home_types_id ?? -1) ?
+                        <View className='flex flex-row gap-1'>
+                            <View className={propMetaClassName.container}>
+                                <Text className={propMetaClassName.number}>{bd?.toLocaleString('en-IN')}</Text>
+                                <Text className={propMetaClassName.label}>bd</Text>
+                                <Text className={propMetaClassName.line}>|</Text>
+                            </View>
+                            <View className={propMetaClassName.container}>
+                                <Text className={propMetaClassName.number}>{ba?.toLocaleString('en-IN')}</Text>
+                                <Text className={propMetaClassName.label}>ba</Text>
+                                <Text className={propMetaClassName.line}>|</Text>
+                            </View>
+                            <View className={propMetaClassName.container}>
+                                <Text className={propMetaClassName.number}>{hall?.toLocaleString('en-IN')}</Text>
+                                <Text className={propMetaClassName.label}>hall</Text>
+                                <Text className={propMetaClassName.line}>|</Text>
+                            </View>
+                            <View className={propMetaClassName.container}>
+                                <Text className={propMetaClassName.number}>{kitchen?.toLocaleString('en-IN')}</Text>
+                                <Text className={propMetaClassName.label}>kitchen</Text>
+                                <Text className={propMetaClassName.line}>|</Text>
+                            </View>
+                            <View className={propMetaClassName.container}>
+                                <Text className={propMetaClassName.number}>{sqft?.toLocaleString('en-IN')}</Text>
+                                <Text className={propMetaClassName.label}>sqft</Text>
+                                {/* <Text className={propMetaClassName.line}>|</Text> */}
+                            </View>
+                        </View>
+                        : null
+                }
+                {
+                    [5, 6].includes(property?.home_types_id ?? -1) ?
+                        <Text className='text-base font-mMedium text-black-800 capitalize'>Looking for {property?.looking_for?.name}</Text> : null
+                }
+
+                <Text className='text-base font-mRegular text-gray-400 capitalize'>{address && truncateText(address, 50, 'center')}</Text>
+                <Text className='text-sm font-mBold text-gray-400 capitalize'>Listed by {role ? role : 'NP User'}</Text>
             </View>
         </Pressable>
     )

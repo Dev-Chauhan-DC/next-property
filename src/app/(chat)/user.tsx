@@ -70,7 +70,7 @@ const User = () => {
                                     </AvatarFallback>
                                 </Avatar>
                                 <View>
-                                    <Text className='text-black-800 text-sm truncate font-mMedium mb-1'>{otherUser.first_name}</Text>
+                                    <Text className='text-black-800 text-base truncate font-mMedium mb-1'>{otherUser.first_name}</Text>
                                     <Text className='text-gray-300 text-xs truncate font-mMedium'>id: {otherUser.id}</Text>
                                 </View>
                             </Pressable>)

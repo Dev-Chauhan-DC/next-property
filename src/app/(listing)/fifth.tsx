@@ -16,7 +16,7 @@ import { createFile, readFile } from '@/src/data/network/services/file'
 import { getKeyFromS3Presigned } from '@/src/utilities/halper_functions/s3'
 import { Colors } from '@/src/constants/Colors'
 import { useRecoilState } from 'recoil'
-import { amenityArryState, eleManagerState, imageFileIdsState, imageUrlsState, propertyPhotoState, propertyState, updateHighlightState, updateMealState, updatePreferenceState } from '@/src/global_state/recoil/atoms/property'
+import { amenityArryState, createPreferenceState, eleManagerState, imageFileIdsState, imageUrlsState, propertyPhotoState, propertyState, updateHighlightState, updateMealState, updatePreferenceState } from '@/src/global_state/recoil/atoms/property'
 import { postProperty } from '@/src/data/network/services/property'
 import { getError } from '@/src/utilities/halper_functions/service'
 import { createPhotos, createPhotosV2 } from '@/src/data/network/services/photo'
@@ -57,7 +57,8 @@ const FifthScreen = () => {
     const [eleManager, setEleManager] = useRecoilState(eleManagerState)
     const [highlight, setHighlight] = useRecoilState(updateHighlightState);
     const [meal, setMeal] = useRecoilState(updateMealState);
-    const [preference, setPreference] = useRecoilState(updatePreferenceState);
+    const [preference, setPreference] = useRecoilState(createPreferenceState);
+
 
 
     const pickImage = async () => {

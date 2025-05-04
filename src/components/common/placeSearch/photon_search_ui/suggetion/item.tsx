@@ -18,25 +18,25 @@ const Item: React.FC<Props> = ({ title, message, onPress }) => {
         <Pressable
             onPress={onPress}
             className='flex flex-row gap-3 items-center'>
-            <View className='w-5 h-5 rounded-full bg-gray-200 flex items-center justify-center'>
+            <View className='w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center'>
                 <LocationIcon
-                    width={10}
-                    height={10}
+                    width={14}
+                    height={14}
                     fill={Colors.black[800]}
                 />
             </View>
             <View
                 className='flex-1'
             >
-                <Text className='text-sm font-mRegular text-black-800'>{title}</Text>
-                <Text className='text-gray-300 text-sm'>{message}</Text>
+                <Text className='text-base font-mRegular text-black-800'>{title}</Text>
+                <Text className='text-gray-400 font-mRegular text-sm'>{message}</Text>
             </View>
             <ArrowIcon
                 style={{
                     transform: [{ rotate: '45deg' }]
                 }}
-                width={12}
-                height={12}
+                width={14}
+                height={14}
                 fill={Colors.black[800]}
             />
         </Pressable>

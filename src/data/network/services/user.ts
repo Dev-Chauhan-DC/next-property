@@ -24,6 +24,17 @@ export const updateUser = async (data: IUpdateUser) => {
     }
 }
 
+
+export const updateUserV2 = async (user: IUser): Promise<IResponse<IUser>> => {
+    try {
+        const result = await remInstance.put(remEndpoints.updateUserV2, user);
+        return result.data
+    } catch (e) {
+        console.error(e)
+        throw e;
+    }
+}
+
 export const updateRole = async (roleId: number): Promise<IResponse<number[]>> => {
     try {
         const result = await remInstance.post(remEndpoints.role, { roleId });

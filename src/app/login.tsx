@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Image, Linking } from 'react-native'
+import { View, Text, ScrollView, Image, Linking, ActivityIndicator } from 'react-native'
 import React, { useState } from 'react'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Input from '../components/input';
@@ -12,6 +12,8 @@ import { AsyncStorageKey } from '../constants/AsyncStorageKeys';
 import { router } from 'expo-router';
 import { useRecoilState } from 'recoil';
 import { userState } from '../global_state/recoil/atoms/user';
+import { Button as ButtonUI } from '../components/ui/button';
+import { Text as TextUI } from '../components/ui/text';
 
 const login = () => {
     const insets = useSafeAreaInsets();
@@ -90,11 +92,16 @@ const login = () => {
                                 placeholder='Enter OTP' /> :
                             null
                     }
-                    <Button
-                        loading={loading}
+                    <ButtonUI
+                        disabled={loading}
                         onPress={showOtp ? verifyOtpHandle : sendOtpHandle}
-                        className='w-full bg-primary'
-                        title='Send OTP' />
+                        className='w-full '
+                    >
+                        {
+                            loading ? <ActivityIndicator size={'small'} color={'white'} /> : null
+                        }
+                        <TextUI>Send OTP</TextUI>
+                    </ButtonUI>
                 </View>
                 <Text className='text-sm text-black-800 font-mRegular mt-[52px] text-center'>
                     By continuing, you agree to the

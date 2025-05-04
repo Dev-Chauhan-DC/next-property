@@ -18,6 +18,8 @@ import { ISaveProperty } from '@/src/data/network/models/saveProperty'
 import Button from '@/src/components/common/button/Button'
 import { IMeta } from '@/src/data/network/models'
 import NoData from '@/src/components/common/ui/no_data'
+import { Button as ButtonUI } from '@/src/components/ui/button'
+import { Text as TextUI } from '@/src/components/ui/text'
 
 const LikeScreen = () => {
     const limit = 6;
@@ -106,7 +108,7 @@ const LikeScreen = () => {
                 paddingTop: insets.top
             }}
             className='flex-1 bg-white'>
-            <View className='pb-[10] flex flex-row justify-end px-[10px]'>
+            <View className={'absolute bottom-0 left-0 z-40  flex flex-row justify-center pb-5 px-4 w-full '}>
                 <ButtonIcon
                     onPress={() => setShowCompare(true)}
                     icon={<CompareIcon width={12} height={12} fill={Colors.gray[400]} />}
@@ -163,25 +165,27 @@ const LikeScreen = () => {
                     <View
                         onLayout={(e) => setSubmitHeight(e.nativeEvent.layout.height)}
 
-                        className='border-t border-t-gray-100 bg-white py-2 px-7 flex flex-row justify-between items-center absolute bottom-0 left-0 w-full'>
-                        <Button
-                            classNameTitle='text-black-800'
-                            title='Cancel'
-                            className='px-8 bg-transparent'
+                        className='z-50 border-t border-t-gray-100 bg-white py-2 px-7 flex flex-row justify-between items-center absolute bottom-0 left-0 w-full'>
+                        <ButtonUI
+                            variant={'ghost'}
+                            size={'default'}
                             onPress={() => {
                                 setComparePropertyList([])
                                 setShowCompare(false)
                             }}
-                        />
+                        ><TextUI>Cancel</TextUI></ButtonUI>
 
-                        {
-                            comparePropertyList.length >= 2 ? <Button
-                                onPress={() => {
-                                    router.push({ pathname: '/compare', params: { ids: comparePropertyList.join(',') } });
-                                }}
-                                className='px-8 bg-black-800 '
-                                title='Compare' /> : null
-                        }
+
+
+                        <ButtonUI
+                            disabled={comparePropertyList.length < 2}
+                            variant={'black'}
+                            onPress={() => {
+                                router.push({ pathname: '/compare', params: { ids: comparePropertyList.join(',') } });
+                            }}
+                        ><TextUI>Compare ({comparePropertyList.length})</TextUI></ButtonUI>
+
+
 
                     </View> : null
             }

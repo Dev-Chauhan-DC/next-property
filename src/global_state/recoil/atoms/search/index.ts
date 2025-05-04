@@ -20,6 +20,11 @@ export const filterAtom = atom<IFilters>({
     default: { purposeId: 1 }
 });
 
+export const fltAtom = atom<IFilters>({
+    key: 'fltAtomState',
+    default: { purposeId: 1 }
+});
+
 
 export const onFilterApplyClickAtom = atom<boolean>({
     key: 'onFilterApplyClickAtomState',

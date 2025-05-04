@@ -26,6 +26,7 @@ import { ISelectList } from "@/src/components/common/select/multiple_select";
 import { IPlaceDetails } from "@/src/data/network/models/googleMap";
 import { IViewport } from "@/src/utilities/interfaces/search";
 import { airpodsImg, alarmImg, backpackImg, ballImg, booksImg, dumbbellImg, foodImg, glassImg, owlImg, partyImg, petBedImg, plantImg, smokingImg } from "../Images";
+import { AirVent, Bed, BedDouble, BellElectric, Brush, BrushIcon, Building, Building2, DoorClosed, DoorOpen, Droplet, Fence, Flame, House, HouseWifi, ParkingMeterIcon, ShoppingBag, Smartphone, TreePineIcon, Warehouse, Waves, WavesLadder } from "lucide-react-native";
 
 
 
@@ -69,7 +70,7 @@ export enum HouseTypeQPEnum {
 export const houseType: ISelectList[] = [
     {
         title: HouseTypeEnum.Apartment,
-        icon: <ApartmentIcon className="" />,
+        icon: <Building2 />,
         meta: {
             queryParamName: HouseTypeQPEnum.apartment,
             serverId: 1
@@ -77,7 +78,7 @@ export const houseType: ISelectList[] = [
     },
     {
         title: HouseTypeEnum.GatedCommunityVilla,
-        icon: <GateIcon className="" />,
+        icon: <DoorOpen />,
         meta: {
             queryParamName: HouseTypeQPEnum.gated_community_villa,
             serverId: 2
@@ -85,7 +86,7 @@ export const houseType: ISelectList[] = [
     },
     {
         title: HouseTypeEnum.StandaloneBuilding,
-        icon: <BuildingIcon className="" />,
+        icon: <Building />,
         meta: {
             queryParamName: HouseTypeQPEnum.standalone_building,
             serverId: 3
@@ -93,7 +94,7 @@ export const houseType: ISelectList[] = [
     },
     {
         title: HouseTypeEnum.IndependentHouseVilla,
-        icon: <HouseIcon className="" />,
+        icon: <House />,
         meta: {
             queryParamName: HouseTypeQPEnum.independent_house_villa,
             serverId: 4
@@ -101,7 +102,7 @@ export const houseType: ISelectList[] = [
     },
     {
         title: HouseTypeEnum.Room,
-        icon: <RoomIcon className="" />,
+        icon: <BedDouble />,
         meta: {
             queryParamName: HouseTypeQPEnum.room,
             serverId: 5
@@ -109,7 +110,7 @@ export const houseType: ISelectList[] = [
     },
     {
         title: HouseTypeEnum.PG,
-        icon: <PGIcon className="" />,
+        icon: <Bed />,
         meta: {
             queryParamName: HouseTypeQPEnum.pg,
             serverId: 6
@@ -546,74 +547,74 @@ export const sort: ISelectList[] = [
 export const amenities: ISelectList[] = [
     {
         title: "air conditioner",
-        icon: <AcIcon className="" />
+        icon: <AirVent />
 
     },
     {
         title: "club",
-        icon: <ClubIcon className="" />
+        icon: <Warehouse />
 
 
     },
     {
         title: "playground",
-        icon: <SliderIcon className="" />
+        icon: <Fence />
 
     },
     {
         title: "gas",
-        icon: <PipeIcon className="" />
+        icon: <Flame />
 
     },
     {
         title: "internet",
-        icon: <WifiIcon className="" />
+        icon: <HouseWifi />
 
     },
     {
         title: "sewage",
-        icon: <SewageIcon className="" />
+        icon: <Waves />
     },
     {
         title: "lift",
-        icon: <ElevatorIcon className="" />
+        icon: <DoorClosed />
 
     },
     {
         title: "fire alarm",
-        icon: <FireAlarmIcon className="" />
+        icon: <BellElectric />
 
     },
     {
         title: "house keeper",
-        icon: <HouseKeeperIcon className="" />
+        icon: <Brush />
 
     },
     {
         title: "park",
-        icon: <ParkIcon className="" />
+        icon: <TreePineIcon />
 
     },
     {
         title: "shopping center",
-        icon: <ShoppingCenterIcon className="" />
+        icon: <ShoppingBag />
     },
     {
         title: "swimming pool",
-        icon: <SwimmingPoolIcon className="" />
+        icon: <WavesLadder />
     },
     {
         title: "intercom",
-        icon: <IntercomIcon className="" />
+        icon: <Smartphone />
     },
     {
         title: "visitor parking",
-        icon: <ParkingIcon />
+        icon: <ParkingMeterIcon />
 
     },
     {
         title: "rain water harvesting ",
-        icon: <SaveWaterIcon className="" />
+        icon: <Droplet />
     },
 ]
 

@@ -15,7 +15,8 @@ const IconTitle: React.FC<Props> = ({ title, icon }) => {
                 React.cloneElement(icon as React.ReactElement, {
                     width: 24,
                     height: 24,
-                    fill: Colors.black[800]
+                    color: Colors.black[800],
+                    strokeWidth: '1.3'
                 })
             }
             <Text className='font-mRegular text-base text-black-800 capitalize'>{title}</Text>

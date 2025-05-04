@@ -20,10 +20,11 @@ interface Props {
     list?: ISelectList[];
     onSelect?: (arr: number[]) => void;
     classNameItem?: string;
+    textClassName?: string;
     setSelected?: number[]
 }
 
-const MultipleSelect: React.FC<Props> = ({ list, onSelect, classNameItem, setSelected }) => {
+const MultipleSelect: React.FC<Props> = ({ textClassName, list, onSelect, classNameItem, setSelected }) => {
 
     const [selectedArr, setSelectedArr] = useState<number[]>([])
 
@@ -60,19 +61,24 @@ const MultipleSelect: React.FC<Props> = ({ list, onSelect, classNameItem, setSel
                         onPress={() => onPressHandle(index)}
                         className={twMerge(`
                             ${selectedArr.includes(index) ? 'bg-primary' : 'bg-gray-100'}
-                            gap-1 flex items-center justify-center p-4 rounded-[5px]`, classNameItem)}
+                            gap-1 flex items-center justify-center  rounded-[5px]
+                            ${item.icon ? 'p-4' : 'px-4 py-2'}
+                            
+                            `, classNameItem)}
                         key={index}>
                         {item.icon ?
                             React.cloneElement(item.icon as React.ReactElement, {
                                 width: 30,
                                 height: 30,
-                                fill: selectedArr.includes(index) ? 'white' : Colors.gray[400]
+                                // fill: selectedArr.includes(index) ? 'white' : Colors.gray[400],
+                                stroke: selectedArr.includes(index) ? 'white' : Colors.gray[400],
+                                strokeWidth: 1.2
                             })
                             : null
                         }
-                        <Text className={`
+                        <Text className={twMerge(`
                             ${selectedArr.includes(index) ? 'text-white' : 'text-gray-400'}
-                            text-base font-mMedium capitalize`}>{item.title}</Text>
+                            text-base font-mMedium capitalize`, textClassName)}>{item.title}</Text>
                     </Pressable>
                 )
             }

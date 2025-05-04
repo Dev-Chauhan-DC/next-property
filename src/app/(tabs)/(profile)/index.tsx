@@ -22,6 +22,7 @@ import * as AvatarPrimitive from '@rn-primitives/avatar';
 import { Avatar, AvatarFallback } from '@/src/components/ui/avatar'
 import { Text as TextUI } from '@/src/components/ui/text'
 import { getInitials } from '@/src/utilities/halper_functions/text'
+import { Button as ButtonUI } from '@/src/components/ui/button'
 
 const ProfileScreen = () => {
     const insets = useSafeAreaInsets();
@@ -137,10 +138,13 @@ const ProfileScreen = () => {
 
 
             </View>
-            <Button
-                onPress={() => router.push('/(listing)/first')}
-                className='mx-[10px] mt-[28px]'
-                title='List Your Property for Free' />
+            <ButtonUI
+                variant={'black'}
+                size={'default'}
+                className='mt-3 mx-[10px]'
+                onPress={() => router.push('/(listing)/first')} >
+                <TextUI>List Your Property for Free</TextUI>
+            </ButtonUI>
 
             <Text className='font-mSemiBold text-black-800 text-base mt-[20px] mb-[10px] px-[10px]'>Listed Properties</Text>
             <FlatList

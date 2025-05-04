@@ -145,7 +145,7 @@ const ListScreen = () => {
 
     return (
         <HomeLayout>
-            <View className='pb-[10] flex flex-row justify-end px-[10px]'>
+            <View className='absolute bottom-0 left-0 z-50  flex flex-row justify-center pb-5 px-4 w-full '>
                 <ButtonIcon
                     onPress={() => setSortModal(true)}
                     icon={<SortIcon />}
@@ -178,24 +178,22 @@ const ListScreen = () => {
                         address={item.address}
                         role={item.user?.user_role?.role}
                     />}
-                keyExtractor={(item) => item.id.toString()}
+                keyExtractor={(item) => item?.id?.toString() || ''}
                 ListHeaderComponent={
                     !loading && properties?.length === 0 ?
                         <NoData /> : null
                 }
-                ListFooterComponent={
-                    loading ?
-                        <View className='h-8 mb-3 items-center justify-center'>
-                            <ActivityIndicator size={'small'} color={Colors.black[800]} />
-                        </View>
-                        : meta?.page && meta?.totalPages && meta?.page < meta?.totalPages ?
-                            <LoadMoreButton
-                                className='mb-3'
-                                onPress={loadMorePressHandle} /> : null
-                }
+                onEndReached={() => {
+                    if (meta?.page && meta?.totalPages && meta?.page < meta?.totalPages) {
+                        loadMorePressHandle()
+                    }
+                }}
+                onEndReachedThreshold={0.5}  // Trigger when 50% of the list is scrolled
             />
 
             <SortModal
+                onClose={() => setSortModal(false)}
+                isOpen={sortModal}
                 onPressClose={() => setSortModal(false)}
                 onRequestClose={() => setSortModal(false)}
                 onPressOutSide={() => setSortModal(false)}

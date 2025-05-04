@@ -6,6 +6,7 @@ import BottomSheet from '../bottom_sheet'
 import BottomSheetHeader from '../bottom_sheet/bottom_sheet_header'
 import CheckIcon from '@/src/assets/svgs/CheckIcon'
 import { sort } from '@/src/constants/app/Property'
+import { Actionsheet, ActionsheetBackdrop, ActionsheetContent, ActionsheetDragIndicator, ActionsheetDragIndicatorWrapper, ActionsheetItem, ActionsheetItemText } from '../../ui/gs/actionsheet'
 
 
 
@@ -15,36 +16,39 @@ interface Props {
     onPressOutSide?: (event: GestureResponderEvent) => void
     onSelect?: (index: number) => void;
     onRequestClose?: ((event: NativeSyntheticEvent<any>) => void) | undefined
+    isOpen?: boolean | undefined
+    onClose?: (() => any) | undefined
 }
 
 
 
-const SortModal: React.FC<Props> = ({ onRequestClose, visible, onPressClose, onPressOutSide, onSelect }) => {
+const SortModal: React.FC<Props> = ({ onClose, isOpen, onRequestClose, visible, onPressClose, onPressOutSide, onSelect }) => {
     const [selectedIndex, setSelectedIndex] = useState<number>(NaN)
 
     return (
-        <BottomSheet
-            onRequestClose={onRequestClose}
-            onPressOutSide={onPressOutSide}
-            visible={visible}>
-            <BottomSheetHeader
-                onPressClose={onPressClose}
-                title='Sort By' />
-            <View className='pb-2.5'>
+
+
+        <Actionsheet isOpen={isOpen} onClose={onClose}>
+            <ActionsheetBackdrop />
+            <ActionsheetContent className='pb-5'>
+                <ActionsheetDragIndicatorWrapper>
+                    <ActionsheetDragIndicator />
+                </ActionsheetDragIndicatorWrapper>
                 {
                     sort.map((item, index) =>
-                        <Pressable
+                        <ActionsheetItem
                             onPress={() => {
                                 setSelectedIndex(index)
                                 onSelect ? onSelect(index) : null
                             }}
                             key={index}
-                            className='flex-row  justify-between items-center  px-5  py-2.5'>
-                            <Text
+                            className='flex-row  justify-between items-center px-5'
+                        >
+                            <ActionsheetItemText
                                 className={`
                                 ${selectedIndex === index ? 'text-primary ' : ' text-black-800 '}  
-                                text-base  font-mRegular`}
-                            >{item.title}</Text>
+                                text-lg  font-mRegular`}
+                            >{item.title}</ActionsheetItemText>
                             {
                                 selectedIndex === index ?
                                     <CheckIcon
@@ -54,11 +58,13 @@ const SortModal: React.FC<Props> = ({ onRequestClose, visible, onPressClose, onP
                                     /> : null
                             }
 
-                        </Pressable>
+                        </ActionsheetItem>
                     )
                 }
-            </View>
-        </BottomSheet>
+            </ActionsheetContent>
+
+        </Actionsheet>
+
     )
 }
 

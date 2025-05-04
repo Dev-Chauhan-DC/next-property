@@ -1,5 +1,5 @@
 import { View, Text, ScrollView } from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Toggle from '../components/common/toggle';
 import TitleLayout from '../components/common/title_layout';
@@ -10,12 +10,27 @@ import Input from '../components/input';
 import Checkbox from '../components/common/checkbox';
 import Button from '../components/common/button/Button';
 import { useRecoilState } from 'recoil';
-import { filterAtom, onFilterApplyClickAtom } from '../global_state/recoil/atoms/search';
+import { filterAtom, fltAtom, onFilterApplyClickAtom } from '../global_state/recoil/atoms/search';
 import { IFilters } from '../utilities/interfaces/search';
 import { availability, balcony, bathroom, bedroom, ElementEnum, elementManagement, facing, furnishing, hall, houseType, HouseTypeEnum, IElementManagement, kitchen, parkingSlotFourWheel, parkingSlotTwoWheel, possesion, roles, tenants } from '../constants/app/Property';
 import { router } from 'expo-router';
 import { Button as ButtonUI } from '@/src/components/ui/button'
 import { Text as TextUI } from '@/src/components/ui/text'
+import { twMerge } from 'tailwind-merge';
+import { useFocusEffect } from '@react-navigation/native';
+import MultipleSelectV2 from '../components/common/select/multiple_select_v2';
+import ToggleV2 from '../components/common/toggleV2';
+
+
+
+
+
+
+
+
+export const numberSelectClass = 'w-14 h-14 p-0'
+export const textSelectClass = 'text-lg'
+
 
 const FilterScreen = () => {
     const insets = useSafeAreaInsets();
@@ -24,6 +39,24 @@ const FilterScreen = () => {
     const [filter, setFilter] = useRecoilState(filterAtom);
     const [onFilterApplyClick, setOnFilterApplyClick] = useRecoilState(onFilterApplyClickAtom);
     const [eleManager, setEleManager] = useState<IElementManagement>(HouseTypeEnum.Apartment)
+    const [flt, setFlt] = useState<IFilters>({ purposeId: 1 });
+
+
+    const [homeTypeId, setHomeTypeId] = useState<number[]>([]);
+    const [userRoleId, setUserRoleId] = useState<number[]>([]);
+    const [availabilityTypeId, setAvailabilityTypeId] = useState<number[]>([]);
+    const [furnishingsId, setFurnishingsId] = useState<number[]>([]);
+    const [facingId, setFacingId] = useState<number[]>([]);
+    const [possessionsId, setPossessionsId] = useState<number[]>([]);
+    const [tenantsId, setTenantsId] = useState<number[]>([]);
+    const [bedroomCount, setBedroomCount] = useState<number[]>([]);
+    const [bathroomCount, setBathroomCount] = useState<number[]>([]);
+    const [hallCount, setHallCount] = useState<number[]>([]);
+    const [kitchenCount, setKitchenCount] = useState<number[]>([]);
+    const [balconyCount, setBalconyCount] = useState<number[]>([]);
+    const [purposeId, setPurposeId] = useState<number>(0);
+
+
 
     // 
     const [minPrice, setMinPrice] = useState('');
@@ -49,7 +82,7 @@ const FilterScreen = () => {
 
 
     const deleteKey = (key: keyof IFilters) => {
-        setFilter((prevState) => {
+        setFlt((prevState) => {
             let obj = { ...prevState };
             delete obj[key];
             return obj;
@@ -71,7 +104,7 @@ const FilterScreen = () => {
         if (minValue === '' || maxValue === '') {
             deleteKey(rangeKey); // Remove range if min or max is empty
         } else {
-            setFilter((prevState) => ({
+            setFlt((prevState) => ({
                 ...prevState,
                 [rangeKey]: `${minValue}-${maxValue}`,
             }));
@@ -102,6 +135,153 @@ const FilterScreen = () => {
 
 
 
+    useEffect(() => {
+
+
+
+        setFlt(filter)
+
+        if (filter?.purposeId) {
+            setPurposeId(filter.purposeId - 1)
+        }
+
+        setHomeTypeId(filter?.homeTypeId?.split(',')?.map(e => parseInt(e) - 1) || [])
+        setUserRoleId(filter?.userRoleId?.split(',')?.map(e => parseInt(e) - 1) || [])
+        setAvailabilityTypeId(filter?.availabilityTypeId?.split(',')?.map(e => parseInt(e) - 1) || [])
+        setFurnishingsId(filter?.furnishingsId?.split(',')?.map(e => parseInt(e) - 1) || [])
+        setFacingId(filter?.facingId?.split(',')?.map(e => parseInt(e) - 1) || [])
+        setPossessionsId(filter?.possessionsId?.split(',')?.map(e => parseInt(e) - 1) || [])
+        setTenantsId(filter?.tenantsId?.split(',')?.map(e => parseInt(e) - 1) || [])
+
+
+        setBedroomCount(filter?.bedroomCount?.split(',')?.map(e => parseInt(e)) || [])
+        setBathroomCount(filter?.bathroomCount?.split(',')?.map(e => parseInt(e)) || [])
+        setHallCount(filter?.hallCount?.split(',')?.map(e => parseInt(e)) || [])
+        setKitchenCount(filter?.kitchenCount?.split(',')?.map(e => parseInt(e)) || [])
+        setBalconyCount(filter?.balconyCount?.split(',')?.map(e => parseInt(e)) || [])
+
+
+
+
+        if (filter?.priceRange) setMinPrice(filter?.priceRange?.split('-')[0]);
+        if (filter?.priceRange) setMaxPrice(filter?.priceRange?.split('-')[1]);
+
+
+
+        if (filter?.builtUpArea) setMinBuilt(filter?.builtUpArea?.split('-')[0]);
+        if (filter?.builtUpArea) setMaxBuilt(filter?.builtUpArea?.split('-')[1]);
+
+
+
+
+        if (filter?.maintenance) setMinMainT(filter?.maintenance?.split('-')[0]);
+        if (filter?.maintenance) setMaxMainT(filter?.maintenance?.split('-')[1]);
+
+
+        if (filter?.propertyAge) setMinAge(filter?.propertyAge?.split('-')[0]);
+        if (filter?.propertyAge) setMaxAge(filter?.propertyAge?.split('-')[1]);
+
+
+
+        if (filter?.daysOnApp) setMinDay(filter?.daysOnApp?.split('-')[0]);
+        if (filter?.daysOnApp) setMaxDay(filter?.daysOnApp?.split('-')[1]);
+
+
+
+        if (filter?.totalFloor) setMinFloor(filter?.totalFloor?.split('-')[0]);
+        if (filter?.totalFloor) setMaxFloor(filter?.totalFloor?.split('-')[1]);
+
+
+
+
+        if (filter?.propertyFloor) setMinPFloor(filter?.propertyFloor?.split('-')[0]);
+        if (filter?.propertyFloor) setMaxPFloor(filter?.propertyFloor?.split('-')[1]);
+
+
+        if (filter.cornerProperty) setCorner(true)
+
+
+
+
+    }, [])
+
+
+
+
+    const clearFilterHandle = () => {
+
+
+        setPurposeId(0)
+
+
+        setHomeTypeId([])
+        setUserRoleId([])
+        setAvailabilityTypeId([])
+        setFurnishingsId([])
+        setFacingId([])
+        setPossessionsId([])
+        setTenantsId([])
+
+
+        setBedroomCount([])
+        setBathroomCount([])
+        setHallCount([])
+        setKitchenCount([])
+        setBalconyCount([])
+
+
+
+
+        setMinPrice('');
+        setMaxPrice('');
+
+
+
+        setMinBuilt('');
+        setMaxBuilt('');
+
+
+
+
+        setMinMainT('');
+        setMaxMainT('');
+
+
+        setMinAge('');
+        setMaxAge('');
+
+
+
+        setMinDay('');
+        setMaxDay('');
+
+
+
+        setMinFloor('');
+        setMaxFloor('');
+
+
+
+
+        setMinPFloor('');
+        setMaxPFloor('');
+
+
+        setCorner(false)
+
+        setFlt({ purposeId: 1 })
+        applyFilter({ purposeId: 1 })
+
+
+    }
+
+
+    const applyFilter = (fl: IFilters) => {
+        setFilter(fl)
+        setOnFilterApplyClick(true)
+        router.back()
+    }
+
 
 
 
@@ -124,22 +304,25 @@ const FilterScreen = () => {
                     {
                         elementManagement?.find(e => e?.name === eleManager)?.element?.includes?.(ElementEnum.purposeEle) &&
                         <View className='flex flex-row justify-center'>
-                            <Toggle
+                            <ToggleV2
+                                selected={purposeId}
+                                setSelected={setPurposeId}
                                 onSelect={(index) => {
-                                    setFilter(prevState => ({ ...prevState, purposeId: index + 1 }))
+                                    setFlt(prevState => ({ ...prevState, purposeId: index + 1 }))
                                 }}
-                                selectedIndex={filter.purposeId ? filter.purposeId - 1 : 0}
                                 list={['Buy', 'Rent']} />
                         </View>
                     }
 
 
 
+
                     <TitleLayout
                         title='Home Type'
                     >
-                        <MultipleSelect
-                            setSelected={filter.homeTypeId ? filter.homeTypeId.split(',').map((e: string) => parseInt(e) - 1) : []}
+                        <MultipleSelectV2
+                            selected={homeTypeId}
+                            setSelected={setHomeTypeId}
                             list={houseType}
                             onSelect={(e) => {
                                 const arr = e.map(e => e + 1).join(',');
@@ -147,7 +330,7 @@ const FilterScreen = () => {
                                     deleteKey('homeTypeId')
                                 }
                                 if (arr) {
-                                    setFilter(prevState => ({ ...prevState, homeTypeId: arr }));
+                                    setFlt(prevState => ({ ...prevState, homeTypeId: arr }));
                                 }
 
                                 if (e.includes(4)) {
@@ -158,8 +341,10 @@ const FilterScreen = () => {
                                     setEleManager(HouseTypeEnum.Apartment)
                                 }
                             }}
+
                         />
                     </TitleLayout>
+
 
 
 
@@ -169,15 +354,17 @@ const FilterScreen = () => {
                         <TitleLayout
                             title='Listed By'
                         >
-                            <MultipleSelect
-                                setSelected={filter.userRoleId ? filter.userRoleId.split(',').map((e: string) => parseInt(e) - 1) : []}
+                            <MultipleSelectV2
+                                classNameItem='flex-1'
+                                selected={userRoleId}
+                                setSelected={setUserRoleId}
                                 onSelect={(e) => {
                                     const arr = e.map(e => e + 1).join(',');
                                     if (!arr) {
                                         deleteKey('userRoleId')
                                     }
                                     if (arr) {
-                                        setFilter(prevState => ({ ...prevState, userRoleId: arr }));
+                                        setFlt(prevState => ({ ...prevState, userRoleId: arr }));
                                     }
                                 }}
                                 list={roles}
@@ -195,16 +382,18 @@ const FilterScreen = () => {
                         >
                             <View className='flex flex-row items-center gap-5'>
                                 <Input
+                                    value={minPrice}
                                     keyboardType="numeric"
                                     onChangeText={handleMinPriceChange}
-                                    className='w-28'
+                                    className='w-28 flex-1'
                                     placeholder='Min'
                                 />
                                 <Text>To</Text>
                                 <Input
+                                    value={maxPrice}
                                     keyboardType="numeric"
                                     onChangeText={handleMaxPriceChange}
-                                    className='w-28' placeholder='Max' />
+                                    className='w-28 flex-1' placeholder='Max' />
                             </View>
                         </TitleLayout>
                     }
@@ -216,15 +405,18 @@ const FilterScreen = () => {
                         <TitleLayout
                             title='Bedroom'
                         >
-                            <MultipleSelect
-                                setSelected={filter.bedroomCount ? filter.bedroomCount.split(',').map((e: string) => parseInt(e)) : []}
+                            <MultipleSelectV2
+                                selected={bedroomCount}
+                                textClassName={twMerge(``, textSelectClass)}
+                                classNameItem={twMerge(``, numberSelectClass)}
+                                setSelected={setBedroomCount}
                                 onSelect={(e) => {
                                     const arr = e.join(',');
                                     if (!arr) {
                                         deleteKey('bedroomCount')
                                     }
                                     if (arr) {
-                                        setFilter(prevState => ({ ...prevState, bedroomCount: arr }));
+                                        setFlt(prevState => ({ ...prevState, bedroomCount: arr }));
                                     }
                                 }}
                                 list={bedroom}
@@ -239,15 +431,19 @@ const FilterScreen = () => {
                         <TitleLayout
                             title='Bathroom'
                         >
-                            <MultipleSelect
-                                setSelected={filter.bathroomCount ? filter.bathroomCount.split(',').map((e: string) => parseInt(e)) : []}
+                            <MultipleSelectV2
+                                textClassName={twMerge(``, textSelectClass)}
+                                classNameItem={twMerge(``, numberSelectClass)}
+
+                                setSelected={setBathroomCount}
+                                selected={bathroomCount}
                                 onSelect={(e) => {
                                     const arr = e.join(',');
                                     if (!arr) {
                                         deleteKey('bathroomCount')
                                     }
                                     if (arr) {
-                                        setFilter(prevState => ({ ...prevState, bathroomCount: arr }));
+                                        setFlt(prevState => ({ ...prevState, bathroomCount: arr }));
                                     }
                                 }}
                                 list={bathroom}
@@ -264,15 +460,18 @@ const FilterScreen = () => {
                         <TitleLayout
                             title='Hall'
                         >
-                            <MultipleSelect
-                                setSelected={filter.hallCount ? filter.hallCount.split(',').map((e: string) => parseInt(e)) : []}
+                            <MultipleSelectV2
+                                textClassName={twMerge(``, textSelectClass)}
+                                classNameItem={twMerge(``, numberSelectClass)}
+                                setSelected={setHallCount}
+                                selected={hallCount}
                                 onSelect={(e) => {
                                     const arr = e.join(',');
                                     if (!arr) {
                                         deleteKey('hallCount')
                                     }
                                     if (arr) {
-                                        setFilter(prevState => ({ ...prevState, hallCount: arr }));
+                                        setFlt(prevState => ({ ...prevState, hallCount: arr }));
                                     }
                                 }}
                                 list={hall}
@@ -288,15 +487,19 @@ const FilterScreen = () => {
                         <TitleLayout
                             title='Kitchen'
                         >
-                            <MultipleSelect
-                                setSelected={filter.kitchenCount ? filter.kitchenCount.split(',').map((e: string) => parseInt(e)) : []}
+                            <MultipleSelectV2
+                                selected={kitchenCount}
+                                textClassName={twMerge(``, textSelectClass)}
+                                classNameItem={twMerge(``, numberSelectClass)}
+
+                                setSelected={setKitchenCount}
                                 onSelect={(e) => {
                                     const arr = e.join(',');
                                     if (!arr) {
                                         deleteKey('kitchenCount')
                                     }
                                     if (arr) {
-                                        setFilter(prevState => ({ ...prevState, kitchenCount: arr }));
+                                        setFlt(prevState => ({ ...prevState, kitchenCount: arr }));
                                     }
                                 }}
                                 list={kitchen}
@@ -311,15 +514,18 @@ const FilterScreen = () => {
                         <TitleLayout
                             title='Balcony'
                         >
-                            <MultipleSelect
-                                setSelected={filter.balconyCount ? filter.balconyCount.split(',').map((e: string) => parseInt(e)) : []}
+                            <MultipleSelectV2
+                                selected={balconyCount}
+                                textClassName={twMerge(``, textSelectClass)}
+                                classNameItem={twMerge(``, numberSelectClass)}
+                                setSelected={setBalconyCount}
                                 onSelect={(e) => {
                                     const arr = e.join(',');
                                     if (!arr) {
                                         deleteKey('balconyCount')
                                     }
                                     if (arr) {
-                                        setFilter(prevState => ({ ...prevState, balconyCount: arr }));
+                                        setFlt(prevState => ({ ...prevState, balconyCount: arr }));
                                     }
                                 }}
                                 list={balcony}
@@ -337,14 +543,16 @@ const FilterScreen = () => {
                         >
                             <View className='flex flex-row items-center gap-5'>
                                 <Input
+                                    value={minBuilt}
                                     keyboardType="numeric"
                                     onChangeText={handleMinBuiltChange}
-                                    className='w-28' placeholder='Min' />
+                                    className='w-28 flex-1' placeholder='Min' />
                                 <Text>To</Text>
                                 <Input
+                                    value={maxBuilt}
                                     keyboardType="numeric"
                                     onChangeText={handleMaxBuiltChange}
-                                    className='w-28' placeholder='Max' />
+                                    className='w-28 flex-1' placeholder='Max' />
                             </View>
                         </TitleLayout>
                     }
@@ -359,15 +567,18 @@ const FilterScreen = () => {
                         >
                             <View className='flex flex-row items-center gap-5'>
                                 <Input
+                                    value={minMainT}
                                     keyboardType="numeric"
                                     onChangeText={handleMinMainTChange}
-                                    className='w-28' placeholder='Min' />
+                                    className='w-28 flex-1' placeholder='Min' />
                                 <Text>To</Text>
                                 <Input
+                                    value={maxMainT}
+
                                     keyboardType="numeric"
                                     onChangeText={handleMaxMainTChange}
 
-                                    className='w-28' placeholder='Max' />
+                                    className='w-28 flex-1' placeholder='Max' />
                             </View>
                         </TitleLayout>
                     }
@@ -381,15 +592,18 @@ const FilterScreen = () => {
                         >
                             <View className='flex flex-row items-center gap-5'>
                                 <Input
+                                    value={minAge}
                                     keyboardType="numeric"
                                     onChangeText={handleMinAgeChange}
 
-                                    className='w-28' placeholder='Min' />
+                                    className='w-28 flex-1' placeholder='Min' />
                                 <Text>To</Text>
                                 <Input
+                                    value={maxAge}
+
                                     keyboardType="numeric"
                                     onChangeText={handleMaxAgeChange}
-                                    className='w-28' placeholder='Max' />
+                                    className='w-28 flex-1' placeholder='Max' />
                             </View>
                         </TitleLayout>
                     }
@@ -403,14 +617,17 @@ const FilterScreen = () => {
                         >
                             <View className='flex flex-row items-center gap-5'>
                                 <Input
+                                    value={minDay}
                                     keyboardType="numeric"
                                     onChangeText={handleMinDayChange}
-                                    className='w-28' placeholder='Min' />
+                                    className='w-28 flex-1' placeholder='Min' />
                                 <Text>To</Text>
                                 <Input
+                                    value={maxDay}
+
                                     keyboardType="numeric"
                                     onChangeText={handleMaxDayChange}
-                                    className='w-28' placeholder='Max' />
+                                    className='w-28 flex-1' placeholder='Max' />
                             </View>
                         </TitleLayout>
                     }
@@ -423,14 +640,16 @@ const FilterScreen = () => {
                             title='Parking slot for 2 wheeler'
                         >
                             <MultipleSelect
-                                setSelected={filter.parkingSlotTwoWheelerCount ? filter.parkingSlotTwoWheelerCount.split(',').map((e: string) => parseInt(e)) : []}
+                                textClassName={twMerge(``, textSelectClass)}
+                                classNameItem={twMerge(``, numberSelectClass)}
+                                setSelected={flt.parkingSlotTwoWheelerCount ? flt.parkingSlotTwoWheelerCount.split(',').map((e: string) => parseInt(e)) : []}
                                 onSelect={(e) => {
                                     const arr = e.join(',');
                                     if (!arr) {
                                         deleteKey('parkingSlotTwoWheelerCount')
                                     }
                                     if (arr) {
-                                        setFilter(prevState => ({ ...prevState, parkingSlotTwoWheelerCount: arr }));
+                                        setFlt(prevState => ({ ...prevState, parkingSlotTwoWheelerCount: arr }));
                                     }
                                 }}
                                 list={parkingSlotTwoWheel}
@@ -446,14 +665,16 @@ const FilterScreen = () => {
                             title='Parking slot for 4 wheeler'
                         >
                             <MultipleSelect
-                                setSelected={filter.parkingSlotFourWheelerCount ? filter.parkingSlotFourWheelerCount.split(',').map((e: string) => parseInt(e)) : []}
+                                textClassName={twMerge(``, textSelectClass)}
+                                classNameItem={twMerge(``, numberSelectClass)}
+                                setSelected={flt.parkingSlotFourWheelerCount ? flt.parkingSlotFourWheelerCount.split(',').map((e: string) => parseInt(e)) : []}
                                 onSelect={(e) => {
                                     const arr = e.join(',');
                                     if (!arr) {
                                         deleteKey('parkingSlotFourWheelerCount')
                                     }
                                     if (arr) {
-                                        setFilter(prevState => ({ ...prevState, parkingSlotFourWheelerCount: arr }));
+                                        setFlt(prevState => ({ ...prevState, parkingSlotFourWheelerCount: arr }));
                                     }
                                 }}
                                 list={parkingSlotFourWheel}
@@ -471,14 +692,17 @@ const FilterScreen = () => {
                         >
                             <View className='flex flex-row items-center gap-5'>
                                 <Input
+                                    value={minFloor}
                                     keyboardType="numeric"
                                     onChangeText={handleMinFloorChange}
-                                    className='w-28' placeholder='Min' />
+                                    className='w-28 flex-1' placeholder='Min' />
                                 <Text>To</Text>
                                 <Input
+                                    value={maxFloor}
+
                                     keyboardType="numeric"
                                     onChangeText={handleMaxFloorChange}
-                                    className='w-28' placeholder='Max' />
+                                    className='w-28 flex-1' placeholder='Max' />
                             </View>
                         </TitleLayout>
                     }
@@ -492,14 +716,18 @@ const FilterScreen = () => {
                         >
                             <View className='flex flex-row items-center gap-5'>
                                 <Input
+                                    value={minPFloor}
+
                                     keyboardType="numeric"
                                     onChangeText={handleMinPFloorChange}
-                                    className='w-28' placeholder='Min' />
+                                    className='w-28 flex-1' placeholder='Min' />
                                 <Text>To</Text>
                                 <Input
+                                    value={maxPFloor}
+
                                     keyboardType="numeric"
                                     onChangeText={handleMaxPFloorChange}
-                                    className='w-28' placeholder='Max' />
+                                    className='w-28 flex-1' placeholder='Max' />
                             </View>
                         </TitleLayout>
                     }
@@ -511,15 +739,16 @@ const FilterScreen = () => {
                         <TitleLayout
                             title='Availability'
                         >
-                            <MultipleSelect
-                                setSelected={filter.availabilityTypeId ? filter.availabilityTypeId.split(',').map((e: string) => parseInt(e)) : []}
+                            <MultipleSelectV2
+                                selected={availabilityTypeId}
+                                setSelected={setAvailabilityTypeId}
                                 onSelect={(e) => {
-                                    const arr = e.join(',');
+                                    const arr = e.map(e => e + 1).join(',');
                                     if (!arr) {
                                         deleteKey('availabilityTypeId')
                                     }
                                     if (arr) {
-                                        setFilter(prevState => ({ ...prevState, availabilityTypeId: arr }));
+                                        setFlt(prevState => ({ ...prevState, availabilityTypeId: arr }));
                                     }
                                 }}
                                 list={availability}
@@ -534,15 +763,16 @@ const FilterScreen = () => {
                         <TitleLayout
                             title='Furnishing'
                         >
-                            <MultipleSelect
-                                setSelected={filter.furnishingsId ? filter.furnishingsId.split(',').map((e: string) => parseInt(e)) : []}
+                            <MultipleSelectV2
+                                selected={furnishingsId}
+                                setSelected={setFurnishingsId}
                                 onSelect={(e) => {
-                                    const arr = e.join(',');
+                                    const arr = e.map(e => e + 1).join(',');
                                     if (!arr) {
                                         deleteKey('furnishingsId')
                                     }
                                     if (arr) {
-                                        setFilter(prevState => ({ ...prevState, furnishingsId: arr }));
+                                        setFlt(prevState => ({ ...prevState, furnishingsId: arr }));
                                     }
                                 }}
                                 list={furnishing}
@@ -557,15 +787,17 @@ const FilterScreen = () => {
                         <TitleLayout
                             title='Facing *'
                         >
-                            <MultipleSelect
-                                setSelected={filter.facingId ? filter.facingId.split(',').map((e: string) => parseInt(e)) : []}
+                            <MultipleSelectV2
+
+                                selected={facingId}
+                                setSelected={setFacingId}
                                 onSelect={(e) => {
-                                    const arr = e.join(',');
+                                    const arr = e.map(e => e + 1).join(',');
                                     if (!arr) {
                                         deleteKey('facingId')
                                     }
                                     if (arr) {
-                                        setFilter(prevState => ({ ...prevState, facingId: arr }));
+                                        setFlt(prevState => ({ ...prevState, facingId: arr }));
                                     }
                                 }}
                                 list={facing}
@@ -580,7 +812,7 @@ const FilterScreen = () => {
                             onPress={() => {
                                 setCorner(!corner)
                                 if (corner) return deleteKey('cornerProperty');
-                                setFilter((prevState) => ({ ...prevState, cornerProperty: '1' }))
+                                setFlt((prevState) => ({ ...prevState, cornerProperty: '1' }))
                             }}
                             check={corner}
                             title='Corner Property' />
@@ -593,15 +825,17 @@ const FilterScreen = () => {
                         <TitleLayout
                             title='Possession Status *'
                         >
-                            <MultipleSelect
-                                setSelected={filter.possessionsId ? filter.possessionsId.split(',').map((e: string) => parseInt(e)) : []}
+                            <MultipleSelectV2
+
+                                selected={possessionsId}
+                                setSelected={setPossessionsId}
                                 onSelect={(e) => {
-                                    const arr = e.join(',');
+                                    const arr = e.map(e => e + 1).join(',');
                                     if (!arr) {
                                         deleteKey('possessionsId')
                                     }
                                     if (arr) {
-                                        setFilter(prevState => ({ ...prevState, possessionsId: arr }));
+                                        setFlt(prevState => ({ ...prevState, possessionsId: arr }));
                                     }
                                 }}
                                 list={possesion}
@@ -616,15 +850,16 @@ const FilterScreen = () => {
                         <TitleLayout
                             title='Preferred Tenants'
                         >
-                            <MultipleSelect
-                                setSelected={filter.tenantsId ? filter.tenantsId.split(',').map((e: string) => parseInt(e)) : []}
+                            <MultipleSelectV2
+                                selected={tenantsId}
+                                setSelected={setTenantsId}
                                 onSelect={(e) => {
-                                    const arr = e.join(',');
+                                    const arr = e.map(e => e + 1).join(',');
                                     if (!arr) {
                                         deleteKey('tenantsId')
                                     }
                                     if (arr) {
-                                        setFilter(prevState => ({ ...prevState, tenantsId: arr }));
+                                        setFlt(prevState => ({ ...prevState, tenantsId: arr }));
                                     }
                                 }}
                                 list={tenants}
@@ -646,10 +881,10 @@ const FilterScreen = () => {
                 <ButtonUI
                     variant={'ghost'}
                     size={'default'}
-                    onPress={() => router.back()}
+                    onPress={clearFilterHandle}
                 >
 
-                    <TextUI>Close</TextUI>
+                    <TextUI>Clear Filter</TextUI>
                 </ButtonUI>
                 {/* <Button
                     onPress={() => {
@@ -660,10 +895,7 @@ const FilterScreen = () => {
                     title='Apply' /> */}
                 <ButtonUI
                     size={'default'}
-                    onPress={() => {
-                        setOnFilterApplyClick(true)
-                        router.back()
-                    }}
+                    onPress={() => applyFilter(flt)}
                 >
                     {/* {loading &&
                         <ActivityIndicator

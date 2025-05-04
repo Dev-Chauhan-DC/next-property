@@ -9,6 +9,8 @@ export const remEndpoints = {
     // User
     getUser: `${prepath}/get/user`,
     updateUser: `${prepath}/update/profile/info`,
+    updateUserV2: `${prepath}/user`,
+
     getUserByID: `${prepath}/user/info`,
 
     // Subscription

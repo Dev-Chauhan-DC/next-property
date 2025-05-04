@@ -50,6 +50,8 @@ const buttonStyle = tva({
         'bg-error-500 border-error-300 data-[hover=true]:bg-error-600 data-[hover=true]:border-error-400 data-[active=true]:bg-error-700 data-[active=true]:border-error-500 data-[focus-visible=true]:web:ring-indicator-info',
       default:
         'bg-transparent data-[hover=true]:bg-background-50 data-[active=true]:bg-transparent',
+      white: 'bg-white data-[hover=true]:bg-white-80 data-[active=true]:bg-white-90 border-white data-[hover=true]:border-white data-[active=true]:border-white data-[focus-visible=true]:web:ring-indicator-info',
+
     },
     variant: {
       link: 'px-0',
@@ -64,6 +66,7 @@ const buttonStyle = tva({
       md: 'px-5 h-10',
       lg: 'px-6 h-11',
       xl: 'px-7 h-12',
+      icon: 'h-9 w-9'
     },
   },
   compoundVariants: [
@@ -138,11 +141,11 @@ const buttonTextStyle = tva({
         'text-typography-0 data-[hover=true]:text-typography-0 data-[active=true]:text-typography-0',
     },
     size: {
-      xs: 'text-xs',
-      sm: 'text-sm',
-      md: 'text-base',
-      lg: 'text-lg',
-      xl: 'text-xl',
+      xs: 'text-xs/none',
+      sm: 'text-sm/none',
+      md: 'text-base/none',
+      lg: 'text-lg/none',
+      xl: 'text-xl/none',
     },
   },
   parentCompoundVariants: [
@@ -212,6 +215,7 @@ const buttonIconStyle = tva({
       md: 'h-[18px] w-[18px]',
       lg: 'h-[18px] w-[18px]',
       xl: 'h-5 w-5',
+      icon: 'h-5 w-5'
     },
     action: {
       primary:
@@ -223,6 +227,9 @@ const buttonIconStyle = tva({
 
       negative:
         'text-error-600 data-[hover=true]:text-error-600 data-[active=true]:text-error-700',
+      white:
+        'text-black-800 data-[hover=true]:text-black-800 data-[active=true]:text-black-800',
+
     },
   },
   parentCompoundVariants: [

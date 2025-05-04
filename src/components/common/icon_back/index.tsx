@@ -2,6 +2,7 @@ import { View, Text, Pressable, StyleProp, ViewStyle, GestureResponderEvent } fr
 import React from 'react'
 import { twMerge } from 'tailwind-merge';
 import { Colors } from '@/src/constants/Colors';
+import { Button } from '../../ui/button';
 
 
 interface Props {
@@ -13,20 +14,21 @@ interface Props {
 
 const IconBack: React.FC<Props> = ({ style, icon, className, onPress }) => {
     return (
-        <Pressable
+        <Button
+            size={'icon'}
             onPress={onPress}
             style={style}
-            className={twMerge(`w-7 h-7 rounded-full bg-white flex items-center justify-center`, className)}>
+            className={twMerge(` rounded-full bg-white `, className)}>
             {
                 React.cloneElement(icon, {
-                    width: 12,
-                    height: 12,
+                    width: 16,
+                    height: 16,
                     color: Colors.black[800],
                     ...icon.props,
 
                 })
             }
-        </Pressable>
+        </Button>
     )
 }
 

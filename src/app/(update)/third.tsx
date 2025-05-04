@@ -12,6 +12,8 @@ import { eleManagerUpdateState, propertyState, updatePreferenceState, updateProp
 import { availability, cupboards, ElementEnum, elementManagement, furnishing, kitchenType, parkingSlotFourWheel, parkingSlotTwoWheel, possesion } from '@/src/constants/app/Property'
 import PreferenceSelect from '@/src/components/app/(listing)/third/preference_select'
 import { Textarea } from '@/src/components/ui/textarea'
+import { twMerge } from 'tailwind-merge'
+import { numberSelectClass, textSelectClass } from '../filter'
 
 const ThirdScreen = () => {
     const insets = useSafeAreaInsets();
@@ -172,6 +174,8 @@ const ThirdScreen = () => {
                             title='Parking Slot For Two Wheeler *'
                         >
                             <SingleSelect
+                                textClassName={twMerge(``, textSelectClass)}
+                                classNameItem={twMerge(``, numberSelectClass)}
                                 onSelect={(index) => setFormData(e => ({ ...e, parking_slot_two_wheeler_count: index }))}
                                 defaultIndex={property?.parking_slot_two_wheeler_count}
                                 list={parkingSlotTwoWheel}
@@ -192,6 +196,8 @@ const ThirdScreen = () => {
                             title='Parking Slot For Four Wheeler *'
                         >
                             <SingleSelect
+                                textClassName={twMerge(``, textSelectClass)}
+                                classNameItem={twMerge(``, numberSelectClass)}
                                 onSelect={(index) => setFormData(e => ({ ...e, parking_slot_four_wheeler_count: index }))}
                                 defaultIndex={property?.parking_slot_four_wheeler_count}
                                 list={parkingSlotFourWheel}
@@ -212,6 +218,8 @@ const ThirdScreen = () => {
                             title='Cupboards *'
                         >
                             <SingleSelect
+                                textClassName={twMerge(``, textSelectClass)}
+                                classNameItem={twMerge(``, numberSelectClass)}
                                 onSelect={(index) => setFormData(e => ({ ...e, cupboard: index }))}
                                 defaultIndex={property?.cupboard}
                                 list={cupboards}

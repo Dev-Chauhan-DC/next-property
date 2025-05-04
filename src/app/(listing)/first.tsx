@@ -12,6 +12,8 @@ import Input from '@/src/components/input'
 import { useRecoilState } from 'recoil'
 import { eleManagerState, propertyState, updateHighlightState, updateMealState } from '@/src/global_state/recoil/atoms/property'
 import { amenities, balcony, bathroom, bedroom, ElementEnum, elementManagement, facing, flooringType, hall, highlights, houseType, HouseTypeEnum, kitchen, lookingFor, meals, noticePeriod, occupancy, ownershipType, tenants } from '@/src/constants/app/Property'
+import { twMerge } from 'tailwind-merge'
+import { numberSelectClass, textSelectClass } from '../filter'
 
 const FirstScreen = () => {
     const insets = useSafeAreaInsets();
@@ -88,7 +90,7 @@ const FirstScreen = () => {
                         <Input
                             value={property.singleSharing}
                             onChangeText={(e) => setProperty(prevState => ({ ...prevState, singleSharing: e }))}
-                            placeholder='Single Sharing Price'
+                            placeholder='Single Sharing Price per Month'
                         />
                     }
 
@@ -98,7 +100,7 @@ const FirstScreen = () => {
                         <Input
                             value={property.doubleSharing}
                             onChangeText={(e) => setProperty(prevState => ({ ...prevState, doubleSharing: e }))}
-                            placeholder='Double Sharing Price'
+                            placeholder='Double Sharing Price per Month'
                         />
                     }
 
@@ -108,7 +110,7 @@ const FirstScreen = () => {
                         <Input
                             value={property.tripleSharing}
                             onChangeText={(e) => setProperty(prevState => ({ ...prevState, tripleSharing: e }))}
-                            placeholder='Triple Sharing Price'
+                            placeholder='Triple Sharing Price per Month'
                         />
                     }
 
@@ -119,7 +121,7 @@ const FirstScreen = () => {
                         <Input
                             value={property.fourSharing}
                             onChangeText={(e) => setProperty(prevState => ({ ...prevState, fourSharing: e }))}
-                            placeholder='Four Sharing Price'
+                            placeholder='Four Sharing Price per Month'
                         />
                     }
 
@@ -229,6 +231,8 @@ const FirstScreen = () => {
                             title='Bedroom *'
                         >
                             <SingleSelect
+                                textClassName={twMerge(``, textSelectClass)}
+                                classNameItem={twMerge(``, numberSelectClass)}
                                 selected={property.bedroomCount}
                                 onSelect={(index) => setProperty(prevState => ({ ...prevState, bedroomCount: index }))}
                                 list={bedroom}
@@ -244,6 +248,8 @@ const FirstScreen = () => {
                             title='Bathroom *'
                         >
                             <SingleSelect
+                                textClassName={twMerge(``, textSelectClass)}
+                                classNameItem={twMerge(``, numberSelectClass)}
                                 selected={property.bathroomCount}
                                 onSelect={(index) => setProperty(prevState => ({ ...prevState, bathroomCount: index }))}
                                 list={bathroom}
@@ -261,6 +267,8 @@ const FirstScreen = () => {
                             title='Hall *'
                         >
                             <SingleSelect
+                                textClassName={twMerge(``, textSelectClass)}
+                                classNameItem={twMerge(``, numberSelectClass)}
                                 selected={property.hallCount}
                                 onSelect={(index) => setProperty(prevState => ({ ...prevState, hallCount: index }))}
                                 list={hall}
@@ -278,6 +286,8 @@ const FirstScreen = () => {
                             title='Kitchen *'
                         >
                             <SingleSelect
+                                textClassName={twMerge(``, textSelectClass)}
+                                classNameItem={twMerge(``, numberSelectClass)}
                                 selected={property.kitchenCount}
                                 onSelect={(index) => setProperty(prevState => ({ ...prevState, kitchenCount: index }))}
                                 list={kitchen}
@@ -295,6 +305,8 @@ const FirstScreen = () => {
                             title='Balcony *'
                         >
                             <SingleSelect
+                                textClassName={twMerge(``, textSelectClass)}
+                                classNameItem={twMerge(``, numberSelectClass)}
                                 selected={property.balconyCount}
                                 onSelect={(index) => setProperty(prevState => ({ ...prevState, balconyCount: index }))}
                                 list={balcony}
