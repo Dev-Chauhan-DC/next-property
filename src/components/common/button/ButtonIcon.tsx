@@ -18,7 +18,7 @@ const ButtonIcon: React.FC<Props> = ({ icon, title, onPress, className }) => {
             variant={'secondary'}
             size={'sm'}
             onPress={onPress}
-            className={twMerge('rounded-full px-[14px] py-[5px] flex flex-row items-center gap-2 bg-white border border-gray-200  ', className)}>
+            className={twMerge('rounded-full px-[14px] py-[5px] flex flex-row items-center gap-2 bg-white border border-gray-200 justify-center ', className)}>
             {
                 icon ?
                     React.cloneElement(icon as React.ReactElement, {
@@ -27,7 +27,7 @@ const ButtonIcon: React.FC<Props> = ({ icon, title, onPress, className }) => {
                         fill: Colors.black[800]
                     }) : null
             }
-            <Text className='text-base text-black-800 font-mRegular'>{title}</Text>
+            <Text className='text-base/none text-black-800 font-mMedium'>{title}</Text>
         </Button>
     )
 }

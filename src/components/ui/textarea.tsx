@@ -1,14 +1,16 @@
 import * as React from 'react';
 import { TextInput, type TextInputProps } from 'react-native';
 import { cn } from '@/src/lib/utils';
+import { Colors } from '@/src/constants/Colors';
 
 const Textarea = React.forwardRef<React.ElementRef<typeof TextInput>, TextInputProps>(
   ({ className, multiline = true, numberOfLines = 4, placeholderClassName, ...props }, ref) => {
     return (
       <TextInput
+        selectionColor={Colors.primary}
         ref={ref}
         className={cn(
-          'web:flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-lg lg:text-sm native:text-lg native:leading-[1.25]  web:ring-offset-background placeholder:text-lg placeholder:text-gray-400 web:focus-visible:outline-none web:focus-visible:ring-2 web:focus-visible:ring-ring web:focus-visible:ring-offset-2 font-mRegular',
+          'web:flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-lg lg:text-sm native:text-lg native:leading-[1.25]  web:ring-offset-background placeholder:text-lg placeholder:text-gray-400 web:focus-visible:outline-none web:focus-visible:ring-2 web:focus-visible:ring-ring web:focus-visible:ring-offset-2 font-mMedium text-black-800',
           props.editable === false && 'opacity-50 web:cursor-not-allowed',
           className
         )}

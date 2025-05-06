@@ -32,7 +32,7 @@ const IconBox: React.FC<Props> = ({ icon, title, subTitle, className }) => {
                         className='text-base font-mMedium text-black-800 mb-1 capitalize flex-1'>{title}</Text>
                     <Text
                         numberOfLines={1}
-                        className='text-sm font-mRegular text-gray-400  capitalize  flex-1'>{subTitle}</Text>
+                        className='text-sm font-mMedium text-gray-400  capitalize  flex-1'>{subTitle}</Text>
                 </View>
 
             </View>

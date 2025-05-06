@@ -19,7 +19,7 @@ const IconTitle: React.FC<Props> = ({ title, icon }) => {
                     strokeWidth: '1.3'
                 })
             }
-            <Text className='font-mRegular text-base text-black-800 capitalize'>{title}</Text>
+            <Text className='font-mMedium text-base text-black-800 capitalize'>{title}</Text>
         </View>
     )
 }

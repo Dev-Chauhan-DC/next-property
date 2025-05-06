@@ -344,7 +344,7 @@ const PropertyInformationScreen = () => {
 
 
 
-                    <Text className='text-base font-mRegular text-gray-400 capitalize'>{property?.address}</Text>
+                    <Text className='text-base font-mMedium text-gray-400 capitalize'>{property?.address}</Text>
                     <Text className='text-xs font-mBold text-gray-400'>Listed by {property?.user?.user_role?.role || 'NP User'}</Text>
                     {/* {
                         property?.bedroom_count &&
@@ -488,7 +488,7 @@ const PropertyInformationScreen = () => {
                                         <View
                                             key={highlight.id}
                                             className='flex items-center justify-center bg-gray-100 rounded-full'>
-                                            <Text className='px-4 py-2 text-sm capitalize text-black-800 font-mRegular'>{highlight.highlight.name}</Text>
+                                            <Text className='px-4 py-2 text-base capitalize text-black-800 font-mMedium'>{highlight.highlight.name}</Text>
                                         </View>
                                     )
                                 }
@@ -506,7 +506,7 @@ const PropertyInformationScreen = () => {
                                     <View
                                         key={meal.id}
                                         className='flex items-center justify-center bg-gray-100 rounded-full'>
-                                        <Text className='px-4 py-2 text-sm capitalize text-black-800 font-mRegular'>{meals.find(ml => ml.meta?.serverId === meal.meal_type_id)?.title}</Text>
+                                        <Text className='px-4 py-2 text-base capitalize text-black-800 font-mMedium'>{meals.find(ml => ml.meta?.serverId === meal.meal_type_id)?.title}</Text>
                                     </View>
                                 )
                             }
@@ -581,7 +581,7 @@ const PropertyInformationScreen = () => {
                         <View className='px-3.5 mb-9'>
                             <Text className='font-mSemiBold text-base text-black-800 mb-3'>{[5]?.includes?.(property?.home_type?.id ?? -1) ? 'Description about Room' : 'Description from Owner'}</Text>
                             <Text
-                                className='text-base font-mRegular text-black-800'
+                                className='text-base font-mMedium text-black-800'
                             >{property?.property_description}</Text>
                         </View>
                         : null
@@ -600,7 +600,7 @@ const PropertyInformationScreen = () => {
                         <View className='px-3.5 mb-9'>
                             <Text className='font-mSemiBold text-base text-black-800 mb-3'>Description about Roommate</Text>
                             <Text
-                                className='text-base font-mRegular text-black-800'
+                                className='text-base font-mMedium text-black-800'
                             >{property?.description_roomie}</Text>
                         </View> : null}
 

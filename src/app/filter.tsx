@@ -20,6 +20,7 @@ import { twMerge } from 'tailwind-merge';
 import { useFocusEffect } from '@react-navigation/native';
 import MultipleSelectV2 from '../components/common/select/multiple_select_v2';
 import ToggleV2 from '../components/common/toggleV2';
+import MultipleSelectGrid from '../components/common/select/multiple_select_grid';
 
 
 
@@ -320,7 +321,7 @@ const FilterScreen = () => {
                     <TitleLayout
                         title='Home Type'
                     >
-                        <MultipleSelectV2
+                        <MultipleSelectGrid
                             selected={homeTypeId}
                             setSelected={setHomeTypeId}
                             list={houseType}

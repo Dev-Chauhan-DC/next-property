@@ -246,7 +246,7 @@ const PropertyCard: React.FC<Props> = ({
                         <Text className='text-base font-mMedium text-black-800 capitalize'>Looking for {property?.looking_for?.name}</Text> : null
                 }
 
-                <Text className='text-base font-mRegular text-gray-400 capitalize'>{address && truncateText(address, 50, 'center')}</Text>
+                <Text className='text-base font-mMedium text-gray-400 capitalize'>{address && truncateText(address, 50, 'center')}</Text>
                 <Text className='text-sm font-mBold text-gray-400 capitalize'>Listed by {role ? role : 'NP User'}</Text>
             </View>
         </Pressable>

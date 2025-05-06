@@ -58,7 +58,7 @@ const Header: React.FC<Props> = ({ getHeight }) => {
                 className='h-12 bg-gray-100 rounded-full flex-row justify-start items-center px-4 flex-1'>
                 <Text
                     numberOfLines={1}
-                    className='text-lg font-mRegular text-black-800'>{searchQuery?.result.formatted_address}</Text>
+                    className='text-lg font-mMedium text-black-800'>{searchQuery?.result.formatted_address}</Text>
             </Pressable>
 
 

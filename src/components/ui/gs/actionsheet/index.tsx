@@ -114,13 +114,13 @@ const actionsheetItemStyle = tva({
 });
 
 const actionsheetItemTextStyle = tva({
-  base: 'text-typography-700 font-normal font-body',
+  base: 'text-typography-700 font-mMedium font-body',
   variants: {
     isTruncated: {
       true: '',
     },
     bold: {
-      true: 'font-bold',
+      true: 'font-mBold',
     },
     underline: {
       true: 'underline',

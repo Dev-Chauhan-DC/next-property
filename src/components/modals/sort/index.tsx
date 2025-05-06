@@ -47,7 +47,7 @@ const SortModal: React.FC<Props> = ({ onClose, isOpen, onRequestClose, visible, 
                             <ActionsheetItemText
                                 className={`
                                 ${selectedIndex === index ? 'text-primary ' : ' text-black-800 '}  
-                                text-lg  font-mRegular`}
+                                text-lg  font-mMedium`}
                             >{item.title}</ActionsheetItemText>
                             {
                                 selectedIndex === index ?

@@ -28,8 +28,8 @@ const Item: React.FC<Props> = ({ title, message, onPress }) => {
             <View
                 className='flex-1'
             >
-                <Text className='text-base font-mRegular text-black-800'>{title}</Text>
-                <Text className='text-gray-400 font-mRegular text-sm'>{message}</Text>
+                <Text className='text-lg font-mMedium text-black-800'>{title}</Text>
+                <Text className='text-gray-400 font-mMedium text-base'>{message}</Text>
             </View>
             <ArrowIcon
                 style={{

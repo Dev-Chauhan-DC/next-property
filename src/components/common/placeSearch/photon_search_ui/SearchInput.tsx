@@ -37,19 +37,21 @@ const SearchInput: React.FC<Props> = ({ inputRef, className, value, onChangeText
                     width={14}
                     height={14}
                     fill={Colors.black[800]}
-                /></Pressable>
+                />
+            </Pressable>
             <TextInput
+                textAlignVertical='center'
                 ref={inputRef}
                 placeholderTextColor={Colors.gray[400]}
                 placeholder={placeholder}
                 value={value}
                 onChangeText={onChangeText}
-                className='font-mRegular'
+                className='font-mMedium text-lg/tight flex flex-row items-center flex-1 h-full'
                 selectionColor={Colors.primary}
                 style={{
-                    flex: 1,
-                    height: 35
-                }} />
+                    textAlignVertical: 'center'
+                }}
+            />
             {
                 loading ?
                     <ActivityIndicator

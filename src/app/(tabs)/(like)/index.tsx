@@ -183,7 +183,9 @@ const LikeScreen = () => {
                             onPress={() => {
                                 router.push({ pathname: '/compare', params: { ids: comparePropertyList.join(',') } });
                             }}
-                        ><TextUI>Compare ({comparePropertyList.length})</TextUI></ButtonUI>
+                        >
+                            <TextUI>Compare ({comparePropertyList.length})</TextUI>
+                        </ButtonUI>
 
 
 
